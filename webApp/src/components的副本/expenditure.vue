@@ -2,21 +2,21 @@
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
       <span  @click="goToHome1" style="cursor: pointer;color:#409EFF">返回项目 > </span>
-      <span  @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}} > </span>收款明细收入列表
-      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加收款</el-button>
+      <span  @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}} > </span>付款明细
+      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加付款</el-button>
     </h3>
     <el-dialog title="添加收款" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
-        <el-form-item label="收款名称" prop="ReceivablesName">
+        <el-form-item label="付款名称" prop="ReceivablesName">
           <el-input v-model="form.ReceivablesName"></el-input>
         </el-form-item>
-        <el-form-item label="收款时间" prop="ReceivablesData">
+        <el-form-item label="付款时间" prop="ReceivablesData">
           <el-input v-model="form.ReceivablesData"></el-input>
         </el-form-item>
-        <el-form-item label="收款方式" prop="ReceivablesMode">
+        <el-form-item label="付款方式" prop="ReceivablesMode">
           <el-input v-model="form.ReceivablesMode"></el-input>
         </el-form-item>
-        <el-form-item label="应收金额" prop="number">
+        <el-form-item label="应付金额" prop="number">
           <el-input type="number"  v-model="form.number" style="width:46%" ></el-input>
         </el-form-item>
         <el-form-item label="有无合同" prop="contract">
@@ -33,13 +33,13 @@
               <el-option label="保质金" value="保质金"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="到帐金额"  prop="Receivables" >
+        <el-form-item label="付款金额" prop="Receivables">
           <el-col :span="11" style="margin-right:10px">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>
-          <el-input type="number" v-model="form.Receivables" style="width:46%" ></el-input>
+          <el-input type="number"  v-model="form.Receivables" style="width:46%" ></el-input>
         </el-form-item>
-        <el-form-item label="开出发票" prop="invoice">
+        <el-form-item label="收到发票" prop="invoice">
           <el-col :span="11" style="margin-right:10px">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.kaifapiaodate" style="width: 100%;"></el-date-picker>
           </el-col>
@@ -58,16 +58,16 @@
 
     <el-dialog :title="formModify.ReceivablesName" :visible.sync="dialogAddVisible" >
       <el-form ref="formModify" :model="formModify" :rules="rules"  label-width="80px" class="demo-ruleForm">
-        <el-form-item label="收款名称" prop="ReceivablesName">
+        <el-form-item label="付款名称" prop="ReceivablesName">
           <el-input v-model="formModify.ReceivablesName"></el-input>
         </el-form-item>
-        <el-form-item label="收款时间" prop="ReceivablesData">
+        <el-form-item label="付款时间" prop="ReceivablesData">
           <el-input v-model="formModify.ReceivablesData"></el-input>
         </el-form-item>
-        <el-form-item label="收款方式" prop="ReceivablesMode">
+        <el-form-item label="付款方式" prop="ReceivablesMode">
           <el-input v-model="formModify.ReceivablesMode"></el-input>
         </el-form-item>
-        <el-form-item label="应收金额" prop="number">
+        <el-form-item label="付款金额" prop="number">
           <el-input type="number"  v-model="formModify.number" style="width:46%" ></el-input>
         </el-form-item>
         <el-form-item label="有无合同" prop="contract">
@@ -84,13 +84,13 @@
               <el-option label="保质金" value="保质金"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="到帐金额" >
+        <el-form-item label="付款金额" prop="Receivables">
           <el-col :span="11" style="margin-right:10px">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>
           <el-input type="number"  v-model="formModify.Receivables" style="width:46%" ></el-input>
         </el-form-item>
-        <el-form-item label="开出发票" >
+        <el-form-item label="收到发票" prop="invoice">
           <el-col :span="11" style="margin-right:10px">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.kaifapiaodate" style="width: 100%;"></el-date-picker>
           </el-col>
@@ -111,19 +111,19 @@
       <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
       <el-table-column prop="number" label="应收金额" ></el-table-column>
       <el-table-column prop="ReceivablesData" label="收款时间" ></el-table-column>
-      <el-table-column prop="Receivables" label="到账金额" ></el-table-column>
-      <el-table-column prop="daozhangdate" label="到账时间" ></el-table-column>
-      <el-table-column prop="invoice" label="开出发票" ></el-table-column>
-      <el-table-column prop="kaifapiaodate" label="开发票时间" ></el-table-column>
-      <el-table-column prop="Receivablesend" label="未收金额" ></el-table-column>
+      <el-table-column prop="Receivables" label="付款金额" ></el-table-column>
+      <el-table-column prop="daozhangdate" label="付款时间" ></el-table-column>
+      <el-table-column prop="invoice" label="收到发票" ></el-table-column>
+      <el-table-column prop="kaifapiaodate" label="发票时间" ></el-table-column>
+      <el-table-column prop="Receivablesend" label="未付金额" ></el-table-column>
       <!-- <el-table-column prop="Remarks" label="备注" sortable></el-table-column> -->
     </el-table>
     <p style="text-align:right; font-size:15px; color:#555" type="error"><span class="colorRed">
       合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
-      / 应收金额: {{this.jsondata.currency( this.yingshou, '￥', 2)}}
-      / 到账金额: {{this.jsondata.currency( this.zongshouru, '￥', 2)}}
-      / 未收金额: {{this.jsondata.currency( this.weishou, '￥', 2)}}
-      / 已开发票未收款: {{this.jsondata.currency( this.weikaifapiao, '￥', 2)}}
+      / 应付金额: {{this.jsondata.currency( this.yingshou, '￥', 2)}}
+      / 已付金额: {{this.jsondata.currency( this.zongshouru, '￥', 2)}}
+      / 未付金额: {{this.jsondata.currency( this.weishou, '￥', 2)}}
+      / 未收发票: {{this.jsondata.currency( this.weikaifapiao, '￥', 2)}}
     </p>
   </el-main>
 </template>
@@ -155,13 +155,11 @@ export default {
         Receivablesend: '',
         projectId: '',
         invoice: '',
-        Receivables: '',
-        daozhangdate: '',
-        kaifapiaodate: ''
+        Receivables: ''
       }, // 添加收到金额
       TransactionList: {},
       formTransactionCon: '',
-      formTransactionList: {}, // 交易列表
+      formTransactionList: [], // 交易列表
       formTransaction: {
         MoneyClass: '',
         CollectMoney: '',
@@ -181,8 +179,6 @@ export default {
         invoice: '',
         Receivableslist: '',
         Receivables: '',
-        daozhangdate: '',
-        kaifapiaodate: '',
         projectlist: ''
       },
       dataList: [],
@@ -233,7 +229,7 @@ export default {
       })
     },
     updatpostData () { // 更新数据
-      this.jsondata.updatpostData('Receivables', this.formModify).then(response => {
+      this.jsondata.updatpostData('expenditureData', this.formModify).then(response => {
         // console.log(response)
         // this.formTransaction.AmountMoney = this.formModify.Receivables
         // this.formTransaction.MoneyClass = 1
@@ -265,10 +261,10 @@ export default {
       this.form.Receivableslist = ''
     },
     postData () { // 添加数据
-      this.jsondata.postData('Receivables', this.form).then(response => {
-        // console.log(response.data, this.form)
+      this.jsondata.postData('expenditureData', this.form).then(response => {
+        console.log(response.data, this.form)
         if (response.data === 'OK') {
-          // console.log(response.data, this.form)
+          console.log(response.data, this.form)
           this.dialogFormVisible = false
           this.getdata()
           this.resetForm('form')
@@ -280,14 +276,14 @@ export default {
       return false
     },
     getdataincome () {
-      this.jsondata.getDataClass('RevenueContract', this.$route.params.id, 'id').then(response => {
+      this.jsondata.getDataClass('expenditure', this.$route.params.id, 'id').then(response => {
         // this.tableData = response.data
         this.projectName = response.data[0].ReceivablesName
         this.projectNameid = response.data[0].projectId
         this.hetongjiner = response.data[0].number
         this.income = response.data
         this.form.projectlist = response.data[0].projectId
-        // console.log(response.data)
+        console.log(response.data)
       })
         .catch(error => {
           console.log(error)
@@ -301,42 +297,44 @@ export default {
       this.weishou = 0 // 未收金额初始化
       this.weikaifapiao = 0 // 未收金额初始化
       this.getdataincome()// 请求交易例表
-      this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectId').then(response => {
-        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
-        this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
+      this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectId').then(response => {
+        this.tableData = response.data.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }).reverse() // 根据期数排序
         // console.log(this.tableData)
-        for (let i = 0; i < this.tableData.length; i++) { // 合并表格数组
+        for (let i = 0; i < this.tableData.length; i++) {
           if(this.tableData[i].number == ''){ //eslint-disable-line
+            this.dataList[i] = {len: 0, isfirst: false}
             this.tableData[i].Receivablesend = ''
           } else {
+            this.dataList[i] = {len: 0, isfirst: true}
             this.tableData[i].Receivablesend = Number(this.tableData[i].number)
             for (let is = 0; is < this.tableData.length; is++) {
               if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist){ //eslint-disable-line
                 // console.log(this.tableData[i].Receivableslist, this.tableData[i].number, this.tableData[is].Receivables)
                 this.tableData[i].Receivablesend -= Number(this.tableData[is].Receivables)
+                this.dataList[i].len += 1
               }
             }
           }
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
         }
-        this.dataList = this.jsondata.getSpanArr(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
           this.yingshou += Number(this.tableData[i].number)
           this.zongshouru += Number(this.tableData[i].Receivables)
-          this.weikaifapiao += Number(this.tableData[i].invoice)
+          this.weikaifapiao -= Number(this.tableData[i].invoice)
           // this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
           this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
           this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
           this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
         }
         // console.log(Number(this.hetongjiner), Number(this.yingshou))
-        this.weishou = Number(this.yingshou) - Number(this.zongshouru)
-        this.weikaifapiao = Number(this.weikaifapiao) - Number(this.zongshouru)
         if (Number(this.hetongjiner) == Number(this.yingshou)) { //eslint-disable-line
           document.querySelector('.colorRed').style.color = '#555'
         } else {
           document.querySelector('.colorRed').style.color = '#f00'
         }
+        this.weishou = Number(this.yingshou) - Number(this.zongshouru)
+        this.weikaifapiao = Number(this.weikaifapiao) + Number(this.yingshou)
+        console.log(this.dataList)
       })
         .catch(error => {
           console.log(error)
@@ -344,7 +342,7 @@ export default {
       return false
     },
     deletepost () { // 删除收款
-      this.jsondata.deletepost('Receivables', this.formModify.id).then(response => {
+      this.jsondata.deletepost('expenditureData', this.formModify.id).then(response => {
         console.log(response.data)
         if (response.data === 'OK') {
           this.dialogAddVisible = false
@@ -357,9 +355,8 @@ export default {
     },
 
     handle (row) {
-      console.log(row)
       this.dialogAddVisible = true
-      this.jsondata.getDataId('Receivables', row.id).then(response => {
+      this.jsondata.getDataId('expenditureData', row.id).then(response => {
         this.formModify = response.data[0]
       })
         .catch(error => {
@@ -394,18 +391,23 @@ export default {
         })
     },
     goToHome () {
-      this.$router.push('/RevenueContract/' + this.projectNameid)
+      this.$router.push('/expenditureContract/' + this.projectNameid)
     },
     goToHome1 () {
       this.$router.push('/ProjectDetails/' + this.projectNameid)
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 7) {
-        const _row = this.dataList[rowIndex]
-        const _col = _row > 0 ? 1 : 0
-        return {
-          rowspan: _row,
-          colspan: _col
+        if (this.dataList[rowIndex].isfirst) {
+          return {
+            rowspan: this.dataList[rowIndex].len,
+            colspan: 1
+          }
+        } else {
+          return {
+            rowspan: 0,
+            colspan: 0
+          }
         }
       }
     }
