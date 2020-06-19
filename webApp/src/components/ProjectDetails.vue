@@ -52,7 +52,7 @@
       <el-button type="primary" style="float: right; margin-left:10px;" @click="ReceivablesGo">项目收款</el-button>
       <el-button type="primary" style="float: right; margin-left:10px;" @click="expenditureGo">项目支出</el-button>
     </h3>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table class="projectdateil" :data="tableData" border style="width: 100%">
       <el-table-column prop="pojname" label="名称" width="120"></el-table-column>
       <el-table-column prop="contents" label="内容" ></el-table-column>
     </el-table>

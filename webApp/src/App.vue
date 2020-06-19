@@ -121,4 +121,12 @@ export default {
     padding-bottom: 10px;
 
   }
+  .el-table td, .el-table th{
+    padding: 6px 0px;
+    text-align: center;
+  }
+  .projectdateil td, .projectdateil th{
+    padding: 6px 0px;
+    text-align: left;
+  }
 </style>

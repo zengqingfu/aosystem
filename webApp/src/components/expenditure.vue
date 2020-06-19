@@ -298,25 +298,24 @@ export default {
       this.weikaifapiao = 0 // 未收金额初始化
       this.getdataincome()// 请求交易例表
       this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectId').then(response => {
-        this.tableData = response.data.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }).reverse() // 根据期数排序
+        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
+        this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)
-        for (let i = 0; i < this.tableData.length; i++) {
+        for (let i = 0; i < this.tableData.length; i++) { // 合并表格数组
           if(this.tableData[i].number == ''){ //eslint-disable-line
-            this.dataList[i] = {len: 0, isfirst: false}
             this.tableData[i].Receivablesend = ''
           } else {
-            this.dataList[i] = {len: 0, isfirst: true}
             this.tableData[i].Receivablesend = Number(this.tableData[i].number)
             for (let is = 0; is < this.tableData.length; is++) {
               if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist){ //eslint-disable-line
                 // console.log(this.tableData[i].Receivableslist, this.tableData[i].number, this.tableData[is].Receivables)
                 this.tableData[i].Receivablesend -= Number(this.tableData[is].Receivables)
-                this.dataList[i].len += 1
               }
             }
           }
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
         }
+        this.dataList = this.jsondata.getSpanArr(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
           this.yingshou += Number(this.tableData[i].number)
           this.zongshouru += Number(this.tableData[i].Receivables)
@@ -398,16 +397,11 @@ export default {
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 7) {
-        if (this.dataList[rowIndex].isfirst) {
-          return {
-            rowspan: this.dataList[rowIndex].len,
-            colspan: 1
-          }
-        } else {
-          return {
-            rowspan: 0,
-            colspan: 0
-          }
+        const _row = this.dataList[rowIndex]
+        const _col = _row > 0 ? 1 : 0
+        return {
+          rowspan: _row,
+          colspan: _col
         }
       }
     }
