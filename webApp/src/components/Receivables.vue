@@ -303,7 +303,7 @@ export default {
         this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
         this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)
-        for (let i = 0; i < this.tableData.length; i++) { // 合并表格数组
+        for (let i = 0; i < this.tableData.length; i++) {
           if(this.tableData[i].number == ''){ //eslint-disable-line
             this.tableData[i].Receivablesend = ''
           } else {

@@ -62,12 +62,13 @@
       <el-table :data="item.projectidlist" show-summary :summary-method="getSummaries" :span-method="objectSpanMethod" border style="width: 100%">
         <!-- <el-table-column prop="ReceivablesName" label="合同名称" sortable></el-table-column> -->
         <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
+        <el-table-column prop="ReceivablesData" label="合同收款时间" ></el-table-column>
         <el-table-column prop="number" label="应收金额" ></el-table-column>
-        <el-table-column prop="ReceivablesData" label="收款时间" ></el-table-column>
         <el-table-column prop="Receivables" label="到帐金额" ></el-table-column>
+        <el-table-column prop="hetongwidthou" label="未收金额" ></el-table-column>
         <el-table-column prop="invoice" label="开出发票" ></el-table-column>
-        <!-- <el-table-column prop="projectint" label="备注" ></el-table-column> -->
-        <el-table-column prop="Receivablesend" label="未收金额" ></el-table-column>
+        <el-table-column prop="daozhangdate" label="日期" ></el-table-column>
+        <el-table-column prop="Remarks" label="备注" ></el-table-column>
       </el-table>
     </el-row>
     <h3>硬件类</h3>
@@ -134,6 +135,7 @@
 export default {
   data () {
     return {
+      hetongweishou: '',
       projectContractcon: [],
       dataList: [],
       spanArr: [],
@@ -192,6 +194,7 @@ export default {
       tableDatayingjiang1: [],
       tableDataruangjian: [],
       tableDatatuozhan: [],
+      tableDatas: [],
       tableData: [
         {
           pojname: '项目名称',
@@ -244,8 +247,29 @@ export default {
             for (let irp in this.projectContractcon) { //eslint-disable-line
               if (this.projectContract[irr].id == this.projectContractcon[irp].projectId) { //eslint-disable-line
                 this.projectContractcon[irp].projectint = irr
-                this.projectContractcon[irp].number = this.jsondata.currency(this.projectContractcon[irp].number, '￥', 2)
                 this.projectContract[irr].projectidlist.push(this.projectContractcon[irp])
+              }
+            }
+
+            for (let iss in this.projectContract[irr].projectidlist) { //eslint-disable-line
+              if(this.projectContract[irr].projectidlist[iss].number != ''){ //eslint-disable-line
+                this.projectContract[irr].projectidlist[iss].hetongwidthou = Number(this.projectContract[irr].projectidlist[iss].number)
+                for (let issr in this.projectContract[irr].projectidlist) {
+                  if (this.projectContract[irr].projectidlist[iss].Receivableslist == this.projectContract[irr].projectidlist[issr].Receivableslist){ //eslint-disable-line
+                    // console.log(this.projectContract[irr].projectidlist[iss].Receivables, this.projectContract[irr].projectidlist[issr].Receivables)
+                    this.projectContract[irr].projectidlist[iss].hetongwidthou -= Number(this.projectContract[irr].projectidlist[issr].Receivables)
+                  }
+                }
+              }
+            }
+
+            for (let iss in this.projectContract[irr].projectidlist) { //eslint-disable-line
+              this.projectContract[irr].projectidlist[iss].number = this.jsondata.currency(this.projectContract[irr].projectidlist[iss].number, '￥', 2)
+              this.projectContract[irr].projectidlist[iss].hetongwidthou = this.jsondata.currency(this.projectContract[irr].projectidlist[iss].hetongwidthou, '￥', 2)
+              this.projectContract[irr].projectidlist[iss].Receivables = this.jsondata.currency(this.projectContract[irr].projectidlist[iss].Receivables, '￥', 2)
+              this.projectContract[irr].projectidlist[iss].invoice = this.jsondata.currency(this.projectContract[irr].projectidlist[iss].invoice, '￥', 2)
+              if(this.projectContract[irr].projectidlist[iss].daozhangdate == ''){ //eslint-disable-line
+                this.projectContract[irr].projectidlist[iss].daozhangdate += this.projectContract[irr].projectidlist[iss].kaifapiaodate
               }
             }
             this.projectContract[irr].projectidlist = this.projectContract[irr].projectidlist.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 表格合并数组排序 .reverse()
@@ -469,7 +493,7 @@ export default {
         })
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 5) {
+      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2) {
         const _row = this.dataList[row.projectint][rowIndex]
         const _col = _row > 0 ? 1 : 0
         return {
@@ -501,11 +525,12 @@ export default {
           } else {
             values[is] = Number(values[is])
           }
-          console.log(values[is])
+          // console.log(values[is])
         }
         if (!values.every(value => isNaN(value))) {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr)
+            // console.log(Number(curr))
             if (!isNaN(value)) {
               return prev + curr
             } else {
@@ -516,6 +541,13 @@ export default {
           sums[index] = 'N/A'
         }
       })
+      for (let ins in sums) { // eslint-disable-line0
+        if (sums[ins] > 0) { // eslint-disable-line0
+          console.log(sums[ins])
+          sums[ins] = this.jsondata.currency(sums[ins], '￥', 2)
+        }
+      }
+
       return sums
     }
   }
