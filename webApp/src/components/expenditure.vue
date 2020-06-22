@@ -106,7 +106,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" border highligth-current-row  :span-method="objectSpanMethod" style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="getSummaries" show-summary  :span-method="objectSpanMethod" style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
       <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
       <el-table-column prop="number" label="应收金额" ></el-table-column>
@@ -118,12 +118,8 @@
       <el-table-column prop="Receivablesend" label="未付金额" ></el-table-column>
       <!-- <el-table-column prop="Remarks" label="备注" sortable></el-table-column> -->
     </el-table>
-    <p style="text-align:right; font-size:15px; color:#555" type="error"><span class="colorRed">
+    <p style="text-align:right; font-size:15px; color:#555;font-weight: bold;" type="error"><span class="colorRed">
       合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
-      / 应付金额: {{this.jsondata.currency( this.yingshou, '￥', 2)}}
-      / 已付金额: {{this.jsondata.currency( this.zongshouru, '￥', 2)}}
-      / 未付金额: {{this.jsondata.currency( this.weishou, '￥', 2)}}
-      / 未收发票: {{this.jsondata.currency( this.weikaifapiao, '￥', 2)}}
     </p>
   </el-main>
 </template>
@@ -319,20 +315,15 @@ export default {
         for (let i = 0; i < this.tableData.length; i++) {
           this.yingshou += Number(this.tableData[i].number)
           this.zongshouru += Number(this.tableData[i].Receivables)
-          this.weikaifapiao -= Number(this.tableData[i].invoice)
+          this.weikaifapiao += Number(this.tableData[i].invoice)
           // this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
           this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
           this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
           this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
         }
         // console.log(Number(this.hetongjiner), Number(this.yingshou))
-        if (Number(this.hetongjiner) == Number(this.yingshou)) { //eslint-disable-line
-          document.querySelector('.colorRed').style.color = '#555'
-        } else {
-          document.querySelector('.colorRed').style.color = '#f00'
-        }
         this.weishou = Number(this.yingshou) - Number(this.zongshouru)
-        this.weikaifapiao = Number(this.weikaifapiao) + Number(this.yingshou)
+        // this.weikaifapiao = Number(this.weikaifapiao) + Number(this.yingshou)
         console.log(this.dataList)
       })
         .catch(error => {
@@ -404,6 +395,14 @@ export default {
           colspan: _col
         }
       }
+    },
+    getSummaries (param) {
+      // if (Number(this.hetongjiner) == Number(this.yingshou)) { //eslint-disable-line
+      //   document.querySelector('.colorRed').style.color = '#555'
+      // } else {
+      //   document.querySelector('.colorRed').style.color = '#f00'
+      // }
+      return ['合计', this.jsondata.currency(this.yingshou, '￥', 2), '', this.jsondata.currency(this.zongshouru, '￥', 2), '', this.jsondata.currency(this.weikaifapiao, '￥', 2), '', this.jsondata.currency(this.weishou, '￥', 2)]
     }
   }
 }

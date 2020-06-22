@@ -19,6 +19,16 @@ export default {
     }
     return this.spanArr
   },
+  objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
+    if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2) {
+      const _row = this.dataList[row.projectint][rowIndex]
+      const _col = _row > 0 ? 1 : 0
+      return {
+        rowspan: _row,
+        colspan: _col
+      }
+    }
+  },
   getDataId (form, listid) {
     return axios({
       url: 'http://localhost:3000/getpost/' + form + '/' + listid,

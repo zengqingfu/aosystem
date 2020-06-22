@@ -122,11 +122,14 @@ export default {
 
   }
   .el-table td, .el-table th{
-    padding: 6px 0px;
+    padding: 8px 0px;
     text-align: center;
   }
   .projectdateil td, .projectdateil th{
-    padding: 6px 0px;
+    padding: 8px 0px;
     text-align: left;
   }
+  .el-table__footer-wrapper {
+    font-weight: bold;
+}
 </style>

@@ -59,15 +59,15 @@
     <h3>收款</h3>
     <el-row v-for="item in projectContract" :key="item.ReceivablesName">
       {{item.ReceivablesName}}
-      <el-table :data="item.projectidlist" :span-method="objectSpanMethod" border style="width: 100%">
+      <el-table :data="item.projectidlist" show-summary :summary-method="getSummaries" :span-method="objectSpanMethod" border style="width: 100%">
         <!-- <el-table-column prop="ReceivablesName" label="合同名称" sortable></el-table-column> -->
         <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
         <el-table-column prop="number" label="应收金额" ></el-table-column>
         <el-table-column prop="ReceivablesData" label="收款时间" ></el-table-column>
         <el-table-column prop="Receivables" label="到帐金额" ></el-table-column>
-        <el-table-column prop="Receivablesend" label="未收金额" ></el-table-column>
         <el-table-column prop="invoice" label="开出发票" ></el-table-column>
-        <el-table-column prop="projectint" label="备注" ></el-table-column>
+        <!-- <el-table-column prop="projectint" label="备注" ></el-table-column> -->
+        <el-table-column prop="Receivablesend" label="未收金额" ></el-table-column>
       </el-table>
     </el-row>
     <h3>硬件类</h3>
@@ -244,6 +244,7 @@ export default {
             for (let irp in this.projectContractcon) { //eslint-disable-line
               if (this.projectContract[irr].id == this.projectContractcon[irp].projectId) { //eslint-disable-line
                 this.projectContractcon[irp].projectint = irr
+                this.projectContractcon[irp].number = this.jsondata.currency(this.projectContractcon[irp].number, '￥', 2)
                 this.projectContract[irr].projectidlist.push(this.projectContractcon[irp])
               }
             }
@@ -468,7 +469,7 @@ export default {
         })
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2) {
+      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 5) {
         const _row = this.dataList[row.projectint][rowIndex]
         const _col = _row > 0 ? 1 : 0
         return {
@@ -476,6 +477,46 @@ export default {
           colspan: _col
         }
       }
+    },
+    getSummaries (param) {
+      const { columns, data } = param
+      const sums = []
+      // for (let is = 0; is < data.length; is++) {
+      //   if(Number(data[is].number) != '') { //eslint-disable-line
+      //     console.log(Number(data[is].number.replace(/,|￥/g, '')))
+      //   }
+      // }
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '合计'
+          return
+        }
+        const values = data.map(item => item[column.property])
+        for (let is = 0; is < values.length; is++) {
+          if (values[is] != '' && values[is] != undefined) { //eslint-disable-line
+            values[is] = Number(values[is].replace(/,|￥/g, ''))
+            if (isNaN(values[is])) { //eslint-disable-line
+              values[is] = 0
+            }
+          } else {
+            values[is] = Number(values[is])
+          }
+          console.log(values[is])
+        }
+        if (!values.every(value => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr)
+            if (!isNaN(value)) {
+              return prev + curr
+            } else {
+              return prev
+            }
+          }, 0)
+        } else {
+          sums[index] = 'N/A'
+        }
+      })
+      return sums
     }
   }
 }
