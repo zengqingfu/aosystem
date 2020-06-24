@@ -1,6 +1,6 @@
 import axios from 'axios'
 export default {
-  getSpanArr (data) {
+  getSpanArr (data) { // 合并表格数组生成
     this.spanArr = []
     for (var i = 0; i < data.length; i++) {
       if (i === 0) {
@@ -18,16 +18,6 @@ export default {
       }
     }
     return this.spanArr
-  },
-  objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-    if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2) {
-      const _row = this.dataList[row.projectint][rowIndex]
-      const _col = _row > 0 ? 1 : 0
-      return {
-        rowspan: _row,
-        colspan: _col
-      }
-    }
   },
   getDataId (form, listid) {
     return axios({
@@ -102,7 +92,7 @@ export default {
       }
     })
   },
-  currency (value, currency, decimals) {
+  currency (value, currency, decimals) { // 生成货币格式
     const digitsRE = /(\d{3})(?=\d)/g
     value = parseFloat(value)
     if (!isFinite(value) || (!value && value !== 0)) return ''
@@ -123,5 +113,50 @@ export default {
     return sign + currency + head +
       _int.slice(i).replace(digitsRE, '$1,') +
       _float
+  },
+  getSummaries (param) { // 统计行
+    const { columns, data } = param
+    const sums = []
+    columns.forEach((column, index) => {
+      if (index === 0) {
+        sums[index] = '合计'
+        return
+      }
+      const values = data.map(item => item[column.property])
+      for (let is = 0; is < values.length; is++) {
+        if (values[is] != '' && values[is] != undefined) { //eslint-disable-line
+          values[is] = Number(values[is].replace(/,|￥/g, ''))
+          if (isNaN(values[is])) { //eslint-disable-line
+            values[is] = 0
+          }
+        } else {
+          values[is] = Number(values[is])
+        }
+        // console.log(values[is])
+      }
+      if (!values.every(value => isNaN(value))) {
+        sums[index] = values.reduce((prev, curr) => {
+          const value = Number(curr)
+          // console.log(Number(curr))
+          if (!isNaN(value)) {
+            return prev + curr
+          } else {
+            return prev
+          }
+        }, 0)
+      } else {
+        sums[index] = 'N/A'
+      }
+    })
+    for (let ins in sums) { // eslint-disable-line0
+      if (sums[ins] > 0) {
+        // console.log(sums[ins])
+        sums[ins] = this.jsondata.currency(sums[ins], '￥', 2)
+      }
+      if (sums[ins] === 0) {
+        sums[ins] = 'N/A'
+      }
+    }
+    return sums
   }
 }

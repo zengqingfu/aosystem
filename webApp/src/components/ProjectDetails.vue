@@ -58,74 +58,33 @@
     </el-table>
     <h3>收款</h3>
     <el-row v-for="item in projectContract" :key="item.ReceivablesName">
-      {{item.ReceivablesName}}
-      <el-table :data="item.projectidlist" show-summary :summary-method="getSummaries" :span-method="objectSpanMethod" border style="width: 100%">
+      <h4>{{item.ReceivablesName}}  <span style="float:right">签约日期 {{item.ReceivablesData}}</span></h4>
+      <el-table :data="item.projectidlist" show-summary :summary-method="jsondata.getSummaries" :span-method="objectSpanMethod" border style="width: 100%">
         <!-- <el-table-column prop="ReceivablesName" label="合同名称" sortable></el-table-column> -->
         <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
         <el-table-column prop="ReceivablesData" label="合同收款时间" ></el-table-column>
         <el-table-column prop="number" label="应收金额" ></el-table-column>
         <el-table-column prop="Receivables" label="到帐金额" ></el-table-column>
-        <el-table-column prop="hetongwidthou" label="未收金额" ></el-table-column>
         <el-table-column prop="invoice" label="开出发票" ></el-table-column>
         <el-table-column prop="daozhangdate" label="日期" ></el-table-column>
+        <el-table-column prop="hetongwidthou" label="未收金额" ></el-table-column>
         <el-table-column prop="Remarks" label="备注" ></el-table-column>
       </el-table>
     </el-row>
-    <h3>硬件类</h3>
-    <el-table :data="tableDatayingjiang1" border style="width: 100%">
-      <el-table-column prop="SupplierName" label="收款名称" sortable></el-table-column>
-      <el-table-column prop="ReceivablesName" label="款项目名称" sortable></el-table-column>
-      <el-table-column prop="Receivableslist" label="付款分期" sortable></el-table-column>
-      <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
-      <el-table-column prop="ReceivablesData" label="付款时间" sortable></el-table-column>
-      <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>
-      <el-table-column prop="invoice" label="收到发票" sortable></el-table-column>
-      <el-table-column prop="Remarks" label="备注" sortable></el-table-column>
+    <hr style="height: 30px;background-color: #eee;border: 0px;" />
+
+    <h3>工程类</h3>
+    <el-table :data="gongchenglist" border show-summary :summary-method="jsondata.getSummaries"  style="width: 100%">
+      <el-table-column prop="SupplierName" label="收款名称" ></el-table-column>
+      <el-table-column prop="ReceivablesName" label="款项目名称" ></el-table-column>
+      <!-- <el-table-column prop="ReceivablesData" label="应支付日期" ></el-table-column> -->
+      <el-table-column prop="number" label="应支付金额" ></el-table-column>
+      <el-table-column prop="Receivables" label="已支付金额" ></el-table-column>
+      <el-table-column prop="invoice" label="收到发票" ></el-table-column>
+      <el-table-column prop="Receivablesend" label="未付金额" ></el-table-column>
+      <el-table-column prop="contractdate" label="签约日期" ></el-table-column>
     </el-table>
-    <h3>软体类成本</h3>
-    <el-table :data="tableDataruangjian" border style="width: 100%">
-      <el-table-column prop="SupplierName" label="收款名称" sortable></el-table-column>
-      <el-table-column prop="ReceivablesName" label="款项目名称" sortable></el-table-column>
-      <el-table-column prop="Receivableslist" label="付款分期" sortable></el-table-column>
-      <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
-      <el-table-column prop="ReceivablesData" label="付款时间" sortable></el-table-column>
-      <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>
-      <el-table-column prop="invoice" label="收到发票" sortable></el-table-column>
-      <el-table-column prop="Remarks" label="备注" sortable></el-table-column>
-    </el-table>
-        <h3>工程类</h3>
-    <el-table :data="gongcheng" border style="width: 100%">
-      <el-table-column prop="SupplierName" label="收款名称" sortable></el-table-column>
-      <el-table-column prop="ReceivablesName" label="款项目名称" sortable></el-table-column>
-      <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
-      <el-table-column prop="ReceivablesData" label="应支付日期" sortable></el-table-column>
-      <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>
-      <el-table-column prop="invoice" label="收到发票" sortable></el-table-column>
-      <el-table-column prop="projectClass" label="支出类别" sortable></el-table-column>
-      <el-table-column prop="Remarks" label="备注" sortable></el-table-column>
-    </el-table>
-        <h3>业务类</h3>
-    <el-table :data="yewu" border style="width: 100%">
-      <el-table-column prop="SupplierName" label="收款名称" sortable></el-table-column>
-      <el-table-column prop="ReceivablesName" label="款项目名称" sortable></el-table-column>
-      <el-table-column prop="Receivableslist" label="付款分期" sortable></el-table-column>
-      <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
-      <el-table-column prop="ReceivablesData" label="付款时间" sortable></el-table-column>
-      <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>
-      <el-table-column prop="invoice" label="收到发票" sortable></el-table-column>
-      <el-table-column prop="Remarks" label="备注" sortable></el-table-column>
-    </el-table>
-    <h3>拓展费</h3>
-    <el-table :data="tableDatatuozhan" border style="width: 100%">
-      <el-table-column prop="SupplierName" label="收款名称" sortable></el-table-column>
-      <el-table-column prop="ReceivablesName" label="款项目名称" sortable></el-table-column>
-      <el-table-column prop="Receivableslist" label="付款分期" sortable></el-table-column>
-      <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
-      <el-table-column prop="ReceivablesData" label="付款时间" sortable></el-table-column>
-      <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>
-      <el-table-column prop="invoice" label="收到发票" sortable></el-table-column>
-      <el-table-column prop="Remarks" label="备注" sortable></el-table-column>
-    </el-table>
+
   </el-main>
 </template>
 <style>
@@ -191,17 +150,18 @@ export default {
       invoiceint: '',
       invoiceintp: '',
       tableDatayingjiang: [],
-      tableDatayingjiang1: [],
-      tableDataruangjian: [],
-      tableDatatuozhan: [],
-      tableDatas: [],
+      yingjianglist: [], // 硬件
+      ruanjianlist: [], // 软件
+      gongchenglist: [], // 工程
+      yewulist: [], // 业务
+      rtuozhanlist: [], // 拓展
       tableData: [
         {
           pojname: '项目名称',
           contents: '无'
         },
         {
-          pojname: '签约时间',
+          pojname: '项目启动时间',
           contents: '无'
         },
         {
@@ -237,7 +197,20 @@ export default {
     this.getFormDataClass('expenditureClass')
   },
   methods: {
+    dstaplayb () { // 数据初始化
+      this.Receivablesintp = 0
+      this.contentsintp = 0
+      this.Receivablesint = 0
+      this.invoiceint = 0
+      this.Receivablesint = 0
+      this.yingjianglist = [] // 硬件
+      this.ruanjianlist = [] // 软件
+      this.gongchenglist = [] // 工程
+      this.yewulist = [] // 业务
+      this.rtuozhanlist = [] // 拓展
+    },
     getdata () {
+      this.dstaplayb()
       this.jsondata.getDataClass('RevenueContract', this.$route.params.id, 'projectId').then(response => {
         this.projectContract = response.data
         this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectlist').then(responseitem => {
@@ -289,12 +262,7 @@ export default {
         // console.log(response.data[0].ContractDate)
         this.form = response.data[0]
         this.form.ContractDate = response.data[0].ContractDate.substr(0, 10)
-        this.tableData[0].contents = this.form.projectName
-        this.tableData[1].contents = this.form.ContractDate
-        this.tableData[3].contents = '合同金额:' + this.jsondata.currency(this.form.ContractAmount, '￥', 2)
-        this.tableData[4].contents = '预算支出:' + this.jsondata.currency(this.form.ExpenditureBudget, '￥', 2)
-        this.tableData[7].contents = this.form.projectContent
-        this.getdataReceivables()
+        this.getdataReceivables() // 项目明细统计
         this.jsondata.getData('Customerlist').then(response => { // 客户列表
           this.optionsproject = response.data
           for (let is = 0; is < response.data.length; is++) {
@@ -374,6 +342,11 @@ export default {
       this.$router.push('/expenditureContract/' + this.$route.params.id)
     },
     getdataReceivables () {
+      this.tableData[0].contents = this.form.projectName
+      this.tableData[1].contents = this.form.ContractDate
+      this.tableData[3].contents = '合同金额:' + this.jsondata.currency(this.form.ContractAmount, '￥', 2)
+      this.tableData[4].contents = '预算支出:' + this.jsondata.currency(this.form.ExpenditureBudget, '￥', 2)
+      this.tableData[7].contents = this.form.projectContent
       this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectlist').then(response => {
         if (response.data.length == 0) { //eslint-disable-line
           // this.tableData[3].contents += ' / 应收金额: ￥0'
@@ -418,7 +391,6 @@ export default {
           // this.tableData[4].contents += '|项目支出金额: ￥0'
           // console.log(response.data.length)
         } else {
-          this.contentsintp = 0
           // console.log(response.data[0].number)
           for (let i = 0; i < response.data.length; i++) {
             this.contentsintp += Number(response.data[i].number)
@@ -444,33 +416,61 @@ export default {
     getdatae1 () {
       this.jsondata.getDataClass('expenditure', this.$route.params.id, 'projectId').then(response => {
         this.tableDatayingjiang = response.data
-        for (let i = 0; i < this.tableDatayingjiang.length; i++) {
-          this.zhongshouru = Number(this.zhongshouru) + Number(this.tableDatayingjiang[i].Receivables)
-          this.weishoukuan = Number(this.weishoukuan) + Number(this.tableDatayingjiang[i].number)
-          this.tableDatayingjiang[i].number = this.jsondata.currency(this.tableDatayingjiang[i].number, '￥', 2)
-          this.tableDatayingjiang[i].Receivables = this.jsondata.currency(this.tableDatayingjiang[i].Receivables, '￥', 2)
-          this.tableDatayingjiang[i].invoice = this.jsondata.currency(this.tableDatayingjiang[i].invoice, '￥', 2)
-        }
         this.weishoukuan = Number(this.weishoukuan) - Number(this.zhongshouru)
-        this.zhongshouru = this.jsondata.currency(this.zhongshouru, '￥', 2)
-        this.weishoukuan = this.jsondata.currency(this.weishoukuan, '￥', 2)
         for (var i = 0; i < this.tableDatayingjiang.length; i++) {
-                if(this.tableDatayingjiang[i].projectClass == '硬件类成本'){ //eslint-disable-line
-            this.tableDatayingjiang1.push(this.tableDatayingjiang[i])
+                if(this.tableDatayingjiang[i].projectClass == '1'){ //eslint-disable-line
+            this.yingjianglist.push(this.tableDatayingjiang[i])
           }
-                if(this.tableDatayingjiang[i].projectClass == '软体类成本'){ //eslint-disable-line
-            this.tableDataruangjian.push(this.tableDatayingjiang[i])
+                if(this.tableDatayingjiang[i].projectClass == '2'){ //eslint-disable-line
+            this.ruanjianlist.push(this.tableDatayingjiang[i])
           }
-                if(this.tableDatayingjiang[i].projectClass == '工程类'){ //eslint-disable-line
-            this.gongcheng.push(this.tableDatayingjiang[i])
+                if(this.tableDatayingjiang[i].projectClass == '3'){ //eslint-disable-line
+            this.gongchenglist.push(this.tableDatayingjiang[i])
           }
-                if(this.tableDatayingjiang[i].projectClass == '业务类'){ //eslint-disable-line
-            this.yewu.push(this.tableDatayingjiang[i])
+                if(this.tableDatayingjiang[i].projectClass == '4'){ //eslint-disable-line
+            this.yewulist.push(this.tableDatayingjiang[i])
           }
-                if(this.tableDatayingjiang[i].projectClass == '拓展费'){ //eslint-disable-line
-            this.tableDatatuozhan.push(this.tableDatayingjiang[i])
+                if(this.tableDatayingjiang[i].projectClass == '5'){ //eslint-disable-line
+            this.rtuozhanlist.push(this.tableDatayingjiang[i])
           }
         }
+        this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectlist').then(responselist => {
+          for (let is = 0; is < this.gongchenglist.length; is++) {
+            this.gongchenglist[is].Receivables = 0
+            this.gongchenglist[is].invoice = 0
+            this.gongchenglist[is].Receivablesend = 0
+            for (let i = 0; i < responselist.data.length; i++) {
+              if (this.gongchenglist[is].id == responselist.data[i].projectId) { //eslint-disable-line
+                this.gongchenglist[is].Receivables += Number(responselist.data[i].Receivables)
+                this.gongchenglist[is].invoice += Number(responselist.data[i].invoice)
+              }
+            }
+            this.gongchenglist[is].Receivablesend = Number(this.gongchenglist[is].number) - Number(this.gongchenglist[is].Receivables)
+          }
+          for (let i = 0; i < this.tableDatayingjiang.length; i++) {
+            this.tableDatayingjiang[i].number = this.jsondata.currency(this.tableDatayingjiang[i].number, '￥', 2)
+            this.tableDatayingjiang[i].Receivables = this.jsondata.currency(this.tableDatayingjiang[i].Receivables, '￥', 2)
+            this.tableDatayingjiang[i].invoice = this.jsondata.currency(this.tableDatayingjiang[i].invoice, '￥', 2)
+            this.tableDatayingjiang[i].Receivablesend = this.jsondata.currency(this.tableDatayingjiang[i].Receivablesend, '￥', 2)
+          }
+          // for (let i = 0; i < this.gongchenglist.length; i++) {
+          //   for (let is = 0; is < this.gongchenglist.datacon.length; is++) {
+          //     if (this.gongchenglist[i].id == this.gongchenglist.datacon[is].projectId) { //eslint-disable-line
+          //       this.gongchenglist.datacon[is].SupplierName = this.gongchenglist[i].SupplierName
+          //       this.gongchenglist.datacon[is].ReceivablesName = this.gongchenglist[i].ReceivablesName
+          //     }
+          //     // console.log(this.gongchenglist.datacon[is])
+          //     if(this.gongchenglist.datacon[is].daozhangdate == null ||  this.gongchenglist.datacon[is].daozhangdate == ''){ //eslint-disable-line
+          //       this.gongchenglist.datacon[is].daozhangdate = this.gongchenglist.datacon[is].kaifapiaodate
+          //     }
+          //   }
+          // }
+          // this.gongchenglist = this.gongchenglist.datacon
+          console.log(this.gongchenglist)
+        })
+          .catch(error => {
+            console.log(error)
+          })
       })
         .catch(error => {
           console.log(error)
@@ -493,7 +493,7 @@ export default {
         })
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2) {
+      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 6) {
         const _row = this.dataList[row.projectint][rowIndex]
         const _col = _row > 0 ? 1 : 0
         return {
@@ -501,54 +501,6 @@ export default {
           colspan: _col
         }
       }
-    },
-    getSummaries (param) {
-      const { columns, data } = param
-      const sums = []
-      // for (let is = 0; is < data.length; is++) {
-      //   if(Number(data[is].number) != '') { //eslint-disable-line
-      //     console.log(Number(data[is].number.replace(/,|￥/g, '')))
-      //   }
-      // }
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = '合计'
-          return
-        }
-        const values = data.map(item => item[column.property])
-        for (let is = 0; is < values.length; is++) {
-          if (values[is] != '' && values[is] != undefined) { //eslint-disable-line
-            values[is] = Number(values[is].replace(/,|￥/g, ''))
-            if (isNaN(values[is])) { //eslint-disable-line
-              values[is] = 0
-            }
-          } else {
-            values[is] = Number(values[is])
-          }
-          // console.log(values[is])
-        }
-        if (!values.every(value => isNaN(value))) {
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr)
-            // console.log(Number(curr))
-            if (!isNaN(value)) {
-              return prev + curr
-            } else {
-              return prev
-            }
-          }, 0)
-        } else {
-          sums[index] = 'N/A'
-        }
-      })
-      for (let ins in sums) { // eslint-disable-line0
-        if (sums[ins] > 0) { // eslint-disable-line0
-          console.log(sums[ins])
-          sums[ins] = this.jsondata.currency(sums[ins], '￥', 2)
-        }
-      }
-
-      return sums
     }
   }
 }

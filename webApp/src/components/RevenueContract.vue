@@ -83,7 +83,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
       <el-table-column @cell-click="handle" prop="ReceivablesName" label="合同名称" sortable></el-table-column>
       <el-table-column prop="Receivableslist" label="收款分期" sortable></el-table-column>
       <el-table-column prop="number" label="同合金额" sortable></el-table-column>
@@ -91,7 +91,7 @@
       <el-table-column prop="Receivables" label="到帐金额" sortable></el-table-column>
       <el-table-column prop="Receivablesend" label="未收金额" sortable></el-table-column>
       <el-table-column prop="invoice" label="开出发票" sortable></el-table-column>
-      <el-table-column prop="Remarks" label="操作" >
+      <el-table-column prop="" label="操作" >
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small">收款</el-button>
           <el-button @click="handle(scope.row)" type="text" size="small">编辑</el-button>

@@ -99,7 +99,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" border style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
       <el-table-column prop="ReceivablesName" label="合同名称" sortable></el-table-column>
       <el-table-column prop="Receivableslist" label="收款分期" sortable></el-table-column>
       <el-table-column prop="number" label="应收金额" sortable></el-table-column>

@@ -30,8 +30,8 @@
               <el-option label="5期" value="5期"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="收款方" filterable prop="OtherParty">
-            <el-select v-model="form.OtherParty" filterable placeholder="请选择" style="width:46%" >
+        <el-form-item label="收款方" filterable prop="SupplierName">
+            <el-select v-model="form.SupplierName" filterable placeholder="请选择" style="width:46%" >
                 <el-option
                 v-for="item in optionsOtherParty"
                 :key="item.SupplierName"
@@ -46,7 +46,7 @@
                 v-for="item in optionsprojectClass"
                 :key="item.expenditureClass"
                 :label="item.expenditureClass"
-                :value="item.expenditureClass">
+                :value="item.id">
                 </el-option>
             </el-select>
         </el-form-item>
@@ -100,7 +100,7 @@
               <!-- <el-option label="保质金" value="保质金"></el-option> -->
             </el-select>
         </el-form-item>
-        <el-form-item label="收款方" prop="OtherParty">
+        <el-form-item label="收款方" prop="SupplierName">
             <el-select v-model="formModify.SupplierName" filterable placeholder="请选择" style="width:46%" >
                 <el-option
                 v-for="item in optionsOtherParty"
@@ -116,7 +116,7 @@
                 v-for="item in optionsprojectClass"
                 :key="item.expenditureClass"
                 :label="item.expenditureClass"
-                :value="item.expenditureClass">
+                :value="item.id">
                 </el-option>
             </el-select>
         </el-form-item>
@@ -136,16 +136,16 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
       <el-table-column prop="SupplierName" label="收款名称" sortable></el-table-column>
       <el-table-column prop="ReceivablesName" label="应付内容" sortable></el-table-column>
-      <el-table-column prop="Receivableslist" label="付款分期" sortable></el-table-column>
+      <!-- <el-table-column prop="Receivableslist" label="付款分期" sortable></el-table-column> -->
       <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
       <el-table-column prop="contractdate" label="签约时间" sortable></el-table-column>
       <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>
       <el-table-column prop="invoice" label="收到发票" sortable></el-table-column>
       <el-table-column prop="projectClass" label="支出类别" sortable></el-table-column>
-      <el-table-column prop="Remarks" label="操作" >
+      <el-table-column prop="" label="操作" >
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small">付款</el-button>
           <el-button @click="handle(scope.row)" type="text" size="small">编辑</el-button>
@@ -160,6 +160,7 @@
 export default {
   data () {
     return {
+      formbf: [],
       projectName: '',
       Customerlist: [],
       tableData: [],
@@ -243,24 +244,17 @@ export default {
       })
     },
     updatpostData () { // 更新数据
-      if (Number.isInteger(this.formModify.SupplierName)) {
-        this.formModify.OtherParty = this.formModify.SupplierName
+      if ( Number(this.formModify.SupplierName) < 999) { //eslint-disable-line
+      } else {
+        this.formModify.SupplierName = this.formbf.SupplierName
+      }
+      if ( Number(this.formModify.projectClass) < 999) { //eslint-disable-line
+      } else {
+        this.formModify.projectClass = this.formbf.projectClass
       }
       this.jsondata.updatpostData('expenditure', this.formModify).then(response => {
         if (response.data === 'OK') {
           this.dialogAddVisible = false
-          // this.formTransaction.AmountMoney = this.formModify.Receivables
-          // this.formTransaction.MoneyClass = 1
-          // this.formTransaction.invoice = this.formModify.invoice
-          // this.formTransaction.CollectMoney = this.formModify.id
-          // this.jsondata.postData('transaction', this.formTransaction).then(response => {
-          //   if (response.data === 'OK') {
-          //     this.getdata()
-          //   }
-          // })
-          //   .catch(error => {
-          //     console.log(error)
-          //   })
           this.getdata()
         }
       })
@@ -285,16 +279,9 @@ export default {
     postData () { // 添加数据
       this.jsondata.postData('expenditure', this.form).then(response => {
         if (response.data === 'OK') {
-          console.log(response.data, this.form)
           this.dialogFormVisible = false
-          // this.formTransaction.AmountMoney = this.form.Receivables
-          // this.formTransaction.MoneyClass = 1
-          // this.formTransaction.invoice = this.form.invoice
-          // this.formTransaction.CollectMoney = this.form.id
-          // this.postFormData('transaction', this.formTransaction)
           this.getdata()
           this.resetForm('form')
-          // this.$router.push('/ProjectDetails')
         }
       })
         .catch(error => {
@@ -328,8 +315,20 @@ export default {
         this.jsondata.getData('SupplierList').then(response => { // 客户例表
           for (var i = 0; i < this.tableData.length; i++) {
             for (let is = 0; is < response.data.length; is++) {
-              if (this.tableData[i].OtherParty == response.data[is].id) { //eslint-disable-line
+              if (this.tableData[i].SupplierName == response.data[is].id) { //eslint-disable-line
                 this.tableData[i].SupplierName = response.data[is].SupplierName
+              }
+            }
+          }
+        })
+          .catch(error => {
+            console.log(error)
+          })
+        this.jsondata.getData('expenditureclass').then(response => { // 支出类别例表
+          for (var i = 0; i < this.tableData.length; i++) {
+            for (let is = 0; is < response.data.length; is++) {
+              if (this.tableData[i].projectClass == response.data[is].id) { //eslint-disable-line
+                this.tableData[i].projectClass = response.data[is].expenditureClass
               }
             }
           }
@@ -358,11 +357,18 @@ export default {
       this.$router.push('/expenditure/' + row.id)
     },
     handle (row, event, column) { // 点击列表
-      console.log(row)
+      // console.log(row)
       this.dialogAddVisible = true
       this.jsondata.getDataId('expenditure', row.id).then(response => {
         this.formModify = response.data[0]
         this.formModify.SupplierName = row.SupplierName
+        this.formModify.projectClass = row.projectClass
+      })
+        .catch(error => {
+          console.log(error)
+        })
+      this.jsondata.getDataId('expenditure', row.id).then(response => {
+        this.formbf = response.data[0]
       })
         .catch(error => {
           console.log(error)

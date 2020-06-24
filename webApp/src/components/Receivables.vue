@@ -106,19 +106,19 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="getSummaries" show-summary  :span-method="objectSpanMethod" style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary  :span-method="objectSpanMethod" style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
       <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
       <el-table-column prop="number" label="应收金额" ></el-table-column>
       <el-table-column prop="ReceivablesData" label="收款时间" ></el-table-column>
       <el-table-column prop="Receivables" label="到账金额" ></el-table-column>
-      <el-table-column prop="daozhangdate" label="到账时间" ></el-table-column>
       <el-table-column prop="invoice" label="开出发票" ></el-table-column>
-      <el-table-column prop="kaifapiaodate" label="开发票时间" ></el-table-column>
+      <el-table-column prop="daozhangdate" label="到账时间" ></el-table-column>
+      <!-- <el-table-column prop="kaifapiaodate" label="开发票时间" ></el-table-column> -->
       <el-table-column prop="Receivablesend" label="未收金额" ></el-table-column>
       <!-- <el-table-column prop="Remarks" label="备注" sortable></el-table-column> -->
     </el-table>
-    <p style="text-align:right; font-size:15px; color:#555;font-weight: bold;" type="error"><span class="colorRed">
+    <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error"><span class="colorRed">
       合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
       / 已开发票未收款: {{this.jsondata.currency(Number(this.weikaifapiao) - Number(this.zongshouru), '￥', 2)}}
     </p>
@@ -129,7 +129,6 @@
 export default {
   data () {
     return {
-      heje: ['heji', 'heji1', 'heji1', 'heji1', 'heji1', 'heji2', 'heji1', 'heji1'],
       hetongjiner: 0, // 合同金额
       yingshou: 0, // 应收金额
       zongshouru: 0, // 到账金额
@@ -169,19 +168,19 @@ export default {
       }, // 交易
       income: {},
       form: {
-        ReceivablesName: ' ',
-        ReceivablesData: ' ',
-        ReceivablesMode: ' ',
-        number: ' ',
-        contract: ' ',
-        Remarks: ' ',
+        ReceivablesName: '',
+        ReceivablesData: '',
+        ReceivablesMode: '',
+        number: '',
+        contract: '',
+        Remarks: '',
         projectId: this.$route.params.id,
-        invoice: ' ',
-        Receivableslist: ' ',
-        Receivables: ' ',
-        daozhangdate: ' ',
-        kaifapiaodate: ' ',
-        projectlist: ' '
+        invoice: '',
+        Receivableslist: '',
+        Receivables: '',
+        daozhangdate: '',
+        kaifapiaodate: '',
+        projectlist: ''
       },
       dataList: [],
       rules: {
@@ -285,6 +284,11 @@ export default {
         this.hetongjiner = response.data[0].number
         this.income = response.data
         this.form.projectlist = response.data[0].projectId
+        if(Number(this.hetongjiner) == Number(this.yingshou)){  //eslint-disable-line
+          document.querySelector('.colorRed').style.color = '#555'
+        } else {
+          document.querySelector('.colorRed').style.color = '#f00'
+        }
         // console.log(response.data)
       })
         .catch(error => {
@@ -298,12 +302,14 @@ export default {
       this.zongshouru = 0 // 到账金额初始化
       this.weishou = 0 // 未收金额初始化
       this.weikaifapiao = 0 // 未收金额初始化
-      this.getdataincome()// 请求交易例表
       this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectId').then(response => {
         this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
         this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
+          if(this.tableData[i].daozhangdate === ''){  //eslint-disable-line
+            this.tableData[i].daozhangdate = this.tableData[i].kaifapiaodate
+          }
           if(this.tableData[i].number == ''){ //eslint-disable-line
             this.tableData[i].Receivablesend = ''
           } else {
@@ -330,6 +336,7 @@ export default {
         // console.log(Number(this.hetongjiner), Number(this.yingshou))
         this.weishou = Number(this.yingshou) - Number(this.zongshouru)
         // this.weikaifapiao = Number(this.weikaifapiao) - Number(this.zongshouru)
+        this.getdataincome()// 请求交易例表
       })
         .catch(error => {
           console.log(error)
@@ -338,7 +345,7 @@ export default {
     },
     deletepost () { // 删除收款
       this.jsondata.deletepost('Receivables', this.formModify.id).then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.getdata()
@@ -350,7 +357,7 @@ export default {
     },
 
     handle (row) {
-      console.log(row)
+      // console.log(row)
       this.dialogAddVisible = true
       this.jsondata.getDataId('Receivables', row.id).then(response => {
         this.formModify = response.data[0]
@@ -393,7 +400,7 @@ export default {
       this.$router.push('/ProjectDetails/' + this.projectNameid)
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 7) {
+      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 6) {
         const _row = this.dataList[rowIndex]
         const _col = _row > 0 ? 1 : 0
         return {
@@ -401,14 +408,6 @@ export default {
           colspan: _col
         }
       }
-    },
-    getSummaries (param) {
-      // if (Number(this.hetongjiner) == Number(this.yingshou)) { //eslint-disable-line
-      //   document.querySelector('.colorRed').style.color = '#555'
-      // } else {
-      //   document.querySelector('.colorRed').style.color = '#f00'
-      // }
-      return ['合计', this.jsondata.currency(this.yingshou, '￥', 2), '', this.jsondata.currency(this.zongshouru, '￥', 2), '', this.jsondata.currency(this.weikaifapiao, '￥', 2), '', this.jsondata.currency(this.weishou, '￥', 2)]
     }
   }
 }

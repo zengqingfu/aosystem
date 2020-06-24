@@ -75,7 +75,7 @@
             <el-option label="有" value="有"></el-option>
             <el-option label="无" value="无"></el-option>
             </el-select>
-            <el-select v-model="formModify.Receivableslist" placeholder="请选择" disabled style="width:46%" >
+            <el-select v-model="formModify.Receivableslist" placeholder="请选择" style="width:46%" >
               <el-option label="第1期" value="第1期"></el-option>
               <el-option label="第2期" value="第2期"></el-option>
               <el-option label="第3期" value="第3期"></el-option>
@@ -106,19 +106,19 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="getSummaries" show-summary  :span-method="objectSpanMethod" style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary  :span-method="objectSpanMethod" style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
       <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
       <el-table-column prop="number" label="应收金额" ></el-table-column>
       <el-table-column prop="ReceivablesData" label="收款时间" ></el-table-column>
       <el-table-column prop="Receivables" label="付款金额" ></el-table-column>
-      <el-table-column prop="daozhangdate" label="付款时间" ></el-table-column>
       <el-table-column prop="invoice" label="收到发票" ></el-table-column>
-      <el-table-column prop="kaifapiaodate" label="发票时间" ></el-table-column>
+      <el-table-column prop="daozhangdate" label="时间" ></el-table-column>
+      <!-- <el-table-column prop="kaifapiaodate" label="发票时间" ></el-table-column> -->
       <el-table-column prop="Receivablesend" label="未付金额" ></el-table-column>
       <!-- <el-table-column prop="Remarks" label="备注" sortable></el-table-column> -->
     </el-table>
-    <p style="text-align:right; font-size:15px; color:#555;font-weight: bold;" type="error"><span class="colorRed">
+    <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error"><span class="colorRed">
       合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
     </p>
   </el-main>
@@ -150,6 +150,8 @@ export default {
         Remarks: '',
         Receivablesend: '',
         projectId: '',
+        daozhangdate: '',
+        kaifapiaodate: '',
         invoice: '',
         Receivables: ''
       }, // 添加收到金额
@@ -175,6 +177,8 @@ export default {
         invoice: '',
         Receivableslist: '',
         Receivables: '',
+        daozhangdate: '',
+        kaifapiaodate: '',
         projectlist: ''
       },
       dataList: [],
@@ -252,9 +256,9 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
-      this.form.daozhangdate = ''
-      this.form.kaifapiaodate = ''
-      this.form.Receivableslist = ''
+      // this.form.daozhangdate = ''
+      // this.form.kaifapiaodate = ''
+      // this.form.Receivableslist = ''
     },
     postData () { // 添加数据
       this.jsondata.postData('expenditureData', this.form).then(response => {
@@ -279,7 +283,11 @@ export default {
         this.hetongjiner = response.data[0].number
         this.income = response.data
         this.form.projectlist = response.data[0].projectId
-        console.log(response.data)
+        if(Number(this.hetongjiner) == Number(this.yingshou)){  //eslint-disable-line
+          document.querySelector('.colorRed').style.color = '#555'
+        } else {
+          document.querySelector('.colorRed').style.color = '#f00'
+        }
       })
         .catch(error => {
           console.log(error)
@@ -292,12 +300,14 @@ export default {
       this.zongshouru = 0 // 到账金额初始化
       this.weishou = 0 // 未收金额初始化
       this.weikaifapiao = 0 // 未收金额初始化
-      this.getdataincome()// 请求交易例表
       this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectId').then(response => {
         this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
         this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)
-        for (let i = 0; i < this.tableData.length; i++) { // 合并表格数组
+        for (let i = 0; i < this.tableData.length; i++) {
+          if(this.tableData[i].daozhangdate === '' || this.tableData[i].daozhangdate == null){  //eslint-disable-line
+            this.tableData[i].daozhangdate = this.tableData[i].kaifapiaodate
+          }
           if(this.tableData[i].number == ''){ //eslint-disable-line
             this.tableData[i].Receivablesend = ''
           } else {
@@ -324,7 +334,7 @@ export default {
         // console.log(Number(this.hetongjiner), Number(this.yingshou))
         this.weishou = Number(this.yingshou) - Number(this.zongshouru)
         // this.weikaifapiao = Number(this.weikaifapiao) + Number(this.yingshou)
-        console.log(this.dataList)
+        this.getdataincome()// 请求交易例表
       })
         .catch(error => {
           console.log(error)
@@ -387,7 +397,7 @@ export default {
       this.$router.push('/ProjectDetails/' + this.projectNameid)
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 7) {
+      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 6) {
         const _row = this.dataList[rowIndex]
         const _col = _row > 0 ? 1 : 0
         return {
@@ -395,14 +405,6 @@ export default {
           colspan: _col
         }
       }
-    },
-    getSummaries (param) {
-      // if (Number(this.hetongjiner) == Number(this.yingshou)) { //eslint-disable-line
-      //   document.querySelector('.colorRed').style.color = '#555'
-      // } else {
-      //   document.querySelector('.colorRed').style.color = '#f00'
-      // }
-      return ['合计', this.jsondata.currency(this.yingshou, '￥', 2), '', this.jsondata.currency(this.zongshouru, '￥', 2), '', this.jsondata.currency(this.weikaifapiao, '￥', 2), '', this.jsondata.currency(this.weishou, '￥', 2)]
     }
   }
 }
