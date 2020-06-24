@@ -72,19 +72,18 @@
       </el-table>
     </el-row>
     <hr style="height: 30px;background-color: #eee;border: 0px;" />
-
-    <h3>工程类</h3>
-    <el-table :data="gongchenglist" border show-summary :summary-method="jsondata.getSummaries"  style="width: 100%">
-      <el-table-column prop="SupplierName" label="收款名称" ></el-table-column>
-      <el-table-column prop="ReceivablesName" label="款项目名称" ></el-table-column>
-      <!-- <el-table-column prop="ReceivablesData" label="应支付日期" ></el-table-column> -->
-      <el-table-column prop="number" label="应支付金额" ></el-table-column>
-      <el-table-column prop="Receivables" label="已支付金额" ></el-table-column>
-      <el-table-column prop="invoice" label="收到发票" ></el-table-column>
-      <el-table-column prop="Receivablesend" label="未付金额" ></el-table-column>
-      <el-table-column prop="contractdate" label="签约日期" ></el-table-column>
-    </el-table>
-
+    <el-row v-for="item in ReceivableslistData" :key="item.ReceivablesName">
+      <h3>{{item.expenditureClass}}</h3>
+      <el-table :data="item.hetongzhichundata" border show-summary :summary-method="jsondata.getSummaries"  style="width: 100%">
+        <el-table-column prop="SupplierName" label="收款名称" ></el-table-column>
+        <el-table-column prop="ReceivablesName" label="款项目名称" ></el-table-column>
+        <el-table-column prop="number" label="应支付金额" ></el-table-column>
+        <el-table-column prop="Receivables" label="已支付金额" ></el-table-column>
+        <el-table-column prop="invoice" label="收到发票" ></el-table-column>
+        <el-table-column prop="Receivablesend" label="未付金额" ></el-table-column>
+        <el-table-column prop="contractdate" label="签约日期" ></el-table-column>
+      </el-table>
+    </el-row>
   </el-main>
 </template>
 <style>
@@ -155,6 +154,8 @@ export default {
       gongchenglist: [], // 工程
       yewulist: [], // 业务
       rtuozhanlist: [], // 拓展
+      ReceivableslistData: [],
+      hegongzhichun: [],
       tableData: [
         {
           pojname: '项目名称',
@@ -208,6 +209,8 @@ export default {
       this.gongchenglist = [] // 工程
       this.yewulist = [] // 业务
       this.rtuozhanlist = [] // 拓展
+      this.ReceivableslistData = []
+      this.hegongzhichun = []
     },
     getdata () {
       this.dstaplayb()
@@ -415,58 +418,38 @@ export default {
     },
     getdatae1 () {
       this.jsondata.getDataClass('expenditure', this.$route.params.id, 'projectId').then(response => {
-        this.tableDatayingjiang = response.data
-        this.weishoukuan = Number(this.weishoukuan) - Number(this.zhongshouru)
-        for (var i = 0; i < this.tableDatayingjiang.length; i++) {
-                if(this.tableDatayingjiang[i].projectClass == '1'){ //eslint-disable-line
-            this.yingjianglist.push(this.tableDatayingjiang[i])
-          }
-                if(this.tableDatayingjiang[i].projectClass == '2'){ //eslint-disable-line
-            this.ruanjianlist.push(this.tableDatayingjiang[i])
-          }
-                if(this.tableDatayingjiang[i].projectClass == '3'){ //eslint-disable-line
-            this.gongchenglist.push(this.tableDatayingjiang[i])
-          }
-                if(this.tableDatayingjiang[i].projectClass == '4'){ //eslint-disable-line
-            this.yewulist.push(this.tableDatayingjiang[i])
-          }
-                if(this.tableDatayingjiang[i].projectClass == '5'){ //eslint-disable-line
-            this.rtuozhanlist.push(this.tableDatayingjiang[i])
-          }
-        }
+        this.hegongzhichun = response.data
         this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectlist').then(responselist => {
-          for (let is = 0; is < this.gongchenglist.length; is++) {
-            this.gongchenglist[is].Receivables = 0
-            this.gongchenglist[is].invoice = 0
-            this.gongchenglist[is].Receivablesend = 0
-            for (let i = 0; i < responselist.data.length; i++) {
-              if (this.gongchenglist[is].id == responselist.data[i].projectId) { //eslint-disable-line
-                this.gongchenglist[is].Receivables += Number(responselist.data[i].Receivables)
-                this.gongchenglist[is].invoice += Number(responselist.data[i].invoice)
+          this.ReceivableslistData = this.optionsprojectClass
+          for(let item in this.ReceivableslistData) { //eslint-disable-line
+            // console.log(this.ReceivableslistData[item].id)
+            this.ReceivableslistData[item].hetongzhichundata = []
+            for(let item1 in this.hegongzhichun){  //eslint-disable-line
+              this.ReceivableslistData[item].hetongzhichundata.hetongzhichunlist = []
+              if(this.ReceivableslistData[item].id == this.hegongzhichun[item1].projectClass){  //eslint-disable-line
+                this.hegongzhichun[item1].Receivables = 0
+                this.hegongzhichun[item1].invoice = 0
+                this.hegongzhichun[item1].Receivablesend = 0
+                for(let item2 in responselist.data){  //eslint-disable-line
+                  if(this.hegongzhichun[item1].id == responselist.data[item2].projectId){  //eslint-disable-line
+                    this.hegongzhichun[item1].Receivables += Number(responselist.data[item2].Receivables)
+                    this.hegongzhichun[item1].invoice += Number(responselist.data[item2].invoice)
+                    this.ReceivableslistData[item].hetongzhichundata.hetongzhichunlist.push(responselist.data[item2])
+                  }
+                }
+                for(let item3 in this.optionsOtherParty){  //eslint-disable-line
+                  if (this.optionsOtherParty[item3].id == this.hegongzhichun[item1].SupplierName) { //eslint-disable-line
+                    this.hegongzhichun[item1].SupplierName = this.optionsOtherParty[item3].SupplierName
+                  }
+                }
+                this.hegongzhichun[item1].Receivablesend = Number(this.hegongzhichun[item1].number) - this.hegongzhichun[item1].Receivables
+                this.hegongzhichun[item1].Receivables = this.jsondata.currency(this.hegongzhichun[item1].Receivables, '￥', 2)
+                this.hegongzhichun[item1].invoice = this.jsondata.currency(this.hegongzhichun[item1].invoice, '￥', 2)
+                this.hegongzhichun[item1].Receivablesend = this.jsondata.currency(this.hegongzhichun[item1].Receivablesend, '￥', 2)
+                this.ReceivableslistData[item].hetongzhichundata.push(this.hegongzhichun[item1])
               }
             }
-            this.gongchenglist[is].Receivablesend = Number(this.gongchenglist[is].number) - Number(this.gongchenglist[is].Receivables)
           }
-          for (let i = 0; i < this.tableDatayingjiang.length; i++) {
-            this.tableDatayingjiang[i].number = this.jsondata.currency(this.tableDatayingjiang[i].number, '￥', 2)
-            this.tableDatayingjiang[i].Receivables = this.jsondata.currency(this.tableDatayingjiang[i].Receivables, '￥', 2)
-            this.tableDatayingjiang[i].invoice = this.jsondata.currency(this.tableDatayingjiang[i].invoice, '￥', 2)
-            this.tableDatayingjiang[i].Receivablesend = this.jsondata.currency(this.tableDatayingjiang[i].Receivablesend, '￥', 2)
-          }
-          // for (let i = 0; i < this.gongchenglist.length; i++) {
-          //   for (let is = 0; is < this.gongchenglist.datacon.length; is++) {
-          //     if (this.gongchenglist[i].id == this.gongchenglist.datacon[is].projectId) { //eslint-disable-line
-          //       this.gongchenglist.datacon[is].SupplierName = this.gongchenglist[i].SupplierName
-          //       this.gongchenglist.datacon[is].ReceivablesName = this.gongchenglist[i].ReceivablesName
-          //     }
-          //     // console.log(this.gongchenglist.datacon[is])
-          //     if(this.gongchenglist.datacon[is].daozhangdate == null ||  this.gongchenglist.datacon[is].daozhangdate == ''){ //eslint-disable-line
-          //       this.gongchenglist.datacon[is].daozhangdate = this.gongchenglist.datacon[is].kaifapiaodate
-          //     }
-          //   }
-          // }
-          // this.gongchenglist = this.gongchenglist.datacon
-          console.log(this.gongchenglist)
         })
           .catch(error => {
             console.log(error)
