@@ -416,7 +416,7 @@ export default {
         })
       return false
     },
-    getdatae1 () {
+    getdatae1 () { // 支出数据
       this.jsondata.getDataClass('expenditure', this.$route.params.id, 'projectId').then(response => {
         this.hegongzhichun = response.data
         this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectlist').then(responselist => {
@@ -446,6 +446,7 @@ export default {
                 this.hegongzhichun[item1].Receivables = this.jsondata.currency(this.hegongzhichun[item1].Receivables, '￥', 2)
                 this.hegongzhichun[item1].invoice = this.jsondata.currency(this.hegongzhichun[item1].invoice, '￥', 2)
                 this.hegongzhichun[item1].Receivablesend = this.jsondata.currency(this.hegongzhichun[item1].Receivablesend, '￥', 2)
+                this.hegongzhichun[item1].number = this.jsondata.currency(this.hegongzhichun[item1].number, '￥', 2)
                 this.ReceivableslistData[item].hetongzhichundata.push(this.hegongzhichun[item1])
               }
             }
