@@ -98,6 +98,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error">
+      已开发票未收款: {{this.jsondata.currency(Number(this.weikaifapiao), '￥', 2)}}
+    </p>
   </el-main>
 </template>
 <script>
@@ -105,6 +108,7 @@
 export default {
   data () {
     return {
+      weikaifapiao: 0, // 未收金额
       projectName: '',
       public: [],
       Customerlist: [],
@@ -233,6 +237,7 @@ export default {
       return false
     },
     getdata () { // 初始化数据
+      this.weikaifapiao = 0 // 未收金额初始化
       this.jsondata.getData('Receivables').then(responselist => {
         this.formTransactionList = responselist.data
         // console.log(responselist.data)
@@ -249,6 +254,7 @@ export default {
                 this.tableData[i].invoice += Number(this.formTransactionList[is].invoice)
               }
             }
+            this.weikaifapiao = this.weikaifapiao + Number(this.tableData[i].invoice) - Number(this.tableData[i].Receivables)
             this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)

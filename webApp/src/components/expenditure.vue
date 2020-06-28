@@ -119,7 +119,8 @@
       <!-- <el-table-column prop="Remarks" label="备注" sortable></el-table-column> -->
     </el-table>
     <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error"><span class="colorRed">
-      合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
+      合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span> /
+      已付款未收发票:{{this.jsondata.currency( this.weikaifapiao, '￥', 2)}}
     </p>
   </el-main>
 </template>
@@ -132,7 +133,7 @@ export default {
       yingshou: 0, // 应收金额
       zongshouru: 0, // 到账金额
       weishou: 0, // 未收金额
-      weikaifapiao: 0, // 未收金额
+      weikaifapiao: 0, // 已付款未收票
       projectNameid: '',
       projectName: '',
       public: [],
@@ -153,6 +154,7 @@ export default {
         daozhangdate: '',
         kaifapiaodate: '',
         invoice: '',
+        supplielist: '',
         Receivables: ''
       }, // 添加收到金额
       TransactionList: {},
@@ -179,6 +181,7 @@ export default {
         Receivables: '',
         daozhangdate: '',
         kaifapiaodate: '',
+        supplielist: '',
         projectlist: ''
       },
       dataList: [],
@@ -281,6 +284,7 @@ export default {
         this.projectName = response.data[0].ReceivablesName
         this.projectNameid = response.data[0].projectId
         this.hetongjiner = response.data[0].number
+        this.form.supplielist = response.data[0].SupplierName
         this.income = response.data
         this.form.projectlist = response.data[0].projectId
         if(Number(this.hetongjiner) == Number(this.yingshou)){  //eslint-disable-line
@@ -296,10 +300,10 @@ export default {
     },
     getdata () {
       this.hetongjiner = 0 // 合同金额初始化
-      this.yingshou = 0 // 应收金额初始化
-      this.zongshouru = 0 // 到账金额初始化
-      this.weishou = 0 // 未收金额初始化
-      this.weikaifapiao = 0 // 未收金额初始化
+      this.yingshou = 0 //
+      this.zongshouru = 0 //
+      this.weishou = 0 //
+      this.weikaifapiao = 0
       this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectId').then(response => {
         this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
         this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
@@ -321,7 +325,7 @@ export default {
           }
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
         }
-        this.dataList = this.jsondata.getSpanArr(this.tableData)
+        this.dataList = this.jsondata.getSpanArr(this.tableData) // 合并表格数组
         for (let i = 0; i < this.tableData.length; i++) {
           this.yingshou += Number(this.tableData[i].number)
           this.zongshouru += Number(this.tableData[i].Receivables)
@@ -333,7 +337,7 @@ export default {
         }
         // console.log(Number(this.hetongjiner), Number(this.yingshou))
         this.weishou = Number(this.yingshou) - Number(this.zongshouru)
-        // this.weikaifapiao = Number(this.weikaifapiao) + Number(this.yingshou)
+        this.weikaifapiao = Number(this.zongshouru) - Number(this.weikaifapiao)
         this.getdataincome()// 请求交易例表
       })
         .catch(error => {

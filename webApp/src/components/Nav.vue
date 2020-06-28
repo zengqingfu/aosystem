@@ -42,6 +42,9 @@
         <el-menu-item index="/expenditurelist">
           <i class="el-icon-s-flag"></i>支出报表
         </el-menu-item>
+        <el-menu-item index="/expenditurelist">
+          <i class="el-icon-s-flag"></i>利润报表
+        </el-menu-item>
         <!-- <el-menu-item index="2-3">
           <i class="el-icon-user-solid"></i>利润报表
         </el-menu-item> -->

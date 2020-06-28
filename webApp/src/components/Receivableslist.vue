@@ -84,12 +84,12 @@
       </el-form>
     </el-dialog>
     <el-table @row-click="handle" :data="tableData" border style="width: 100%">
-      <el-table-column prop="ReceivablesName" label="款项名称" sortable></el-table-column>
-      <el-table-column prop="number" label="收款金额" sortable></el-table-column>
+      <el-table-column prop="ReceivablesName" label="客户名称" sortable></el-table-column>
+      <el-table-column prop="number" label="项目名称" sortable></el-table-column>
       <el-table-column prop="ReceivablesData" label="收款日期" sortable></el-table-column>
       <el-table-column prop="contract" label="是否有合同" sortable></el-table-column>
       <el-table-column prop="Receivables" label="到帐金额" sortable></el-table-column>
-      <el-table-column prop="invoice" label="开出发票" sortable></el-table-column>
+      <el-table-column prop="invoice" label="已开发票未收款" sortable></el-table-column>
       <!-- <el-table-column prop="ReceivablesMode" label="收款方式" sortable></el-table-column> -->
       <el-table-column prop="Remarks" label="备注" sortable></el-table-column>
     </el-table>
