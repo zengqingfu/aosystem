@@ -147,13 +147,9 @@ export default {
       contentsintp: '',
       Receivablesintp: '',
       invoiceint: '',
+      invoicebo: '', // 不计发票
       invoiceintp: '',
       tableDatayingjiang: [],
-      yingjianglist: [], // 硬件
-      ruanjianlist: [], // 软件
-      gongchenglist: [], // 工程
-      yewulist: [], // 业务
-      rtuozhanlist: [], // 拓展
       ReceivableslistData: [],
       hegongzhichun: [],
       tableData: [
@@ -204,13 +200,9 @@ export default {
       this.Receivablesint = 0
       this.invoiceint = 0
       this.Receivablesint = 0
-      this.yingjianglist = [] // 硬件
-      this.ruanjianlist = [] // 软件
-      this.gongchenglist = [] // 工程
-      this.yewulist = [] // 业务
-      this.rtuozhanlist = [] // 拓展
       this.ReceivableslistData = []
       this.hegongzhichun = []
+      this.invoicebo = 0
     },
     getdata () {
       this.dstaplayb()
@@ -370,7 +362,7 @@ export default {
           this.tableData[3].contents += ' 　　应收金额:' + this.jsondata.currency(this.contentsint, '￥', 2)
           this.tableData[3].contents += ' 　　到帐金额:' + this.jsondata.currency(this.Receivablesint, '￥', 2)
           this.tableData[3].contents += ' 　　未收金额:' + this.jsondata.currency(this.contentsint - this.Receivablesint, '￥', 2)
-          this.tableData[5].contents = '开出发票:' + this.jsondata.currency(this.invoiceint, '￥', 2) + '/' + this.jsondata.currency(this.Receivablesint, '', 2)
+          this.tableData[5].contents = '开出发票:' + this.jsondata.currency(this.invoiceint, '￥', 2) + ' / ' + this.jsondata.currency(this.Receivablesint, '', 2)
           this.tableData[6].contents = this.jsondata.currency(this.Receivablesint, '￥', 2)
           this.getdataexpenditure()
           this.shoukuan = response.data
@@ -390,22 +382,27 @@ export default {
     },
     getdataexpenditure () {
       this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectlist').then(response => {
+        this.invoiceintp = 0
+        this.contentsintp = 0
+        this.invoicebo = 0
         if (response.data.length == 0) { //eslint-disable-line
           // this.tableData[4].contents += '|项目支出金额: ￥0'
           // console.log(response.data.length)
         } else {
           // console.log(response.data[0].number)
           for (let i = 0; i < response.data.length; i++) {
-            this.contentsintp += Number(response.data[i].number)
-          }
-          this.tableData[4].contents += ' 　　项目应付金额:' + this.jsondata.currency(this.contentsintp, '￥', 2)
-          for (let i = 0; i < response.data.length; i++) {
             this.Receivablesintp = Number(this.Receivablesintp) + Number(response.data[i].Receivables)
-            this.invoiceintp = Number(this.invoiceintp) + Number(response.data[i].invoice)
+            if(response.data[i].invoicebo == '不计发票'){ //eslint-disable-line
+              this.invoicebo += Number(response.data[i].Receivables)
+            } else {
+              this.contentsintp += Number(response.data[i].number)
+              this.invoiceintp += Number(response.data[i].invoice)
+            }
           }
-          this.tableData[4].contents += ' 　　项目已付金额:' + this.jsondata.currency(this.Receivablesintp, '￥', 2)
+          this.tableData[4].contents += ' 　　应付金额:' + this.jsondata.currency(this.contentsintp, '￥', 2)
+          this.tableData[4].contents += ' 　　已付金额:' + this.jsondata.currency(this.Receivablesintp, '￥', 2)
           this.tableData[4].contents += ' 　　未支付金额:' + this.jsondata.currency(this.contentsintp - this.Receivablesintp, '￥', 2)
-          this.tableData[5].contents += ' 　　收到发票:' + this.jsondata.currency(this.invoiceintp, '￥', 2) + '/' + this.jsondata.currency(this.Receivablesintp, '', 2)
+          this.tableData[5].contents += ' 　　收到发票:' + this.jsondata.currency(this.invoiceintp, '￥', 2) + ' / ' + this.jsondata.currency(this.Receivablesintp, '', 2) + ' --- 不计发票:'
           // console.log(this.Receivablesint, this.Receivablesintp)
           this.tableData[6].contents = this.jsondata.currency(this.Receivablesint - this.Receivablesintp, '￥', 2)
         }
@@ -424,12 +421,16 @@ export default {
           for(let item in this.ReceivableslistData) { //eslint-disable-line
             // console.log(this.ReceivableslistData[item].id)
             this.ReceivableslistData[item].hetongzhichundata = []
-            for(let item1 in this.hegongzhichun){  //eslint-disable-line
+            for(let item1 in this.hegongzhichun){ //eslint-disable-line
+              if(this.hegongzhichun[item1].invoicebo == '不计发票'){ //eslint-disable-line
+                this.invoicebo += Number(this.hegongzhichun[item1].Receivables)
+              }
               this.ReceivableslistData[item].hetongzhichundata.hetongzhichunlist = []
               if(this.ReceivableslistData[item].id == this.hegongzhichun[item1].projectClass){  //eslint-disable-line
                 this.hegongzhichun[item1].Receivables = 0
                 this.hegongzhichun[item1].invoice = 0
                 this.hegongzhichun[item1].Receivablesend = 0
+
                 for(let item2 in responselist.data){  //eslint-disable-line
                   if(this.hegongzhichun[item1].id == responselist.data[item2].projectId){  //eslint-disable-line
                     this.hegongzhichun[item1].Receivables += Number(responselist.data[item2].Receivables)
@@ -450,7 +451,9 @@ export default {
                 this.ReceivableslistData[item].hetongzhichundata.push(this.hegongzhichun[item1])
               }
             }
+            this.tableData[5].contents += this.jsondata.currency(this.invoicebo, '￥', 2)
           }
+          this.ReceivableslistData = this.ReceivableslistData.reverse()
         })
           .catch(error => {
             console.log(error)

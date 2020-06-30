@@ -83,7 +83,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" border style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border height='90%' fixed style="width: 100%">
       <el-table-column prop="ReceivablesName" label="客户名称" sortable></el-table-column>
       <el-table-column prop="number" label="项目名称" sortable></el-table-column>
       <el-table-column prop="ReceivablesData" label="收款日期" sortable></el-table-column>
@@ -231,8 +231,9 @@ export default {
       return false
     },
     getdata () {
-      this.jsondata.getData('Receivables').then(response => {
-        this.tableData = response.data
+      this.jsondata.getData('RevenueContract').then(response => {
+        this.tableData = response.data.reverse() // 根据期数排序
+        console.log(response.data.reverse(), response.data)
         for (let i = 0; i < this.tableData.length; i++) {
           this.zhongshouru = Number(this.zhongshouru) + Number(this.tableData[i].Receivables)
           this.weishoukuan = Number(this.weishoukuan) + Number(this.tableData[i].number)

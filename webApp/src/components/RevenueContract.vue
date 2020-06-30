@@ -15,7 +15,10 @@
           </el-col>
         </el-form-item>
         <el-form-item label="收款方式" prop="ReceivablesMode">
-          <el-input v-model="form.ReceivablesMode" style="width:46%"></el-input>
+            <el-select v-model="form.ReceivablesMode" placeholder="请选择" style="width:46%" >
+              <el-option label="现金" value="现金"></el-option>
+              <el-option label="银行" value="银行"></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item label="应收金额" prop="number">
           <el-input type="number" v-model="form.number" style="width:46%" ></el-input>
@@ -55,7 +58,10 @@
           </el-col>
         </el-form-item>
         <el-form-item label="收款方式" prop="ReceivablesMode">
-          <el-input v-model="formModify.ReceivablesMode" style="width:46%"></el-input>
+            <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:46%" >
+              <el-option label="现金" value="现金"></el-option>
+              <el-option label="银行" value="银行"></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item label="应收金额" prop="number">
           <el-input type="number" v-model="formModify.number" style="width:46%" ></el-input>
@@ -242,7 +248,7 @@ export default {
         this.formTransactionList = responselist.data
         // console.log(responselist.data)
         this.jsondata.getDataClass('RevenueContract', this.$route.params.id, 'projectId').then(response => {
-          this.tableData = response.data
+          this.tableData = response.data.reverse()
           for (let i = 0; i < this.tableData.length; i++) {
             // this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].Receivables = 0

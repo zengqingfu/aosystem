@@ -14,7 +14,10 @@
           <el-input v-model="form.ReceivablesData"></el-input>
         </el-form-item>
         <el-form-item label="收款方式" prop="ReceivablesMode">
-          <el-input v-model="form.ReceivablesMode"></el-input>
+            <el-select v-model="form.ReceivablesMode" placeholder="请选择" style="width:46%" >
+              <el-option label="现金" value="现金"></el-option>
+              <el-option label="银行" value="银行"></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item label="应收金额" prop="number">
           <el-input type="number"  v-model="form.number" style="width:46%" ></el-input>
@@ -65,7 +68,10 @@
           <el-input v-model="formModify.ReceivablesData"></el-input>
         </el-form-item>
         <el-form-item label="收款方式" prop="ReceivablesMode">
-          <el-input v-model="formModify.ReceivablesMode"></el-input>
+            <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:46%" >
+              <el-option label="现金" value="现金"></el-option>
+              <el-option label="银行" value="银行"></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item label="应收金额" prop="number">
           <el-input type="number"  v-model="formModify.number" style="width:46%" ></el-input>

@@ -37,15 +37,17 @@
       </template>
       <el-menu-item-group>
         <el-menu-item index="/Receivableslist">
-          <i class="el-icon-menu"></i>收入报表
+          <i class="el-icon-menu"></i>项目收入报表
         </el-menu-item>
         <el-menu-item index="/expenditurelist">
-          <i class="el-icon-s-flag"></i>支出报表
+          <i class="el-icon-s-flag"></i>项目支出报表
         </el-menu-item>
         <el-menu-item index="/expenditurelist">
-          <i class="el-icon-s-flag"></i>利润报表
+          <i class="el-icon-s-order"></i>项目利润报表
         </el-menu-item>
-        <!-- <el-menu-item index="2-3">
+        <el-menu-item index="/SupplierData">
+          <i class="el-icon-s-check"></i>供应商应付表
+        </el-menu-item>        <!-- <el-menu-item index="2-3">
           <i class="el-icon-user-solid"></i>利润报表
         </el-menu-item> -->
       </el-menu-item-group>

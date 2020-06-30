@@ -13,6 +13,7 @@ import Receivableslist from '@/components/Receivableslist'
 import expenditurelist from '@/components/expenditurelist'
 import RevenueContract from '@/components/RevenueContract'
 import expenditureContract from '@/components/expenditureContract'
+import SupplierData from '@/components/SupplierData'
 
 Vue.use(Router)
 
@@ -49,6 +50,14 @@ export default new Router({
       components: {
         Nav: Nav,
         content: expenditurelist
+      }
+    },
+    {
+      path: '/SupplierData',
+      name: 'SupplierData',
+      components: {
+        Nav: Nav,
+        content: SupplierData
       }
     },
     {
