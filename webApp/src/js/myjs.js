@@ -1,6 +1,6 @@
 import axios from 'axios'
 export default {
-  getSpanArr (data) { // 合并表格数组生成
+  getSpanArr (data, list) { // 合并表格数组生成
     this.spanArr = []
     for (var i = 0; i < data.length; i++) {
       if (i === 0) {
@@ -8,7 +8,7 @@ export default {
         this.pos = 0
       } else {
         // 判断当前元素与上一个元素是否相同,因合并第一个所以[0]
-        if (data[i].Receivableslist === data[i - 1].Receivableslist) {
+        if (data[i][list] === data[i - 1][list]) {
           this.spanArr[this.pos] += 1
           this.spanArr.push(0)
         } else {
