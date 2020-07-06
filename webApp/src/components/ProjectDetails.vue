@@ -48,7 +48,7 @@
     <h3>
       项目明细
       <el-button type="primary" style="float: right; margin-left:10px;" @click="dialogFormVisible = true">修改</el-button>
-      <el-button type="primary" style="float: right; margin-left:10px;" >结项</el-button>
+      <!-- <el-button type="primary" style="float: right; margin-left:10px;" >结项</el-button> -->
       <el-button type="primary" style="float: right; margin-left:10px;" @click="ReceivablesGo">项目收款</el-button>
       <el-button type="primary" style="float: right; margin-left:10px;" @click="expenditureGo">项目支出</el-button>
     </h3>
@@ -243,7 +243,7 @@ export default {
             this.projectContract[irr].projectidlist = this.projectContract[irr].projectidlist.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 表格合并数组排序 .reverse()
             this.projectContract[irr].projectidlist = this.projectContract[irr].projectidlist.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') })
             // console.log(this.projectContract[irr].projectidlist)
-            this.dataList.push(this.jsondata.getSpanArr(this.projectContract[irr].projectidlist))
+            this.dataList.push(this.jsondata.getSpanArr(this.projectContract[irr].projectidlist, 'Receivableslist'))
           }
         })
           .catch(error => {

@@ -422,25 +422,13 @@ export default {
             console.log(error)
           })
         this.jsondata.getData('SupplierList').then(response => { // 客户例表
-          for (var i = 0; i < this.tableData.length; i++) {
-            for (let is = 0; is < response.data.length; is++) {
-              if (this.tableData[i].SupplierName == response.data[is].id) { //eslint-disable-line
-                this.tableData[i].SupplierName = response.data[is].SupplierName
-              }
-            }
-          }
+          this.tableData = this.jsondata.fordata(response.data, this.tableData, 'SupplierName', 'SupplierName')
         })
           .catch(error => {
             console.log(error)
           })
         this.jsondata.getData('expenditureclass').then(response => { // 支出类别例表
-          for (var i = 0; i < this.tableData.length; i++) {
-            for (let is = 0; is < response.data.length; is++) {
-              if (this.tableData[i].projectClass == response.data[is].id) { //eslint-disable-line
-                this.tableData[i].projectClass = response.data[is].expenditureClass
-              }
-            }
-          }
+          this.tableData = this.jsondata.fordata(response.data, this.tableData, 'expenditureClass', 'projectClass')
         })
           .catch(error => {
             console.log(error)

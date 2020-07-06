@@ -47,9 +47,7 @@
         </el-menu-item>
         <el-menu-item index="/SupplierData">
           <i class="el-icon-s-check"></i>供应商应付表
-        </el-menu-item>        <!-- <el-menu-item index="2-3">
-          <i class="el-icon-user-solid"></i>利润报表
-        </el-menu-item> -->
+        </el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-menu-item index="3">
@@ -62,7 +60,7 @@
 export default {
   data () {
     return {
-      openeds: ['1'],
+      openeds: ['1', '2'],
       isCollapse: false
     }
   },

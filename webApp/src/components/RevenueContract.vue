@@ -47,7 +47,7 @@
       </el-form>
     </el-dialog>
 
-    <el-dialog :title="formModify.ReceivablesName" :visible.sync="dialogAddVisible" >
+    <el-dialog title="修改合同" :visible.sync="dialogAddVisible" >
       <el-form ref="formModify" :model="formModify" :rules="rules"  label-width="80px" class="demo-ruleForm">
         <el-form-item label="合同名称" prop="ReceivablesName">
           <el-input v-model="formModify.ReceivablesName"></el-input>
@@ -200,12 +200,6 @@ export default {
     },
     updatpostData () { // 更新数据
       this.jsondata.updatpostData('RevenueContract', this.formModify).then(response => {
-        // console.log(response)
-        // this.formTransaction.AmountMoney = this.formModify.Receivables
-        // this.formTransaction.MoneyClass = 1
-        // this.formTransaction.invoice = this.formModify.invoice
-        // this.formTransaction.CollectMoney = this.formModify.id
-        // this.postFormData('transaction', this.formTransaction)
         this.dialogAddVisible = false
         this.getdata()
       })
@@ -278,18 +272,8 @@ export default {
 
       return false
     },
-    getdatalist () {
-      this.jsondata.getDataClass('projectList', '0', 'complete').then(response => {
-        this.tableData = response.data
-        // console.log(this.tableData)
-      })
-        .catch(error => {
-          console.log(error)
-        })
-      return false
-    },
     deletepost () { // 删除收款
-      this.jsondata.deletepost('Receivables', this.formModify.id).then(response => {
+      this.jsondata.deletepost('RevenueContract', this.formModify.id).then(response => {
         console.log(response.data)
         if (response.data === 'OK') {
           this.dialogAddVisible = false
@@ -304,7 +288,6 @@ export default {
     handleClick (row) {
       this.$router.push('/Receivables/' + row.id)
     },
-
     handle (row) {
       this.dialogAddVisible = true
       this.jsondata.getDataId('RevenueContract', row.id).then(response => {

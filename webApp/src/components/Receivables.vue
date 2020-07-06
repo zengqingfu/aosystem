@@ -329,7 +329,7 @@ export default {
           }
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
         }
-        this.dataList = this.jsondata.getSpanArr(this.tableData)
+        this.dataList = this.jsondata.getSpanArr(this.tableData, 'Receivableslist')
         for (let i = 0; i < this.tableData.length; i++) {
           this.yingshou += Number(this.tableData[i].number)
           this.zongshouru += Number(this.tableData[i].Receivables)

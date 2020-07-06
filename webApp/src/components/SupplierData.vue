@@ -1,7 +1,7 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      供应商例表
+      供应商例表<span style="float:right;font-size: 16px">不计发票:{{this.jsondata.currency(this.biujifapiao, '￥', 2)}}</span>
     </h3>
     <el-table @row-click="handle" :data="fromexpenditure" border :summary-method="jsondata.getSummaries" show-summary  :span-method="objectSpanMethod"  style="width: 100%">
       <el-table-column prop="SupplierName" label="供应商名称"></el-table-column>
@@ -9,6 +9,7 @@
       <el-table-column prop="ReceivablesName" label="项目内容"></el-table-column>
       <el-table-column prop="number" label="项目金额"></el-table-column>
       <el-table-column prop="Receivables" label="已付金额"></el-table-column>
+      <el-table-column prop="kaifapiao" label="已付款未收发票"></el-table-column>
       <el-table-column prop="Receivablesend" label="未付金额"></el-table-column>
       <el-table-column prop="projectClass" label="支出类别"></el-table-column>
       <el-table-column prop="contractdate" label="签约时间"></el-table-column>
@@ -19,6 +20,8 @@
 export default {
   data () {
     return {
+      biujifapiao: '',
+      weikaifapiao: '',
       thisdata: {},
       dataList: [],
       contentsint: '',
@@ -83,13 +86,15 @@ export default {
       return false
     },
     getdata () {
-      this.jsondata.getData('expenditureData').then(response => {
+      this.biujifapiao = 0
+      this.weikaifapiao = 0
+      this.jsondata.getData('expenditureData').then(response => { // 支出
         this.fromexpenditureData = response.data
-        this.jsondata.getDataClass('projectList', '0', 'complete').then(response => {
+        this.jsondata.getDataClass('projectList', '0', 'complete').then(response => { // 项目
           this.fromprojectList = response.data
-          this.jsondata.getData('expenditure').then(response => {
+          this.jsondata.getData('expenditure').then(response => { // 支出合同
             this.jsondata.getData('supplierlist').then(responsegys => { // 供应商例表
-              this.jsondata.getData('expenditureclass').then(responselist => {
+              this.jsondata.getData('expenditureclass').then(responselist => { // 支出分类
                 for (let i = 0; i < this.fromprojectList.length; i++) {
                   for (let is = 0; is < response.data.length; is++) {
                   if(this.fromprojectList[i].id == response.data[is].projectId){ //eslint-disable-line
@@ -97,20 +102,22 @@ export default {
                       if(response.data[is].SupplierName == responsegys.data[iss].id && responsegys.data[iss].SupplierClass == 1){  //eslint-disable-line
                           this.thisdata = response.data[is]
                           this.thisdata.SupplierName = responsegys.data[iss].SupplierName
-                          this.fromexpenditure.push(this.thisdata)
+                          this.fromexpenditure.push(this.thisdata) // 进行中项目的所有合同
                         }
                       }
                     }
                   }
                 }
-                for (let i = 0; i < this.fromprojectList.length; i++) {
-                  for (let is = 0; is < this.fromexpenditure.length; is++) {
-                  if(this.fromprojectList[i].id == this.fromexpenditure[is].projectId){ //eslint-disable-line
-                      this.fromexpenditure[is].projectId = this.fromprojectList[i].projectName
-                    }
-                  }
-                }
+                // for (let i = 0; i < this.fromprojectList.length; i++) {
+                //   for (let is = 0; is < this.fromexpenditure.length; is++) {
+                //     if(this.fromprojectList[i].id == this.fromexpenditure[is].projectId){ //eslint-disable-line
+                //       this.fromexpenditure[is].projectId = this.fromprojectList[i].projectName
+                //     }
+                //   }
+                // }
+                this.fromexpenditure = this.jsondata.fordata(this.fromprojectList, this.fromexpenditure, 'projectName', 'projectId')
                 for (let i = 0; i < this.fromexpenditure.length; i++) {
+                  this.fromexpenditure[i].kaifapiao = 0
                   for (let il = 0; il < responselist.data.length; il++) {
                     if(responselist.data[il].id == this.fromexpenditure[i].projectClass){ //eslint-disable-line
                       this.fromexpenditure[i].projectClass = responselist.data[il].expenditureClass
@@ -118,13 +125,24 @@ export default {
                   }
                   for (let is = 0; is < this.fromexpenditureData.length; is++) {
                   if(this.fromexpenditure[i].id == this.fromexpenditureData[is].projectId){ //eslint-disable-line
+                    if(this.fromexpenditureData[is].invoicebo == '不计发票'){ //eslint-disable-line
+                        this.biujifapiao += Number(this.fromexpenditureData[is].Receivables)
+                      } else {
+                        this.fromexpenditure[i].kaifapiao += Number(this.fromexpenditureData[is].invoice)
+                      }
                     if(this.fromexpenditure[i].Receivableslist == '不分期'){ //eslint-disable-line
                       // this.fromexpenditure[i].Receivables += Number(response.data[i].Receivables)
                       } else {
-                        this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(this.fromexpenditureData[is].Receivables)
+                        this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(this.fromexpenditureData[is].Receivables) // 已付金额
                       }
                     // console.log(this.fromexpenditure[is])
                     }
+                  }
+                  // this.weikaifapiao = Number(this.weikaifapiao) + Number(this.fromexpenditure[i].Receivables) - Number(this.fromexpenditure[i].kaifapiao)
+                  if(this.fromexpenditure[i].invoicebo == '不计发票'){ //eslint-disable-line
+                    this.fromexpenditure[i].kaifapiao = '不计发票'
+                  } else {
+                    this.fromexpenditure[i].kaifapiao = this.jsondata.currency(this.fromexpenditure[i].Receivables - this.fromexpenditure[i].kaifapiao, '￥', 2)
                   }
                   this.fromexpenditure[i].Receivablesend = Number(this.fromexpenditure[i].number) - Number(this.fromexpenditure[i].Receivables)
                   this.fromexpenditure[i].Receivablesend = this.jsondata.currency(this.fromexpenditure[i].Receivablesend, '￥', 2)

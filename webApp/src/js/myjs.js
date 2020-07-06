@@ -1,5 +1,15 @@
 import axios from 'axios'
 export default {
+  fordata (data1, data2, listclass1, listclass2) { // 循环函数
+    for (let i = 0; i < data1.length; i++) {
+      for (let is = 0; is < data2.length; is++) {
+        if(data1[i].id == data2[is][listclass2]){ //eslint-disable-line
+          data2[is][listclass2] = data1[i][listclass1]
+        }
+      }
+    }
+    return data2
+  },
   getSpanArr (data, list) { // 合并表格数组生成
     this.spanArr = []
     for (var i = 0; i < data.length; i++) {
@@ -114,7 +124,7 @@ export default {
       _int.slice(i).replace(digitsRE, '$1,') +
       _float
   },
-  getSummaries (param) { // 统计行
+  getSummaries (param) { // 统计行数据生成
     const { columns, data } = param
     const sums = []
     columns.forEach((column, index) => {
