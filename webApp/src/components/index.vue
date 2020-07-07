@@ -5,7 +5,7 @@
         <router-view name="Nav"></router-view>
       <el-container>
         <el-header style="text-align: left;background-color:#2396F0; color: #fff;">
-          <span @click="getdataform ()"> 公司名称</span>
+          <span @click="getdataform ()"> 大迈</span>
         </el-header>
         <router-view name="content"></router-view>
       </el-container>

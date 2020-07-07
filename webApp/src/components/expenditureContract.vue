@@ -387,7 +387,7 @@ export default {
       this.weikaifapiao = 0
       this.biujifapiao = 0
       this.jsondata.getDataClass('expenditure', this.$route.params.id, 'projectId').then(response => {
-        this.tableData = response.data.reverse()
+        this.tableData = response.data
         this.jsondata.getData('expenditureData').then(responselist => {
           this.formTransactionList = responselist.data
           for (let i = 0; i < this.tableData.length; i++) {

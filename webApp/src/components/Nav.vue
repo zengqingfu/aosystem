@@ -42,13 +42,16 @@
         <el-menu-item index="/expenditurelist">
           <i class="el-icon-s-flag"></i>项目支出报表
         </el-menu-item>
-        <el-menu-item index="/expenditurelist">
+        <el-menu-item index="/profitlist">
           <i class="el-icon-s-order"></i>项目利润报表
         </el-menu-item>
         <el-menu-item index="/SupplierData">
           <i class="el-icon-s-check"></i>供应商应付表
         </el-menu-item>
-      </el-menu-item-group>
+        <el-menu-item index="/stafflist">
+          <i class="el-icon-s-check"></i>员工应付表
+        </el-menu-item>
+        </el-menu-item-group>
     </el-submenu>
     <el-menu-item index="3">
       <i class="el-icon-setting"></i>

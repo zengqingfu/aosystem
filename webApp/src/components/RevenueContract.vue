@@ -242,7 +242,7 @@ export default {
         this.formTransactionList = responselist.data
         // console.log(responselist.data)
         this.jsondata.getDataClass('RevenueContract', this.$route.params.id, 'projectId').then(response => {
-          this.tableData = response.data.reverse()
+          this.tableData = response.data
           for (let i = 0; i < this.tableData.length; i++) {
             // this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].Receivables = 0

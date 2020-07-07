@@ -14,6 +14,8 @@ import expenditurelist from '@/components/expenditurelist'
 import RevenueContract from '@/components/RevenueContract'
 import expenditureContract from '@/components/expenditureContract'
 import SupplierData from '@/components/SupplierData'
+import profitlist from '@/components/profitlist'
+import stafflist from '@/components/stafflist'
 
 Vue.use(Router)
 
@@ -45,11 +47,27 @@ export default new Router({
       }
     },
     {
+      path: '/stafflist',
+      name: 'stafflist',
+      components: {
+        Nav: Nav,
+        content: stafflist
+      }
+    },
+    {
       path: '/expenditurelist',
       name: 'expenditurelist',
       components: {
         Nav: Nav,
         content: expenditurelist
+      }
+    },
+    {
+      path: '/profitlist',
+      name: 'profitlist',
+      components: {
+        Nav: Nav,
+        content: profitlist
       }
     },
     {

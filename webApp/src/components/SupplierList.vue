@@ -1,15 +1,16 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      供应商及收款人列表{{this.$route.params.id}}
+      供应商及付款人列表{{this.$route.params.id}}
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加</el-button>
     </h3>
-    <el-dialog title="添加收款方" :visible.sync="dialogFormVisible">
+    <el-dialog title="添加付款方" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
         <el-form-item label="付款名称" prop="SupplierName">
           <el-input v-model="form.SupplierName"></el-input>
+          <p id='infoint' style="display:none;color:#f00">名字重复</p>
         </el-form-item>
-        <el-form-item label="收款分类" prop="SupplierClass">
+        <el-form-item label="付款分类" prop="SupplierClass">
             <el-select v-model="form.SupplierClass" placeholder="请选择" style="width:46%" >
             <el-option label="供应商" value="1"></el-option>
             <el-option label="员工" value="2"></el-option>
@@ -43,7 +44,7 @@
       </el-form>
     </el-dialog>
     <el-table @row-click="handle" :data="tableData" border style="width: 100%">
-      <el-table-column prop="SupplierName" label="收款方名称" sortable ></el-table-column>
+      <el-table-column prop="SupplierName" label="付款名称" sortable ></el-table-column>
       <!-- <el-table-column prop="SupplierClass" label="分类" sortable></el-table-column> -->
       <!-- <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>
       <el-table-column prop="invoice" label="收到发票" sortable></el-table-column> -->
@@ -128,18 +129,30 @@ export default {
       this.$refs[formName].resetFields()
     },
     postData () { // 添加数据
-      this.jsondata.postData('SupplierList', this.form).then(response => {
-        if (response.data === 'OK') {
-          console.log(response.data, this.form)
-          this.dialogFormVisible = false
-          this.getdata()
-          this.resetForm('form')
+      this.jsondata.getData('SupplierList').then(response => {
+        for (let i = 0; i < response.data.length; i++) {
+          if (this.form.SupplierName === response.data[i].SupplierName) {
+            document.querySelector('#infoint').style.display = 'block'
+            return false
+          } else {
+            document.querySelector('#infoint').style.display = 'none'
+          }
         }
+        this.jsondata.postData('SupplierList', this.form).then(response => {
+          if (response.data === 'OK') {
+          // console.log(response.data, this.form)
+            this.dialogFormVisible = false
+            this.getdata()
+            this.resetForm('form')
+          }
+        })
+          .catch(error => {
+            console.log(error)
+          })
       })
         .catch(error => {
           console.log(error)
         })
-      return false
     },
     getdata () {
       this.jsondata.getData('SupplierList').then(response => {

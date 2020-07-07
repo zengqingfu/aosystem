@@ -109,7 +109,7 @@ app.get('/addpost/:con', (req, res) => {
 // 查询内容
 app.get('/getposts/:form', (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); // 设置可访问的源
-  let sql = `SELECT * FROM ${req.params.form} ORDER BY id DESC`;
+  let sql = `SELECT * FROM ${req.params.form} ORDER BY id ASC`;
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
@@ -120,7 +120,7 @@ app.get('/getposts/:form', (req, res) => {
 // 查询多条内容
 app.get('/getDataClass/:form/:id/:class', (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); // 设置可访问的源
-  let sql = `SELECT * FROM ${req.params.form} WHERE ${req.params.class} = ${req.params.id} ORDER BY id DESC`;
+  let sql = `SELECT * FROM ${req.params.form} WHERE ${req.params.class} = ${req.params.id} ORDER BY id ASC`;
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);

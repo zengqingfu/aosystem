@@ -5,8 +5,8 @@
       <!-- <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加收款</el-button> -->
     </h3>
     <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary :span-method="objectSpanMethod" fixed style="width: 100%">
-      <el-table-column prop="CustomerName" label="签约公司"></el-table-column>
       <el-table-column prop="projectId" label="项目名称"></el-table-column>
+      <el-table-column prop="CustomerName" label="签约公司"></el-table-column>
       <el-table-column prop="ReceivablesName" label="项目内容"></el-table-column>
       <el-table-column prop="number" label="合同金额"></el-table-column>
       <el-table-column prop="Receivables" label="到帐金额"></el-table-column>
@@ -78,8 +78,8 @@ export default {
                   }
                 }
               }
+              this.dataList = this.jsondata.getSpanArr(this.tableData, 'projectId') // 获得合并表格数组
               this.tableData = this.jsondata.fordata(responsegys.data, this.tableData, 'CustomerName', 'CustomerName')
-              this.dataList = this.jsondata.getSpanArr(this.tableData, 'projectId')
             })
               .catch(error => {
                 console.log(error)
