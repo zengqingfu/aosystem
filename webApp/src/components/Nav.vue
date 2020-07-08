@@ -49,7 +49,7 @@
           <i class="el-icon-s-check"></i>供应商应付表
         </el-menu-item>
         <el-menu-item index="/stafflist">
-          <i class="el-icon-s-check"></i>员工应付表
+          <i class="el-icon-s-check"></i>外包应付表
         </el-menu-item>
         </el-menu-item-group>
     </el-submenu>

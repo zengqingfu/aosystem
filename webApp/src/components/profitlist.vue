@@ -140,21 +140,42 @@ export default {
     },
     getdataReceivables () {
       this.jsondata.getData('Receivables').then(response => {
-        for (var i = 0; i < this.tableData.length; i++) {
-          for (let iee in this.formexpenditureData) { //eslint-disable-line
-            if (this.tableData[i].id == this.formexpenditureData[iee].projectlist) { //eslint-disable-line
-              this.tableData[i].expenditure += Number(this.formexpenditureData[iee].Receivables)
+        this.jsondata.getData('RevenueContract').then(responseContract => {
+          this.jsondata.getData('expenditure').then(responseexpenditure => { // 已付合同
+            for (var i = 0; i < this.tableData.length; i++) {
+              this.tableData[i].Receivables = 0
+              this.tableData[i].expenditure = 0
+              for (var is = 0; is < responseContract.data.length; is++) {
+                for (var iss = 0; iss < response.data.length; iss++) {
+                  if (responseContract.data[is].id === response.data[iss].projectId && Number(responseContract.data[is].projectId) === Number(this.tableData[i].id)) {
+                    this.tableData[i].Receivables += Number(response.data[iss].Receivables)
+                  }
+                }
+              }
+              for (var ie = 0; ie < responseexpenditure.data.length; ie++) {
+                responseexpenditure.data[ie].expenditure = 0
+                for (var iee = 0; iee < this.formexpenditureData.length; iee++) {
+                  if (responseexpenditure.data[ie].id === this.formexpenditureData[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
+                    responseexpenditure.data[ie].expenditure += Number(this.formexpenditureData[iee].Receivables)
+                  }
+                }
+                if (responseexpenditure.data[ie].Receivableslist === '不分期' && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
+                  this.tableData[i].expenditure += Number(responseexpenditure.data[ie].Receivables)
+                } else {
+                  this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
+                }
+              }
+              this.tableData[i].expenditure = this.jsondata.currency(this.tableData[i].expenditure, '￥', 2)
+              this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
             }
-          }
-          for (let is = 0; is < response.data.length; is++) {
-            if(this.tableData[i].id == response.data[is].projectlist){ //eslint-disable-line
-              this.tableData[i].Receivables += Number(response.data[is].Receivables)
-              // console.log(this.tableData[i].Receivables, response.data[is], is)
-            }
-          }
-          this.tableData[i].Receivables = this.jsondata.currency(Number(this.tableData[i].Receivables), '￥', 2)
-          this.tableData[i].expenditure = this.jsondata.currency(Number(this.tableData[i].expenditure), '￥', 2)
-        }
+          })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+          .catch(error => {
+            console.log(error)
+          })
       })
         .catch(error => {
           console.log(error)
