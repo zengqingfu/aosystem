@@ -109,7 +109,12 @@ export default {
                         responseexpenditureData.data[iss].projectlist = responseprojectList.data[i].projectName
                         responseexpenditureData.data[iss].projectname = responseexpenditure.data[is].ReceivablesName
                         responseexpenditureData.data[iss].weikaifapiao = Number(responseexpenditureData.data[iss].Receivables) - Number(responseexpenditureData.data[iss].invoice)
-                        responseexpenditureData.data[iss].projectnumber = Number(responseexpenditure.data[is].number)
+                        if (responseexpenditure.data[is].number != '') { //eslint-disable-line
+                          responseexpenditureData.data[iss].projectnumber = Number(responseexpenditure.data[is].number)
+                          responseexpenditure.data[is].number = ''
+                        } else {
+                          responseexpenditureData.data[iss].projectnumber = 0
+                        }
                         if (responseexpenditureData.data[iss].invoicebo === '不计发票') {
                           responseexpenditureData.data[iss].biujifapiao = Number(responseexpenditureData.data[iss].Receivables)
                         } else {
@@ -137,7 +142,7 @@ export default {
                   this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
                   this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
                   this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
-                  this.tableData[i].number = this.jsondata.currency(this.tableData[i].e, '￥', 2)
+                  this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
                   this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
                   this.tableData[i].projectnumber = this.jsondata.currency(this.tableData[i].projectnumber, '￥', 2)
                 }
