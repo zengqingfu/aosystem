@@ -12,6 +12,7 @@
       <el-table-column prop="Receivables" label="已收金额" sortable></el-table-column>
       <el-table-column prop="ExpenditureBudget" label="应付金额" sortable></el-table-column>
       <el-table-column prop="expenditure" label="已付金额" sortable></el-table-column>
+      <el-table-column prop="profit" label="利润" sortable></el-table-column>
       <el-table-column prop="projectContent" label="项目说明" sortable></el-table-column>
     </el-table>
   </el-main>
@@ -165,6 +166,7 @@ export default {
                   this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
                 }
               }
+              this.tableData[i].profit = this.jsondata.currency(Number(this.tableData[i].Receivables) - Number(this.tableData[i].expenditure), '￥', 2)
               this.tableData[i].expenditure = this.jsondata.currency(this.tableData[i].expenditure, '￥', 2)
               this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
             }

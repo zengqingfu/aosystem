@@ -1,18 +1,23 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      供应商例表<span style="float:right;font-size: 16px">不计发票:{{this.jsondata.currency(this.biujifapiao, '￥', 2)}}</span>
+      {{this.Suppliertitle}}
     </h3>
-    <el-table @row-click="handle" :data="fromexpenditure" border :summary-method="jsondata.getSummaries" show-summary  :span-method="objectSpanMethod"  style="width: 100%">
-      <el-table-column prop="SupplierName" label="供应商名称"></el-table-column>
-      <el-table-column prop="projectId" label="项目名称"></el-table-column>
-      <el-table-column prop="ReceivablesName" label="项目内容"></el-table-column>
-      <el-table-column prop="number" label="项目金额"></el-table-column>
+    <el-table :data="tableData" border :span-method="objectSpanMethod" :summary-method="jsondata.getSummaries" show-summary  style="width: 100%">
+      <el-table-column prop="projectlist" label="所属项目"></el-table-column>
+      <el-table-column prop="projectname" label="应付内容"></el-table-column>
+      <el-table-column prop="projectdata" label="签约日期"></el-table-column>
+      <el-table-column prop="projectnumber" label="应付总额"></el-table-column>
+      <el-table-column prop="Receivableslist" label="应付分期"></el-table-column>
+      <el-table-column prop="ReceivablesData" label="应付时间"></el-table-column>
+      <el-table-column prop="number" label="应付金额"></el-table-column>
       <el-table-column prop="Receivables" label="已付金额"></el-table-column>
-      <el-table-column prop="kaifapiao" label="已付款未收发票"></el-table-column>
+      <el-table-column prop="daozhangdate" label="付款时间"></el-table-column>
       <el-table-column prop="Receivablesend" label="未付金额"></el-table-column>
-      <el-table-column prop="projectClass" label="支出类别"></el-table-column>
-      <el-table-column prop="contractdate" label="签约时间"></el-table-column>
+      <el-table-column prop="invoice" label="已收发票"></el-table-column>
+      <el-table-column prop="kaifapiaodate" label="已票时间"></el-table-column>
+      <el-table-column prop="weikaifapiao" label="已付款未收票"></el-table-column>
+      <el-table-column prop="biujifapiao" label="不计发票"></el-table-column>
     </el-table>
   </el-main>
 </template>
@@ -20,10 +25,13 @@
 export default {
   data () {
     return {
+      Suppliertitle: '',
       biujifapiao: '',
       weikaifapiao: '',
       thisdata: {},
       dataList: [],
+      dataList1: [],
+      dataList2: [],
       contentsint: '',
       contentsintp: '',
       Customerlist: [],
@@ -88,70 +96,58 @@ export default {
     getdata () {
       this.biujifapiao = 0
       this.weikaifapiao = 0
-      this.jsondata.getData('expenditureData').then(response => { // 支出
-        this.fromexpenditureData = response.data
-        this.jsondata.getDataClass('projectList', '0', 'complete').then(response => { // 项目
-          this.fromprojectList = response.data
-          this.jsondata.getData('expenditure').then(response => { // 支出合同
-            this.jsondata.getData('supplierlist').then(responsegys => { // 供应商例表
+      this.jsondata.getData('expenditureData').then(responseexpenditureData => { // 支出
+        this.jsondata.getDataClass('projectList', '0', 'complete').then(responseprojectList => { // 项目
+          this.jsondata.getData('expenditure').then(responseexpenditure => { // 支出合同
+            this.jsondata.getDataClass('supplierlist', this.$route.params.id, 'id').then(responsegys => { // 供应商例表
               this.jsondata.getData('expenditureclass').then(responselist => { // 支出分类
-                for (let i = 0; i < this.fromprojectList.length; i++) {
-                  for (let is = 0; is < response.data.length; is++) {
-                  if(this.fromprojectList[i].id == response.data[is].projectId){ //eslint-disable-line
-                      for (let iss = 0; iss < responsegys.data.length; iss++) {
-                      if(response.data[is].SupplierName == responsegys.data[iss].id && responsegys.data[iss].SupplierClass == 1){  //eslint-disable-line
-                          this.thisdata = response.data[is]
-                          this.thisdata.SupplierName = responsegys.data[iss].SupplierName
-                          this.fromexpenditure.push(this.thisdata) // 进行中项目的所有合同
+                for (let i = 0; i < responseprojectList.data.length; i++) {
+                  for (let is = 0; is < responseexpenditure.data.length; is++) {
+                    for (let iss = 0; iss < responseexpenditureData.data.length; iss++) {
+                      if (responseprojectList.data[i].id === responseexpenditure.data[is].projectId && Number(responseexpenditureData.data[iss].projectId) === Number(responseexpenditure.data[is].id) && responseexpenditure.data[is].SupplierName === this.$route.params.id) {
+                        responseexpenditureData.data[iss].projectdata = responseexpenditure.data[is].contractdate
+                        responseexpenditureData.data[iss].projectlist = responseprojectList.data[i].projectName
+                        responseexpenditureData.data[iss].projectname = responseexpenditure.data[is].ReceivablesName
+                        responseexpenditureData.data[iss].weikaifapiao = Number(responseexpenditureData.data[iss].Receivables) - Number(responseexpenditureData.data[iss].invoice)
+                        responseexpenditureData.data[iss].projectnumber = Number(responseexpenditure.data[is].number)
+                        if (responseexpenditureData.data[iss].invoicebo === '不计发票') {
+                          responseexpenditureData.data[iss].biujifapiao = Number(responseexpenditureData.data[iss].Receivables)
+                        } else {
+                          responseexpenditureData.data[iss].biujifapiao = 0
                         }
+                        this.tableData.push(responseexpenditureData.data[iss])
+                        // this.tableData[i].Receivables += Number(response.data[iss].Receivables)
                       }
                     }
                   }
                 }
-                // for (let i = 0; i < this.fromprojectList.length; i++) {
-                //   for (let is = 0; is < this.fromexpenditure.length; is++) {
-                //     if(this.fromprojectList[i].id == this.fromexpenditure[is].projectId){ //eslint-disable-line
-                //       this.fromexpenditure[is].projectId = this.fromprojectList[i].projectName
-                //     }
-                //   }
-                // }
-                this.fromexpenditure = this.jsondata.fordata(this.fromprojectList, this.fromexpenditure, 'projectName', 'projectId')
-                for (let i = 0; i < this.fromexpenditure.length; i++) {
-                  this.fromexpenditure[i].kaifapiao = 0
-                  for (let il = 0; il < responselist.data.length; il++) {
-                    if(responselist.data[il].id == this.fromexpenditure[i].projectClass){ //eslint-disable-line
-                      this.fromexpenditure[i].projectClass = responselist.data[il].expenditureClass
-                    }
-                  }
-                  for (let is = 0; is < this.fromexpenditureData.length; is++) {
-                  if(this.fromexpenditure[i].id == this.fromexpenditureData[is].projectId){ //eslint-disable-line
-                    if(this.fromexpenditureData[is].invoicebo == '不计发票'){ //eslint-disable-line
-                        this.biujifapiao += Number(this.fromexpenditureData[is].Receivables)
-                      } else {
-                        this.fromexpenditure[i].kaifapiao += Number(this.fromexpenditureData[is].invoice)
-                      }
-                    if(this.fromexpenditure[i].Receivableslist == '不分期'){ //eslint-disable-line
-                      // this.fromexpenditure[i].Receivables += Number(response.data[i].Receivables)
-                      } else {
-                        this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(this.fromexpenditureData[is].Receivables) // 已付金额
-                      }
-                    // console.log(this.fromexpenditure[is])
-                    }
-                  }
-                  // this.weikaifapiao = Number(this.weikaifapiao) + Number(this.fromexpenditure[i].Receivables) - Number(this.fromexpenditure[i].kaifapiao)
-                  if(this.fromexpenditure[i].invoicebo == '不计发票'){ //eslint-disable-line
-                    this.fromexpenditure[i].kaifapiao = '不计发票'
+                for (let i = 0; i < this.tableData.length; i++) {
+                  if(this.tableData[i].number == ''){ //eslint-disable-line
+                    this.tableData[i].Receivablesend = ''
                   } else {
-                    this.fromexpenditure[i].kaifapiao = this.jsondata.currency(this.fromexpenditure[i].Receivables - this.fromexpenditure[i].kaifapiao, '￥', 2)
+                    this.tableData[i].Receivablesend = Number(this.tableData[i].number)
+                    this.tableData[i].weikaifapiao = 0
+                    for (let is = 0; is < this.tableData.length; is++) {
+                      if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist && this.tableData[i].projectname == this.tableData[is].projectname){ //eslint-disable-line
+                        this.tableData[i].Receivablesend -= Number(this.tableData[is].Receivables)
+                        this.tableData[i].weikaifapiao += Number(this.tableData[is].Receivables) - Number(this.tableData[is].invoice)
+                      }
+                    }
                   }
-                  this.fromexpenditure[i].Receivablesend = Number(this.fromexpenditure[i].number) - Number(this.fromexpenditure[i].Receivables)
-                  this.fromexpenditure[i].Receivablesend = this.jsondata.currency(this.fromexpenditure[i].Receivablesend, '￥', 2)
-                  this.fromexpenditure[i].Receivables = this.jsondata.currency(this.fromexpenditure[i].Receivables, '￥', 2)
-                  this.fromexpenditure[i].number = this.jsondata.currency(this.fromexpenditure[i].number, '￥', 2)
+                  this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
+                  this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
+                  this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
+                  this.tableData[i].number = this.jsondata.currency(this.tableData[i].e, '￥', 2)
+                  this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
+                  this.tableData[i].projectnumber = this.jsondata.currency(this.tableData[i].projectnumber, '￥', 2)
                 }
-
-                this.fromexpenditure.sort(function (a, b) { return (a.SupplierName + '').localeCompare(b.SupplierName + '') })
-                this.dataList = this.jsondata.getSpanArr(this.fromexpenditure, 'SupplierName') // 合并表格数组
+                this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 排序.reverse()
+                this.tableData = this.tableData.sort(function (a, b) { return (a.projectname + '').localeCompare(b.projectname + '') }) // 排序.reverse()
+                this.tableData = this.tableData.sort(function (a, b) { return (a.projectlist + '').localeCompare(b.projectlist + '') }) // 排序.reverse()
+                this.Suppliertitle = responsegys.data[0].SupplierName
+                this.dataList = this.jsondata.getSpanArr(this.tableData, 'projectlist')
+                this.dataList1 = this.jsondata.getSpanArr(this.tableData, 'projectname')
+                this.dataList2 = this.jsondata.getSpanArr(this.tableData, 'Receivableslist')
               })
                 .catch(error => {
                   console.log(error)
@@ -176,12 +172,27 @@ export default {
     },
     handle (row, event, column) {
       this.$router.push('/ProjectDetails/' + row.id)
-      console.log(row.id)
       // console.log(row, event, column)
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
         const _row = this.dataList[rowIndex]
+        const _col = _row > 0 ? 1 : 0
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+      if (columnIndex === 1 || columnIndex === 2 || columnIndex === 3) {
+        const _row = this.dataList1[rowIndex]
+        const _col = _row > 0 ? 1 : 0
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+      if (columnIndex === 6 || columnIndex === 4 || columnIndex === 5 || columnIndex === 9 || columnIndex === 12) {
+        const _row = this.dataList2[rowIndex]
         const _col = _row > 0 ? 1 : 0
         return {
           rowspan: _row,
