@@ -197,6 +197,7 @@ export default {
     dstaplayb () { // 数据初始化
       this.Receivablesintp = 0
       this.contentsintp = 0
+      this.contentsint = 0
       this.Receivablesint = 0
       this.invoiceint = 0
       this.Receivablesint = 0
@@ -453,7 +454,6 @@ export default {
             }
             this.tableData[5].contents += this.jsondata.currency(this.invoicebo, '￥', 2)
           }
-          this.ReceivableslistData = this.ReceivableslistData.reverse()
         })
           .catch(error => {
             console.log(error)

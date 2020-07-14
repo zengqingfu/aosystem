@@ -111,7 +111,7 @@ export default {
                         responseexpenditureData.data[iss].weikaifapiao = Number(responseexpenditureData.data[iss].Receivables) - Number(responseexpenditureData.data[iss].invoice)
                         if (responseexpenditure.data[is].number != '') { //eslint-disable-line
                           responseexpenditureData.data[iss].projectnumber = Number(responseexpenditure.data[is].number)
-                          responseexpenditure.data[is].number = ''
+                          responseexpenditure.data[is].number = '' // 应付总额合并
                         } else {
                           responseexpenditureData.data[iss].projectnumber = 0
                         }
@@ -145,6 +145,7 @@ export default {
                   this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
                   this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
                   this.tableData[i].projectnumber = this.jsondata.currency(this.tableData[i].projectnumber, '￥', 2)
+                  this.tableData[i].biujifapiao = this.jsondata.currency(this.tableData[i].biujifapiao, '￥', 2)
                 }
                 this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 排序.reverse()
                 this.tableData = this.tableData.sort(function (a, b) { return (a.projectname + '').localeCompare(b.projectname + '') }) // 排序.reverse()
