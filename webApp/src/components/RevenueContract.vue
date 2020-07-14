@@ -34,6 +34,7 @@
               <el-option label="3期" value="3期"></el-option>
               <el-option label="4期" value="4期"></el-option>
               <el-option label="5期" value="5期"></el-option>
+              <el-option label="6期" value="6期"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="Remarks">
@@ -77,6 +78,7 @@
               <el-option label="3期" value="3期"></el-option>
               <el-option label="4期" value="4期"></el-option>
               <el-option label="5期" value="5期"></el-option>
+              <el-option label="6期" value="6期"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="Remarks">
@@ -90,13 +92,14 @@
       </el-form>
     </el-dialog>
     <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
-      <el-table-column @cell-click="handle" prop="ReceivablesName" label="合同名称" sortable></el-table-column>
+      <el-table-column @cell-click="handle" prop="ReceivablesName" label="合同名称"  width="300" sortable></el-table-column>
       <el-table-column prop="Receivableslist" label="收款分期" sortable></el-table-column>
       <el-table-column prop="number" label="同合金额" sortable></el-table-column>
       <el-table-column prop="ReceivablesData" label="签约时间" sortable></el-table-column>
       <el-table-column prop="Receivables" label="到帐金额" sortable></el-table-column>
       <el-table-column prop="Receivablesend" label="未收金额" sortable></el-table-column>
       <el-table-column prop="invoice" label="开出发票" sortable></el-table-column>
+      <el-table-column prop="weikaifapiao" label="开出发票" sortable></el-table-column>
       <el-table-column prop="" label="操作" >
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small">收款</el-button>
@@ -104,9 +107,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error">
-      已开发票未收款: {{this.jsondata.currency(Number(this.weikaifapiao), '￥', 2)}}
-    </p>
   </el-main>
 </template>
 <script>
@@ -248,13 +248,14 @@ export default {
             this.tableData[i].Receivables = 0
             this.tableData[i].invoice = 0
             this.tableData[i].Receivablesend = 0
+            this.tableData[i].weikaifapiao = 0
             for (let is = 0; is < this.formTransactionList.length; is++) {
               if (this.tableData[i].id == this.formTransactionList[is].projectId) { //eslint-disable-line
                 this.tableData[i].Receivables += Number(this.formTransactionList[is].Receivables)
                 this.tableData[i].invoice += Number(this.formTransactionList[is].invoice)
               }
             }
-            this.weikaifapiao = this.weikaifapiao + Number(this.tableData[i].invoice) - Number(this.tableData[i].Receivables)
+            this.tableData[i].weikaifapiao = this.jsondata.currency(Number(this.tableData[i].invoice) - Number(this.tableData[i].Receivables), '￥', 2)
             this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)

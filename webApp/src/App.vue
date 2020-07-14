@@ -15,14 +15,14 @@ export default {
   },
   methods: {
     fatherMethod () {
-      console.log('测试')
+      // console.log('测试')
     }
   }
 
 }
 </script>
 
-<style >
+<style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -122,14 +122,18 @@ export default {
 
   }
   .el-table td, .el-table th{
-    padding: 8px 0px;
+    padding: 5px 0px;
     text-align: center;
   }
   .projectdateil td, .projectdateil th{
-    padding: 8px 0px;
+    padding: 5px 0px;
     text-align: left;
   }
   .el-table__footer-wrapper {
     font-weight: bold;
+}
+.el-table__body-wrapper{
+  height: auto !important;
+  max-height: 90%;
 }
 </style>

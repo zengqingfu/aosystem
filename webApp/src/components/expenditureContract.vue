@@ -180,13 +180,14 @@
       </el-form>
     </el-dialog>
     <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
-      <el-table-column prop="SupplierName" label="收款名称" sortable></el-table-column>
+      <el-table-column prop="SupplierName" label="收款名称"  width="400" sortable></el-table-column>
       <el-table-column prop="ReceivablesName" label="应付内容" sortable></el-table-column>
       <!-- <el-table-column prop="Receivableslist" label="付款分期" sortable></el-table-column> -->
       <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
       <el-table-column prop="contractdate" label="签约时间" sortable></el-table-column>
       <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>
       <el-table-column prop="invoice" label="收到发票" sortable></el-table-column>
+      <el-table-column prop="weikaifapiao" label="已付未收票" sortable></el-table-column>
       <el-table-column prop="projectClass" label="支出类别" sortable></el-table-column>
       <el-table-column prop="" label="操作" >
         <template slot-scope="scope">
@@ -195,10 +196,6 @@
         </template>
       </el-table-column>
     </el-table>
-      <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error">
-      已付款未收发票:{{this.jsondata.currency( this.weikaifapiao, '￥', 2)}}
-       ( 不计发票:{{this.jsondata.currency(this.biujifapiao, '￥', 2)}} )
-    </p>
   </el-main>
 </template>
 <script>
@@ -396,6 +393,7 @@ export default {
             } else {
               this.tableData[i].Receivables = 0
               this.tableData[i].invoice = 0
+              this.tableData[i].weikaifapiao = 0
               this.tableData[i].Receivablesend = 0
               for (let is = 0; is < this.formTransactionList.length; is++) {
                 if (this.tableData[i].id == this.formTransactionList[is].projectId) { //eslint-disable-line
@@ -408,7 +406,7 @@ export default {
                 }
               }
             }
-            this.weikaifapiao = this.weikaifapiao + Number(this.tableData[i].Receivables) - Number(this.tableData[i].invoice)
+            this.tableData[i].weikaifapiao = this.jsondata.currency(Number(this.tableData[i].Receivables) - Number(this.tableData[i].invoice), '￥', 2)
             this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
             if(this.tableData[i].invoicebo == '不计发票'){ //eslint-disable-line
               this.biujifapiao += Number(this.tableData[i].Receivables)

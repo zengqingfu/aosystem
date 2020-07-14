@@ -2,8 +2,8 @@
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
       <span  @click="goToHome1" style="cursor: pointer;color:#409EFF">返回项目 > </span>
-      <span  @click="goToHome" style="cursor: pointer;color:#409EFF">返回合同 > </span>{{this.titleSupplierName}} --- {{this.projectName}} --- 付款明细
-      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加付款</el-button>
+      <span  @click="goToHome" style="cursor: pointer;color:#409EFF">返回合同 > </span>{{this.titleSupplierName}} ----- {{this.projectName}}
+      <span class="colorRed"> ----- 合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
     </h3>
     <el-dialog title="添加付款" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
@@ -120,7 +120,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary  :span-method="objectSpanMethod" style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary height='90%' :span-method="objectSpanMethod" style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
       <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
       <el-table-column prop="number" label="应收金额" ></el-table-column>
@@ -128,13 +128,11 @@
       <el-table-column prop="Receivables" label="付款金额" ></el-table-column>
       <el-table-column prop="invoice" label="收到发票" ></el-table-column>
       <el-table-column prop="daozhangdate" label="时间" ></el-table-column>
-      <!-- <el-table-column prop="kaifapiaodate" label="发票时间" ></el-table-column> -->
+      <el-table-column prop="weikaifapiao" label="已经付未开票" ></el-table-column>
       <el-table-column prop="Receivablesend" label="未付金额" ></el-table-column>
       <!-- <el-table-column prop="Remarks" label="备注" sortable></el-table-column> -->
     </el-table>
-    <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error"><span class="colorRed">
-      合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span> /
-      已付款未收发票:{{this.jsondata.currency( this.weikaifapiao, '￥', 2)}}
+    <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error">
     </p>
   </el-main>
 </template>
@@ -350,10 +348,11 @@ export default {
       this.weishou = 0 //
       this.weikaifapiao = 0
       this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectId').then(response => {
-        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
-        this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
+        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }).reverse() // 根据期数排序
+        this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }).reverse() // 根据期数排序.reverse()
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
+          this.tableData[i].weikaifapiao = 0
           if(this.tableData[i].daozhangdate === '' || this.tableData[i].daozhangdate == null){  //eslint-disable-line
             this.tableData[i].daozhangdate = this.tableData[i].kaifapiaodate
           }
@@ -365,9 +364,15 @@ export default {
               if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist){ //eslint-disable-line
                 // console.log(this.tableData[i].Receivableslist, this.tableData[i].number, this.tableData[is].Receivables)
                 this.tableData[i].Receivablesend -= Number(this.tableData[is].Receivables)
+                if (this.tableData[is].invoicebo !== '不计发票') {
+                  this.tableData[i].weikaifapiao += Number(this.tableData[is].Receivables) - Number(this.tableData[is].invoice)
+                } else {
+                  // this.tableData[i].weikaifapiao += Number(this.tableData[is].number)
+                }
               }
             }
           }
+          this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
         }
         this.dataList = this.jsondata.getSpanArr(this.tableData, 'Receivableslist') // 按期数合并表格数组
@@ -450,7 +455,7 @@ export default {
       this.$router.push('/ProjectDetails/' + this.projectNameid)
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 6) {
+      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 6 || columnIndex === 7) {
         const _row = this.dataList[rowIndex]
         const _col = _row > 0 ? 1 : 0
         return {

@@ -258,7 +258,6 @@ export default {
         // console.log(response.data[0].ContractDate)
         this.form = response.data[0]
         this.form.ContractDate = response.data[0].ContractDate.substr(0, 10)
-        this.getdataReceivables() // 项目明细统计
         this.jsondata.getData('Customerlist').then(response => { // 客户列表
           this.optionsproject = response.data
           for (let is = 0; is < response.data.length; is++) {
@@ -267,6 +266,7 @@ export default {
               this.tableData[2].contents = this.form.CustomerNameid
             }
           }
+          this.getdataReceivables() // 项目明细统计
         })
           .catch(error => {
             console.log(error)
@@ -280,6 +280,7 @@ export default {
     updatpostData () { // 更新数据
       if (Number.isInteger(this.form.CustomerNameid)) {
         this.form.CustomerName = this.form.CustomerNameid
+        console.log(this.form.ContractDate)
       }
       // console.log(this.form)
       this.jsondata.updatpostData('projectList', this.form).then(response => {

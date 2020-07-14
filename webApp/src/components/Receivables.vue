@@ -3,6 +3,7 @@
     <h3>
       <span  @click="goToHome1" style="cursor: pointer;color:#409EFF">返回项目 > </span>
       <span  @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}} > </span>收款明细收入列表
+      <span class="colorRed"> ----- 合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加收款</el-button>
     </h3>
     <el-dialog title="添加收款" :visible.sync="dialogFormVisible">
@@ -33,7 +34,9 @@
               <el-option label="第3期" value="第3期"></el-option>
               <el-option label="第4期" value="第4期"></el-option>
               <el-option label="第5期" value="第5期"></el-option>
-              <el-option label="保质金" value="保质金"></el-option>
+              <el-option label="第6期" value="第6期"></el-option>
+              <el-option label="1年质保金" value="1年质保金"></el-option>
+              <el-option label="2年质保金" value="2年质保金"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="到帐金额"  prop="Receivables" >
@@ -81,13 +84,15 @@
             <el-option label="有" value="有"></el-option>
             <el-option label="无" value="无"></el-option>
             </el-select>
-            <el-select v-model="formModify.Receivableslist" placeholder="请选择" disabled style="width:46%" >
+            <el-select v-model="formModify.Receivableslist" placeholder="请选择" style="width:46%" >
               <el-option label="第1期" value="第1期"></el-option>
               <el-option label="第2期" value="第2期"></el-option>
               <el-option label="第3期" value="第3期"></el-option>
               <el-option label="第4期" value="第4期"></el-option>
               <el-option label="第5期" value="第5期"></el-option>
-              <el-option label="保质金" value="保质金"></el-option>
+              <el-option label="第6期" value="第6期"></el-option>
+              <el-option label="1年质保金" value="1年质保金"></el-option>
+              <el-option label="2年质保金" value="2年质保金"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="到帐金额" >
@@ -120,14 +125,13 @@
       <el-table-column prop="Receivables" label="到账金额" ></el-table-column>
       <el-table-column prop="invoice" label="开出发票" ></el-table-column>
       <el-table-column prop="daozhangdate" label="到账时间" ></el-table-column>
-      <!-- <el-table-column prop="kaifapiaodate" label="开发票时间" ></el-table-column> -->
+      <el-table-column prop="weikaifapiao" label="已开票未收款" ></el-table-column>
       <el-table-column prop="Receivablesend" label="未收金额" ></el-table-column>
-      <!-- <el-table-column prop="Remarks" label="备注" sortable></el-table-column> -->
     </el-table>
-    <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error"><span class="colorRed">
+    <!-- <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error"><span class="colorRed">
       合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
       / 已开发票未收款: {{this.jsondata.currency(Number(this.weikaifapiao) - Number(this.zongshouru), '￥', 2)}}
-    </p>
+    </p> -->
   </el-main>
 </template>
 <script>
@@ -309,10 +313,11 @@ export default {
       this.weishou = 0 // 未收金额初始化
       this.weikaifapiao = 0 // 未收金额初始化
       this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectId').then(response => {
-        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
-        this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
+        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }).reverse() // 根据期数排序
+        this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }).reverse() // 根据期数排序.reverse()
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
+          this.tableData[i].weikaifapiao = 0
           if(this.tableData[i].daozhangdate === ''){  //eslint-disable-line
             this.tableData[i].daozhangdate = this.tableData[i].kaifapiaodate
           }
@@ -324,9 +329,11 @@ export default {
               if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist){ //eslint-disable-line
                 // console.log(this.tableData[i].Receivableslist, this.tableData[i].number, this.tableData[is].Receivables)
                 this.tableData[i].Receivablesend -= Number(this.tableData[is].Receivables)
+                this.tableData[i].weikaifapiao += Number(this.tableData[is].invoice) - Number(this.tableData[is].Receivables)
               }
             }
           }
+          this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
         }
         this.dataList = this.jsondata.getSpanArr(this.tableData, 'Receivableslist')
@@ -406,7 +413,7 @@ export default {
       this.$router.push('/ProjectDetails/' + this.projectNameid)
     },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 6) {
+      if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 6 || columnIndex === 7) {
         const _row = this.dataList[rowIndex]
         const _col = _row > 0 ? 1 : 0
         return {
