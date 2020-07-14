@@ -99,7 +99,7 @@
       <el-table-column prop="Receivables" label="到帐金额" sortable></el-table-column>
       <el-table-column prop="Receivablesend" label="未收金额" sortable></el-table-column>
       <el-table-column prop="invoice" label="开出发票" sortable></el-table-column>
-      <el-table-column prop="weikaifapiao" label="开出发票" sortable></el-table-column>
+      <el-table-column prop="weikaifapiao" label="已开票未收款" sortable></el-table-column>
       <el-table-column prop="" label="操作" >
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small">收款</el-button>
