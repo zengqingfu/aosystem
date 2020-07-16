@@ -52,7 +52,7 @@
       <el-button type="primary" style="float: right; margin-left:10px;" @click="ReceivablesGo">项目收款</el-button>
       <el-button type="primary" style="float: right; margin-left:10px;" @click="expenditureGo">项目支出</el-button>
     </h3>
-    <el-table class="projectdateil" :data="tableData" border style="width: 100%">
+    <el-table class="projectdateil" :data="tableData" border style="width: 100%; font-weight: bold;">
       <el-table-column prop="pojname" label="名称" width="120"></el-table-column>
       <el-table-column prop="contents" label="内容" ></el-table-column>
     </el-table>
@@ -64,7 +64,7 @@
         <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
         <el-table-column prop="ReceivablesData" label="合同收款时间" ></el-table-column>
         <el-table-column prop="number" label="应收金额" ></el-table-column>
-        <el-table-column prop="Receivables" label="到帐金额" ></el-table-column>
+        <el-table-column prop="Receivables" label="到账金额" ></el-table-column>
         <el-table-column prop="invoice" label="开出发票" ></el-table-column>
         <el-table-column prop="daozhangdate" label="日期" ></el-table-column>
         <el-table-column prop="hetongwidthou" label="未收金额" ></el-table-column>
@@ -359,7 +359,7 @@ export default {
         }
         // this.tableData[3].contents = '合同金额:' + this.jsondata.currency(this.contentsinvoice, '￥', 2)
         this.tableData[3].contents += ' 　　应收金额:' + this.jsondata.currency(this.contentsint, '￥', 2)
-        this.tableData[3].contents += ' 　　到帐金额:' + this.jsondata.currency(this.Receivablesint, '￥', 2)
+        this.tableData[3].contents += ' 　　到账金额:' + this.jsondata.currency(this.Receivablesint, '￥', 2)
         this.tableData[3].contents += ' 　　未收金额:' + this.jsondata.currency(this.contentsint - this.Receivablesint, '￥', 2)
         this.tableData[5].contents = '开出发票:' + this.jsondata.currency(this.invoiceint, '￥', 2) + ' / (已开票未收款:' + this.jsondata.currency(this.invoiceint - this.Receivablesint, '', 2) + ')'
         this.shoukuan = response.data

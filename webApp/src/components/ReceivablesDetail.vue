@@ -77,7 +77,7 @@
               <el-option label="保质金" value="保质金"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="到帐金额" >
+        <el-form-item label="到账金额" >
           <el-col :span="11" style="margin-right:10px">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>
@@ -104,7 +104,7 @@
       <el-table-column prop="Receivableslist" label="收款分期" sortable></el-table-column>
       <el-table-column prop="number" label="应收金额" sortable></el-table-column>
       <el-table-column prop="ReceivablesData" label="收款时间" sortable></el-table-column>
-      <el-table-column prop="Receivables" label="到帐金额" sortable></el-table-column>
+      <el-table-column prop="Receivables" label="到账金额" sortable></el-table-column>
       <el-table-column prop="Receivablesend" label="未收金额" sortable></el-table-column>
       <el-table-column prop="invoice" label="开出发票" sortable></el-table-column>
       <el-table-column prop="Remarks" label="备注" sortable></el-table-column>

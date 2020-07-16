@@ -31,7 +31,7 @@ export default {
   },
   getDataId (form, listid) {
     return axios({
-      url: '/getpost/' + form + '/' + listid,
+      url: 'http://localhost:3000/getpost/' + form + '/' + listid,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -41,7 +41,7 @@ export default {
   },
   getData (form) {
     return axios({
-      url: '/getposts/' + form,
+      url: 'http://localhost:3000/getposts/' + form,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -51,7 +51,7 @@ export default {
   },
   getDataClass (form, id, dataclass) {
     return axios({
-      url: '/getDataClass/' + form + '/' + id + '/' + dataclass,
+      url: 'http://localhost:3000/getDataClass/' + form + '/' + id + '/' + dataclass,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -61,7 +61,7 @@ export default {
   },
   postData (form, jsondata) {
     return axios({
-      url: '/postdata/' + form,
+      url: 'http://localhost:3000/postdata/' + form,
       method: 'POST',
       data: jsondata,
       dataType: 'JSON',
@@ -72,7 +72,7 @@ export default {
   },
   deletepost (form, listid) { // 删除收款
     return axios({
-      url: '/deletepost/' + form + '/' + listid,
+      url: 'http://localhost:3000/deletepost/' + form + '/' + listid,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -82,7 +82,7 @@ export default {
   },
   updatpostData (form, jsondata) {
     return axios({
-      url: '/deletepost/' + form + '/' + jsondata.id,
+      url: 'http://localhost:3000/deletepost/' + form + '/' + jsondata.id,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -91,7 +91,7 @@ export default {
     }).then(response => {
       if (response.data === 'OK') {
         return axios({
-          url: '/postdata/' + form,
+          url: 'http://localhost:3000/postdata/' + form,
           method: 'POST',
           data: jsondata,
           dataType: 'JSON',

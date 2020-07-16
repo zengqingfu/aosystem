@@ -394,7 +394,7 @@ export default {
             this.tableData[i].Receivableslistbo = ''
             if(this.tableData[i].Receivableslist == '不分期'){ //eslint-disable-line
             } else {
-              this.tableData[i].Receivableslistbo = '分' + this.tableData[i].Receivableslist + '付'
+              this.tableData[i].Receivableslistbo = '分' + this.tableData[i].Receivableslist + '付款'
               this.tableData[i].Receivables = 0
               this.tableData[i].invoice = 0
               this.tableData[i].weikaifapiao = 0

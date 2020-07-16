@@ -39,7 +39,7 @@
               <el-option label="二年质保金" value="二年质保金"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="到帐金额"  prop="Receivables" >
+        <el-form-item label="到账金额"  prop="Receivables" >
           <el-col :span="11" style="margin-right:10px">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>
@@ -95,7 +95,7 @@
               <el-option label="二年质保金" value="二年质保金"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="到帐金额" >
+        <el-form-item label="到账金额" >
           <el-col :span="11" style="margin-right:10px">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>

@@ -97,7 +97,7 @@ export default {
                   for (let is = 0; is < response.data.length; is++) {
                   if(this.fromprojectList[i].id == response.data[is].projectId){ //eslint-disable-line
                       for (let iss = 0; iss < responsegys.data.length; iss++) {
-                      if(response.data[is].SupplierName == responsegys.data[iss].id && responsegys.data[iss].SupplierClass == 1){  //eslint-disable-line
+                      if(response.data[is].SupplierName == responsegys.data[iss].id){  //eslint-disable-line
                           // this.thisdata = response.data[is]
                           // this.thisdata.SupplierName = responsegys.data[iss].SupplierName
                           this.fromexpenditure.push(response.data[is]) // 进行中项目的所有合同

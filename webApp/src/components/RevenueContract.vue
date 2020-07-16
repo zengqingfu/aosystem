@@ -96,7 +96,7 @@
       <el-table-column prop="Receivableslist" label="收款分期" sortable></el-table-column>
       <el-table-column prop="number" label="同合金额" sortable></el-table-column>
       <el-table-column prop="ReceivablesData" label="签约时间" sortable></el-table-column>
-      <el-table-column prop="Receivables" label="到帐金额" sortable></el-table-column>
+      <el-table-column prop="Receivables" label="到账金额" sortable></el-table-column>
       <el-table-column prop="Receivablesend" label="未收金额" sortable></el-table-column>
       <el-table-column prop="invoice" label="开出发票" sortable></el-table-column>
       <el-table-column prop="weikaifapiao" label="已开票未收款" sortable></el-table-column>
