@@ -115,8 +115,7 @@ export default {
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
           this.tableData[i].ContractDate = response.data[0].ContractDate.substr(0, 10)
-          this.tableData[i].ContractAmount = this.jsondata.currency(Number(this.tableData[i].ContractAmount), '￥', 2)
-          this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
+          // this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
           this.tableData[i].Receivables = 0
         }
         this.getdataReceivables()
@@ -146,6 +145,7 @@ export default {
             for (var i = 0; i < this.tableData.length; i++) {
               this.tableData[i].Receivables = 0
               this.tableData[i].expenditure = 0
+              this.tableData[i].ExpenditureBudget = 0
               for (var is = 0; is < responseContract.data.length; is++) {
                 for (var iss = 0; iss < response.data.length; iss++) {
                   if (responseContract.data[is].id === response.data[iss].projectId && Number(responseContract.data[is].projectId) === Number(this.tableData[i].id)) {
@@ -155,6 +155,9 @@ export default {
               }
               for (var ie = 0; ie < responseexpenditure.data.length; ie++) {
                 responseexpenditure.data[ie].expenditure = 0
+                if (this.tableData[i].id === responseexpenditure.data[ie].projectId) {
+                  this.tableData[i].ExpenditureBudget += Number(responseexpenditure.data[ie].number)
+                }
                 for (var iee = 0; iee < this.formexpenditureData.length; iee++) {
                   if (responseexpenditure.data[ie].id === this.formexpenditureData[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
                     responseexpenditure.data[ie].expenditure += Number(this.formexpenditureData[iee].Receivables)
@@ -166,9 +169,11 @@ export default {
                   this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
                 }
               }
-              this.tableData[i].profit = this.jsondata.currency(Number(this.tableData[i].Receivables) - Number(this.tableData[i].expenditure), '￥', 2)
+              this.tableData[i].profit = this.jsondata.currency(Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].ExpenditureBudget), '￥', 2)
+              this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
               this.tableData[i].expenditure = this.jsondata.currency(this.tableData[i].expenditure, '￥', 2)
               this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
+              this.tableData[i].ContractAmount = this.jsondata.currency(Number(this.tableData[i].ContractAmount), '￥', 2)
             }
           })
             .catch(error => {

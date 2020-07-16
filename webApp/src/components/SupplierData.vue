@@ -3,7 +3,7 @@
     <h3>
       供应商例表
     </h3>
-    <el-table @row-click="handle" :data="fromsupplierlist" border :summary-method="jsondata.getSummaries" show-summary  style="width: 100%">
+    <el-table @row-click="handle" :data="fromsupplierlist" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
       <el-table-column prop="SupplierName" label="供应商名称" width="300"></el-table-column>
       <el-table-column prop="number" label="应付金额"></el-table-column>
       <el-table-column prop="Receivables" label="已付金额"></el-table-column>

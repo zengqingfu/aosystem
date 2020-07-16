@@ -30,6 +30,7 @@
               <el-option label="3期" value="3期"></el-option>
               <el-option label="4期" value="4期"></el-option>
               <el-option label="5期" value="5期"></el-option>
+              <el-option label="6期" value="6期"></el-option>
               <el-option label="不分期" value="不分期"></el-option>
             </el-select>
         </el-form-item>
@@ -118,6 +119,7 @@
               <el-option label="3期" value="3期"></el-option>
               <el-option label="4期" value="4期"></el-option>
               <el-option label="5期" value="5期"></el-option>
+              <el-option label="6期" value="6期"></el-option>
               <el-option label="不分期" value="不分期"></el-option>
             </el-select>
         </el-form-item>
@@ -179,19 +181,20 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
-      <el-table-column prop="SupplierName" label="收款名称"  width="400" sortable></el-table-column>
+    <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
+      <el-table-column prop="SupplierName" label="付款名称"  width="300" sortable></el-table-column>
       <el-table-column prop="ReceivablesName" label="应付内容" sortable></el-table-column>
       <!-- <el-table-column prop="Receivableslist" label="付款分期" sortable></el-table-column> -->
       <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
       <el-table-column prop="contractdate" label="签约时间" sortable></el-table-column>
       <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>
+      <el-table-column prop="Receivablesend" label="未支付金额" sortable></el-table-column>
       <el-table-column prop="invoice" label="收到发票" sortable></el-table-column>
       <el-table-column prop="weikaifapiao" label="已付未收票" sortable></el-table-column>
       <el-table-column prop="projectClass" label="支出类别" sortable></el-table-column>
       <el-table-column prop="" label="操作" >
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">分期付款</el-button>
+          <el-button @click="handleClick(scope.row)" type="text" size="small">{{scope.row.Receivableslistbo}}</el-button>
           <el-button @click="handle(scope.row)" type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>
@@ -251,11 +254,11 @@ export default {
       rules: {
         ReceivablesName: [
           { required: true, message: '付款名称', trigger: 'blur' }
+        ],
+        Receivableslist: [
+          { required: true, message: '付款分期', trigger: 'blur' }
         ]
         // ,
-        // ReceivablesData: [
-        //   { required: true, message: '付款日期', trigger: 'blur' }
-        // ],
         // ReceivablesMode: [
         //   { required: true, message: '付款方式', trigger: 'blur' }
         // ],
@@ -388,9 +391,10 @@ export default {
         this.jsondata.getData('expenditureData').then(responselist => {
           this.formTransactionList = responselist.data
           for (let i = 0; i < this.tableData.length; i++) {
+            this.tableData[i].Receivableslistbo = ''
             if(this.tableData[i].Receivableslist == '不分期'){ //eslint-disable-line
-
             } else {
+              this.tableData[i].Receivableslistbo = '分' + this.tableData[i].Receivableslist + '付'
               this.tableData[i].Receivables = 0
               this.tableData[i].invoice = 0
               this.tableData[i].weikaifapiao = 0
@@ -411,7 +415,9 @@ export default {
             if(this.tableData[i].invoicebo == '不计发票'){ //eslint-disable-line
               this.biujifapiao += Number(this.tableData[i].Receivables)
               this.tableData[i].invoice = this.tableData[i].invoicebo
+              this.tableData[i].weikaifapiao = this.tableData[i].invoicebo
             }
+            this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
             this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
           }

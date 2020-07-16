@@ -35,8 +35,8 @@
               <el-option label="第4期" value="第4期"></el-option>
               <el-option label="第5期" value="第5期"></el-option>
               <el-option label="第6期" value="第6期"></el-option>
-              <el-option label="1年质保金" value="1年质保金"></el-option>
-              <el-option label="2年质保金" value="2年质保金"></el-option>
+              <el-option label="一年质保金" value="一年质保金"></el-option>
+              <el-option label="二年质保金" value="二年质保金"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="到帐金额"  prop="Receivables" >
@@ -91,8 +91,8 @@
               <el-option label="第4期" value="第4期"></el-option>
               <el-option label="第5期" value="第5期"></el-option>
               <el-option label="第6期" value="第6期"></el-option>
-              <el-option label="1年质保金" value="1年质保金"></el-option>
-              <el-option label="2年质保金" value="2年质保金"></el-option>
+              <el-option label="一年质保金" value="一年质保金"></el-option>
+              <el-option label="二年质保金" value="二年质保金"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="到帐金额" >
@@ -313,8 +313,8 @@ export default {
       this.weishou = 0 // 未收金额初始化
       this.weikaifapiao = 0 // 未收金额初始化
       this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectId').then(response => {
-        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }).reverse() // 根据期数排序
-        this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }).reverse() // 根据期数排序.reverse()
+        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
+        this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
           this.tableData[i].weikaifapiao = 0

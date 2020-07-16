@@ -10,12 +10,12 @@
       <el-table-column prop="projectnumber" label="应付总额"></el-table-column>
       <el-table-column prop="Receivableslist" label="应付分期"></el-table-column>
       <el-table-column prop="ReceivablesData" label="应付时间"></el-table-column>
-      <el-table-column prop="number" label="应付金额"></el-table-column>
+      <el-table-column prop="number" label="分期应付金额"></el-table-column>
       <el-table-column prop="Receivables" label="已付金额"></el-table-column>
       <el-table-column prop="daozhangdate" label="付款时间"></el-table-column>
       <el-table-column prop="Receivablesend" label="未付金额"></el-table-column>
       <el-table-column prop="invoice" label="已收发票"></el-table-column>
-      <el-table-column prop="kaifapiaodate" label="已票时间"></el-table-column>
+      <el-table-column prop="kaifapiaodate" label="开票时间"></el-table-column>
       <el-table-column prop="weikaifapiao" label="已付款未收票"></el-table-column>
       <el-table-column prop="biujifapiao" label="不计发票"></el-table-column>
     </el-table>
@@ -124,11 +124,21 @@ export default {
                         // this.tableData[i].Receivables += Number(response.data[iss].Receivables)
                       }
                     }
+                    if (responseexpenditure.data[is].Receivableslist === '不分期' && responseexpenditure.data[is].SupplierName === this.$route.params.id && responseprojectList.data[i].id === responseexpenditure.data[is].projectId) {
+                      responseexpenditure.data[is].projectdata = responseexpenditure.data[is].contractdate
+                      responseexpenditure.data[is].projectlist = responseprojectList.data[i].projectName
+                      responseexpenditure.data[is].projectname = responseexpenditure.data[is].ReceivablesName
+                      responseexpenditure.data[is].projectnumber = responseexpenditure.data[is].number
+                      responseexpenditure.data[is].weikaifapiao = Number(responseexpenditure.data[is].Receivables) - Number(responseexpenditure.data[is].invoice)
+                      this.tableData.push(responseexpenditure.data[is])
+                    }
                   }
                 }
                 for (let i = 0; i < this.tableData.length; i++) {
                   if(this.tableData[i].number == ''){ //eslint-disable-line
                     this.tableData[i].Receivablesend = ''
+                  } else if (this.tableData[i].Receivableslist === '不分期') {
+                    this.tableData[i].Receivablesend = Number(this.tableData[i].number) - Number(this.tableData[i].Receivables)
                   } else {
                     this.tableData[i].Receivablesend = Number(this.tableData[i].number)
                     this.tableData[i].weikaifapiao = 0
@@ -152,8 +162,9 @@ export default {
                 this.tableData = this.tableData.sort(function (a, b) { return (a.projectlist + '').localeCompare(b.projectlist + '') }) // 排序.reverse()
                 this.Suppliertitle = responsegys.data[0].SupplierName
                 this.dataList = this.jsondata.getSpanArr(this.tableData, 'projectlist')
-                this.dataList1 = this.jsondata.getSpanArr(this.tableData, 'projectname')
-                this.dataList2 = this.jsondata.getSpanArr(this.tableData, 'Receivableslist')
+                this.dataList1 = this.getSpanArrs(this.tableData, 'projectname', 'projectlist')
+                // this.dataList2 = this.getSpanArrs(this.tableData, 'Receivableslist', 'projectname')
+                this.dataList2 = this.getSpanArrss(this.tableData, 'Receivableslist', 'projectname', 'projectlist')
               })
                 .catch(error => {
                   console.log(error)
@@ -180,7 +191,53 @@ export default {
       this.$router.push('/ProjectDetails/' + row.id)
       // console.log(row, event, column)
     },
+    getSpanArrss (data, list, list2, list3) { // 合并表格数组生成
+      this.spanArr = []
+      for (var i = 0; i < data.length; i++) {
+        if (i === 0) {
+          this.spanArr.push(1)
+          this.pos = 0
+        } else {
+        // 判断当前元素与上一个元素是否相同,因合并第一个所以[0]
+          if (data[i][list] === data[i - 1][list] && data[i][list2] === data[i - 1][list2] && data[i][list3] === data[i - 1][list3]) {
+            this.spanArr[this.pos] += 1
+            this.spanArr.push(0)
+          } else {
+            this.spanArr.push(1)
+            this.pos = i
+          }
+        }
+      }
+      return this.spanArr
+    },
+    getSpanArrs (data, list, list2) { // 合并表格数组生成
+      this.spanArr = []
+      for (var i = 0; i < data.length; i++) {
+        if (i === 0) {
+          this.spanArr.push(1)
+          this.pos = 0
+        } else {
+        // 判断当前元素与上一个元素是否相同,因合并第一个所以[0]
+          if (data[i][list] === data[i - 1][list] && data[i][list2] === data[i - 1][list2]) {
+            this.spanArr[this.pos] += 1
+            this.spanArr.push(0)
+          } else {
+            this.spanArr.push(1)
+            this.pos = i
+          }
+        }
+      }
+      return this.spanArr
+    },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 6 || columnIndex === 4 || columnIndex === 5 || columnIndex === 9 || columnIndex === 12) {
+        const _row = this.dataList2[rowIndex]
+        const _col = _row > 0 ? 1 : 0
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
       if (columnIndex === 0) {
         const _row = this.dataList[rowIndex]
         const _col = _row > 0 ? 1 : 0
@@ -191,14 +248,6 @@ export default {
       }
       if (columnIndex === 1 || columnIndex === 2 || columnIndex === 3) {
         const _row = this.dataList1[rowIndex]
-        const _col = _row > 0 ? 1 : 0
-        return {
-          rowspan: _row,
-          colspan: _col
-        }
-      }
-      if (columnIndex === 6 || columnIndex === 4 || columnIndex === 5 || columnIndex === 9 || columnIndex === 12) {
-        const _row = this.dataList2[rowIndex]
         const _col = _row > 0 ? 1 : 0
         return {
           rowspan: _row,
