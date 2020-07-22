@@ -148,7 +148,15 @@ const router = new VueRouter({
 
 // 挂载一个路由导航守卫
 router.beforeEach((to, from, next) => {
-  console.log(to, from)
-  next()
+  // console.log(to, from, sessionStorage.getItem('Token'))
+  if (to.path === '/login') {
+    next()
+  } else {
+    if (sessionStorage.getItem('Token') === 'bigmind') {
+      next()
+    } else {
+      next('/login')
+    }
+  }
 })
 export default router

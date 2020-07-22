@@ -63,7 +63,7 @@ export default {
         if (response.data === '登陆失败') {
           this.infoLogin = true
         } else {
-          console.log(sessionStorage.getItem('Token'))
+          // console.log(sessionStorage.getItem('Token'))
           this.$router.push('/index')
         }
       })
