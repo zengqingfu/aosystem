@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 import OngoingProjects from '@/components/OngoingProjects'
 // eslint-disable-next-line no-unused-vars
 import index from '@/components/index'
@@ -17,11 +17,11 @@ import SupplierData from '@/components/SupplierData'
 import profitlist from '@/components/profitlist'
 import stafflist from '@/components/stafflist'
 import SupplierDatalist from '@/components/SupplierDatalist'
+import login from '@/components/login'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
-
+const router = new VueRouter({
   routes: [
     {
       path: '/ProjectDetails/:id',
@@ -61,6 +61,14 @@ export default new Router({
       components: {
         Nav: Nav,
         content: stafflist
+      }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      components: {
+        Nav: Nav,
+        content: login
       }
     },
     {
@@ -137,3 +145,10 @@ export default new Router({
     }
   ]
 })
+
+// 挂载一个路由导航守卫
+router.beforeEach((to, from, next) => {
+  console.log(to, from)
+  next()
+})
+export default router

@@ -39,9 +39,9 @@
         <el-menu-item index="/Receivableslist">
           <i class="el-icon-menu"></i>项目收入报表
         </el-menu-item>
-        <el-menu-item index="/expenditurelist">
+        <!-- <el-menu-item index="/expenditurelist">
           <i class="el-icon-s-flag"></i>项目支出报表
-        </el-menu-item>
+        </el-menu-item> -->
         <el-menu-item index="/profitlist">
           <i class="el-icon-s-order"></i>项目利润报表
         </el-menu-item>

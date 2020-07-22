@@ -11,23 +11,10 @@
       </el-container>
     </el-container>
   </div>
-
 </template>
 
-<script scoped>
-export default {
-  data () {
-    return {
-      public: []
-    }
-  },
-  methods: {
-    getdataform () {
+<script>
 
-    }
-  }
-
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

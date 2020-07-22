@@ -16,6 +16,13 @@ db.connect(err => {
   console.log('MySql connected....'); 
 });
 
+app.all('*', function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  res.header("Content-Type", "application/json;charset=utf-8");
+  next();
+});
 
 //web页面
 app.use(express.static('dist'));
@@ -40,7 +47,6 @@ app.use('/postdata/:form',function(req, res, next){
 });
 
 // 更新内容
-
 app.use('/updatpost/:id', (req, res) => {
   var result = ""; 
   req.on("data", (chuck) => {
@@ -60,7 +66,6 @@ app.use('/updatpost/:id', (req, res) => {
       contract = '${post.contract}'
     WHERE id = 
 '${post.id}'`;
-
     db.query(sql, (err, result) => {
       if (err) throw err;
       console.log(result);
@@ -68,7 +73,6 @@ app.use('/updatpost/:id', (req, res) => {
     res.end('OK')
   })
 });
-
 
 app.get('/updateget/:id', (req, res) => {
   let newTitle = 'update title';
@@ -79,9 +83,6 @@ app.get('/updateget/:id', (req, res) => {
     res.json('更新成功...');
   });
 });
-
-app.use(bodyParser.json() );
-app.use(bodyParser.urlencoded());
 
 // 创建表
 app.get('/createpoststable', (req, res) => {
@@ -96,7 +97,6 @@ app.get('/createpoststable', (req, res) => {
  
 // 插入内容
 app.get('/addpost/:con', (req, res) => {
-  
   let post = { title: 'post one', body: req.params.con };
   let sql = 'INSERT INTO posts SET ?';
   db.query(sql, post, (err, result) => {
@@ -128,6 +128,26 @@ app.get('/getDataClass/:form/:id/:class', (req, res) => {
   });
 });
 
+//登录数据
+app.use('/loigndata/',function(req, res, next){
+  res.writeHead(200, {"Content-Type": "text/html;charset=utf8","Access-Control-Allow-Origin": "*"})
+  var resdata = "";
+  req.on("data", (chuck) => { 
+    resdata += chuck
+  })
+  req.on("end", () => {
+    var token = 'bigmind'
+    var post = JSON.parse(resdata);
+    let sql = `SELECT * FROM login WHERE user = '${post.username}' and password = '${post.password}'`;
+    db.query(sql, (err, result) => {
+      if (err || result.length == 0) {
+        res.end("登陆失败")
+      } else {
+        res.end(token)
+      }
+    });
+  })
+});
 
 // 查询单条内容
 app.get('/getpost/:form/:id', (req, res) => {

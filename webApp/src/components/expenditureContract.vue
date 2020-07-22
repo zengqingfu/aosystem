@@ -410,29 +410,30 @@ export default {
                 }
               }
             }
-            this.tableData[i].weikaifapiao = this.jsondata.currency(Number(this.tableData[i].Receivables) - Number(this.tableData[i].invoice), '￥', 2)
-            this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
             if(this.tableData[i].invoicebo == '不计发票'){ //eslint-disable-line
               this.biujifapiao += Number(this.tableData[i].Receivables)
               this.tableData[i].invoice = this.tableData[i].invoicebo
               this.tableData[i].weikaifapiao = this.tableData[i].invoicebo
             }
+            this.tableData[i].weikaifapiao = this.jsondata.currency(Number(this.tableData[i].Receivables) - Number(this.tableData[i].invoice), '￥', 2)
+            this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
             this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
+            this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
             this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
             this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
           }
-        })
-          .catch(error => {
-            console.log(error)
+          this.jsondata.getData('SupplierList').then(response => { // 客户例表
+            this.tableData = this.jsondata.fordata(response.data, this.tableData, 'SupplierName', 'SupplierName')
+            this.jsondata.getData('expenditureclass').then(response => { // 支出类别例表
+              this.tableData = this.jsondata.fordata(response.data, this.tableData, 'expenditureClass', 'projectClass')
+            })
+              .catch(error => {
+                console.log(error)
+              })
           })
-        this.jsondata.getData('SupplierList').then(response => { // 客户例表
-          this.tableData = this.jsondata.fordata(response.data, this.tableData, 'SupplierName', 'SupplierName')
-        })
-          .catch(error => {
-            console.log(error)
-          })
-        this.jsondata.getData('expenditureclass').then(response => { // 支出类别例表
-          this.tableData = this.jsondata.fordata(response.data, this.tableData, 'expenditureClass', 'projectClass')
+            .catch(error => {
+              console.log(error)
+            })
         })
           .catch(error => {
             console.log(error)
