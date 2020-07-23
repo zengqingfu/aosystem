@@ -21,7 +21,8 @@
       </div>
     </el-main>
 </template>
-<script scoped>
+<script>
+import CryptoJS from 'crypto-js'
 export default {
   data () {
     return {
@@ -58,6 +59,7 @@ export default {
       })
     },
     postData () { // 请求数据
+      console.log(CryptoJS.AES.encrypt('1111', '123456'))
       this.jsondata.postlogin(this.form).then(response => {
         sessionStorage.setItem('Token', response.data)
         if (response.data === '登陆失败') {
