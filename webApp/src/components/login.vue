@@ -16,8 +16,7 @@
           <el-button @click="resetForm()">重置</el-button>
         </el-form-item>
       </el-form>
-      <div id='infoLogin'  v-bind:class="{'class1': infoLogin}" style="display:none">
-        登陆失败
+      <div id='infoLogin' class="">
       </div>
     </el-main>
 </template>
@@ -59,11 +58,16 @@ export default {
       })
     },
     postData () { // 请求数据
-      console.log(CryptoJS.AES.encrypt('1111', '123456'))
+      // console.log(CryptoJS.AES.encrypt('1111', '123456'))
+      // var jiami = CryptoJS.AES.encrypt(this.form.password, 'bigmind').toString() // 加密码
+      // var bytes = CryptoJS.AES.decrypt(jiami, 'bigmind').toString(CryptoJS.enc.Utf8) // 解密码
+      this.form.password = CryptoJS.AES.encrypt(this.form.password, 'bigmind').toString() // 加密
+      
       this.jsondata.postlogin(this.form).then(response => {
         sessionStorage.setItem('Token', response.data)
         if (response.data === '登陆失败') {
           this.infoLogin = true
+          document.getElementById('infoLogin').innerHTML = '登陆失败'
         } else {
           // console.log(sessionStorage.getItem('Token'))
           this.$router.push('/index')

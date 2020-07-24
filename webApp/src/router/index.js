@@ -67,7 +67,6 @@ const router = new VueRouter({
       path: '/login',
       name: 'login',
       components: {
-        Nav: Nav,
         content: login
       }
     },
