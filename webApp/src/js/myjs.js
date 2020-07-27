@@ -1,4 +1,6 @@
 import axios from 'axios'
+
+const geturl = ''
 export default {
   fordata (data1, data2, listclass1, listclass2) { // 循环函数
     for (let i = 0; i < data1.length; i++) {
@@ -31,7 +33,7 @@ export default {
   },
   postlogin (jsondata) { // 登录信息
     return axios({
-      url: 'http://localhost:3000/loigndata/',
+      url: geturl + '/loigndata/',
       method: 'POST',
       data: jsondata,
       dataType: 'JSON',
@@ -42,7 +44,7 @@ export default {
   },
   getDataId (form, listid) {
     return axios({
-      url: 'http://localhost:3000/getpost/' + form + '/' + listid,
+      url: geturl + '/getpost/' + form + '/' + listid,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -52,7 +54,7 @@ export default {
   },
   getData (form) {
     return axios({
-      url: 'http://localhost:3000/getposts/' + form,
+      url: geturl + '/getposts/' + form,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -62,7 +64,7 @@ export default {
   },
   getDataClass (form, id, dataclass) {
     return axios({
-      url: 'http://localhost:3000/getDataClass/' + form + '/' + id + '/' + dataclass,
+      url: geturl + '/getDataClass/' + form + '/' + id + '/' + dataclass,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -72,7 +74,7 @@ export default {
   },
   postData (form, jsondata) {
     return axios({
-      url: 'http://localhost:3000/postdata/' + form,
+      url: geturl + '/postdata/' + form,
       method: 'POST',
       data: jsondata,
       dataType: 'JSON',
@@ -83,7 +85,7 @@ export default {
   },
   deletepost (form, listid) { // 删除收款
     return axios({
-      url: 'http://localhost:3000/deletepost/' + form + '/' + listid,
+      url: geturl + '/deletepost/' + form + '/' + listid,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -93,7 +95,7 @@ export default {
   },
   updatpostData (form, jsondata) {
     return axios({
-      url: 'http://localhost:3000/deletepost/' + form + '/' + jsondata.id,
+      url: geturl + '/deletepost/' + form + '/' + jsondata.id,
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -102,7 +104,7 @@ export default {
     }).then(response => {
       if (response.data === 'OK') {
         return axios({
-          url: 'http://localhost:3000/postdata/' + form,
+          url: geturl + '/postdata/' + form,
           method: 'POST',
           data: jsondata,
           dataType: 'JSON',

@@ -260,7 +260,6 @@ export default {
     this.getFormDataPojname()
   },
   methods: {
-
     submitFormModify (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {

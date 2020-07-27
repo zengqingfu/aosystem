@@ -16,7 +16,7 @@
           <el-button @click="resetForm()">重置</el-button>
         </el-form-item>
       </el-form>
-      <div id='infoLogin' class="">
+      <div id='infoLogin' style="text-align:center; color:#f00">
       </div>
     </el-main>
 </template>
@@ -34,11 +34,11 @@ export default {
       rules: {
         username: [
           { required: true, message: '请输入帐号', trigger: 'blur' },
-          { min: 4, max: 20, message: '长度在 8 到 20 个字符', trigger: 'blur' }
+          { min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
-          { min: 4, max: 20, message: '长度在 8 到 20 个字符', trigger: 'blur' }
+          { min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -62,7 +62,6 @@ export default {
       // var jiami = CryptoJS.AES.encrypt(this.form.password, 'bigmind').toString() // 加密码
       // var bytes = CryptoJS.AES.decrypt(jiami, 'bigmind').toString(CryptoJS.enc.Utf8) // 解密码
       this.form.password = CryptoJS.AES.encrypt(this.form.password, 'bigmind').toString() // 加密
-      
       this.jsondata.postlogin(this.form).then(response => {
         sessionStorage.setItem('Token', response.data)
         if (response.data === '登陆失败') {

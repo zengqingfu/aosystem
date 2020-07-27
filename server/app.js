@@ -17,6 +17,9 @@ db.connect(err => {
   console.log('MySql connected....'); 
 });
 
+//web页面
+app.use(express.static('dist'));
+
 app.all('*', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -24,9 +27,6 @@ app.all('*', function (req, res, next) {
   res.header("Content-Type", "application/json;charset=utf-8");
   next();
 });
-
-//web页面
-app.use(express.static('dist'));
 
 //post数据添加内容
 app.use('/postdata/:form',function(req, res, next){

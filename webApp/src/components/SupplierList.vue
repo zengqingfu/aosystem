@@ -12,9 +12,9 @@
         </el-form-item>
         <el-form-item label="付款分类" prop="SupplierClass">
             <el-select v-model="form.SupplierClass" placeholder="请选择" style="width:46%" >
-            <el-option label="供应商" value="1"></el-option>
-            <el-option label="员工" value="2"></el-option>
-            <el-option label="外包人员" value="3"></el-option>
+            <el-option label="1供应商" value="1"></el-option>
+            <el-option label="2员工" value="2"></el-option>
+            <el-option label="3外包人员" value="3"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="SupplierCon">
@@ -32,6 +32,13 @@
       <el-form ref="formModify" :model="formModify" :rules="rules"  label-width="80px" class="demo-ruleForm">
         <el-form-item label="付款名称" prop="SupplierName">
           <el-input v-model="formModify.SupplierName"></el-input>
+        </el-form-item>
+        <el-form-item label="付款分类" prop="SupplierClass">
+            <el-select v-model="formModify.SupplierClass" placeholder="请选择" style="width:46%" >
+            <el-option label="1供应商" value="1"></el-option>
+            <el-option label="2员工" value="2"></el-option>
+            <el-option label="3外包人员" value="3"></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="SupplierCon">
           <el-input type="textarea" v-model="formModify.SupplierCon" ></el-input>
