@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const geturl = ''
+const geturl = 'http://localhost:3000'
+// const geturl = ''
 export default {
   fordata (data1, data2, listclass1, listclass2) { // 循环函数
     for (let i = 0; i < data1.length; i++) {

@@ -419,7 +419,6 @@ export default {
             this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
             this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
-            this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
             this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
           }
           this.jsondata.getData('SupplierList').then(response => { // 客户例表
