@@ -65,7 +65,7 @@ export default {
       })
     },
     postData () { // 请求数据
-      console.log(Date.now())
+      // console.log(Date.now())
       this.loginForm.password = CryptoJS.AES.encrypt(this.form.password, 'bigmind').toString() // 加密
       this.loginForm.username = this.form.username
       this.jsondata.postlogin(this.loginForm).then(response => {
@@ -73,24 +73,26 @@ export default {
           this.infoLogin = true
           document.getElementById('infoLogin').innerHTML = '登陆失败'
         } else {
-          this.setCookie(this.form.username, this.form.password, 7)
+          // this.setCookie(this.form.username, this.form.password, 7)
           sessionStorage.setItem('Token', response.data)
-          // console.log(sessionStorage.getItem('Token'))
+          sessionStorage.setItem('user', this.loginForm.username)
+          // console.log(response.data)
           this.$router.push('/index')
         }
       })
         .catch(error => {
           console.log(error)
         })
-    },
-    setCookie (mobile, password, days) {
-      this.logintext = CryptoJS.AES.encrypt(password, 'bigmind').toString() // 加密
-      this.saveDays = new Date() // 获取时间
-      this.saveDays.setTime(this.saveDays.getTime() + 24 * 60 * 60 * 1000 * days) // 保存的天数
-      window.document.cookie = 'mobile' + '=' + mobile + ';path=/;saveDays=' + this.saveDays.toGMTString()
-      window.document.cookie = 'password' + '=' + this.logintext + ';path=/;saveDays=' + this.saveDays.toGMTString()
-      console.log()
     }
+    // ,
+    // setCookie (mobile, password, days) {
+    //   this.logintext = CryptoJS.AES.encrypt(password, 'bigmind').toString() // 加密
+    //   this.saveDays = new Date() // 获取时间
+    //   this.saveDays.setTime(this.saveDays.getTime() + 24 * 60 * 60 * 1000 * days) // 保存的天数
+    //   window.document.cookie = 'mobile' + '=' + mobile + ';path=/;saveDays=' + this.saveDays.toGMTString()
+    //   window.document.cookie = 'password' + '=' + this.logintext + ';path=/;saveDays=' + this.saveDays.toGMTString()
+    //   console.log()
+    // }
   }
 }
 </script>

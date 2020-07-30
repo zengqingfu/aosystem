@@ -151,7 +151,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     next()
   } else {
-    if (sessionStorage.getItem('Token') === 'bigmind') {
+    if (sessionStorage.getItem('Token') !== '') {
       next()
     } else {
       next('/login')

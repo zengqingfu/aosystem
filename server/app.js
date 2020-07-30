@@ -137,16 +137,20 @@ app.use('/loigndata/',function(req, res, next){
     resdata += chuck
   })
   req.on("end", () => {
-    var token = 'bigmind'
+    var token = Date.now()
     var post = JSON.parse(resdata);
     post.password = CryptoJS.AES.decrypt(post.password, 'bigmind').toString(CryptoJS.enc.Utf8) // 解密码
-
     let sql = `SELECT * FROM login WHERE user = '${post.username}' and password = '${post.password}'`;
     db.query(sql, (err, result) => {
       if (err || result.length == 0) {
         res.end("登陆失败")
       } else {
-        res.end(token)
+        let sqls = `UPDATE login SET token = '${token}' WHERE user = '${post.username}'`;
+        db.query(sqls, (err, result) => {
+          if (err) throw err;
+          console.log(result);
+          res.end(""+token)
+        });
       }
     });
   })

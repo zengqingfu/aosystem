@@ -167,7 +167,7 @@ export default {
                 this.dataList = this.jsondata.getSpanArr(this.tableData, 'projectlist')
                 this.dataList1 = this.getSpanArrs(this.tableData, 'listid', 'projectId')
                 // this.dataList2 = this.getSpanArrs(this.tableData, 'Receivableslist', 'projectname')
-                this.dataList2 = this.getSpanArrss(this.tableData, 'Receivableslist', 'projectname', 'projectId')
+                this.dataList2 = this.getSpanArrss(this.tableData, 'Receivableslist', 'listid', 'projectId')
               })
                 .catch(error => {
                   console.log(error)
