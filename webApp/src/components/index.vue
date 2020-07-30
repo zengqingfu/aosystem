@@ -24,10 +24,11 @@ export default {
   },
   methods: {
     exitloign () {
-      this.$router.push('/login')
-      // sessionStorage.removeItem('Token')
-      if (sessionStorage.getItem('Token') === 'bigmind') {
-        sessionStorage.removeItem('Token')
+      // console.log(window.location.href.match('login'))
+      sessionStorage.clear()
+      if (window.location.href.match('login')) {
+      } else {
+        this.$router.push('/login')
       }
     }
   }

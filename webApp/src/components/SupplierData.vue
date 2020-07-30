@@ -95,11 +95,14 @@ export default {
               this.jsondata.getData('expenditureclass').then(responselist => { // 支出分类
                 for (let i = 0; i < this.fromprojectList.length; i++) {
                   for (let is = 0; is < response.data.length; is++) {
-                  if(this.fromprojectList[i].id == response.data[is].projectId){ //eslint-disable-line
+                    if(this.fromprojectList[i].id == response.data[is].projectId){ //eslint-disable-line
                       for (let iss = 0; iss < responsegys.data.length; iss++) {
-                      if(response.data[is].SupplierName == responsegys.data[iss].id){ //eslint-disable-line
+                        if(response.data[is].SupplierName == responsegys.data[iss].id){ //eslint-disable-line
                           // this.thisdata = response.data[is]
                           // this.thisdata.SupplierName = responsegys.data[iss].SupplierName
+                          // if (response.data[is].SupplierName == '33') {
+                          //   console.log(this.fromprojectList[i].projectName)
+                          // }
                           this.fromexpenditure.push(response.data[is]) // 进行中项目的所有合同
                         }
                       }
@@ -115,14 +118,14 @@ export default {
                     }
                   }
                   for (let is = 0; is < this.fromexpenditureData.length; is++) {
-                  if(this.fromexpenditure[i].id == this.fromexpenditureData[is].projectId){ //eslint-disable-line
-                    if(this.fromexpenditureData[is].invoicebo == '不计发票'){ //eslint-disable-line
+                    if(this.fromexpenditure[i].id == this.fromexpenditureData[is].projectId){ //eslint-disable-line
+                      if(this.fromexpenditureData[is].invoicebo == '不计发票'){ //eslint-disable-line
                         this.fromexpenditure[i].biujifapiao += Number(this.fromexpenditureData[is].Receivables)
                       } else {
                         this.fromexpenditure[i].kaifapiao += Number(this.fromexpenditureData[is].invoice)
                       }
                     if(this.fromexpenditure[i].Receivableslist == '不分期'){ //eslint-disable-line
-                      // this.fromexpenditure[i].Receivables += Number(response.data[i].Receivables)
+                        // this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(response.data[i].Receivables)
                       } else {
                         this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(this.fromexpenditureData[is].Receivables) // 已付金额
                       }

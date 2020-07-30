@@ -108,6 +108,7 @@ export default {
                         responseexpenditureData.data[iss].projectdata = responseexpenditure.data[is].contractdate
                         responseexpenditureData.data[iss].projectlist = responseprojectList.data[i].projectName
                         responseexpenditureData.data[iss].projectname = responseexpenditure.data[is].ReceivablesName
+                        responseexpenditureData.data[iss].listid = responseexpenditure.data[is].id
                         responseexpenditureData.data[iss].weikaifapiao = Number(responseexpenditureData.data[iss].Receivables) - Number(responseexpenditureData.data[iss].invoice)
                         if (responseexpenditure.data[is].number != '') { //eslint-disable-line
                           responseexpenditureData.data[iss].projectnumber = Number(responseexpenditure.data[is].number)
@@ -125,6 +126,7 @@ export default {
                       }
                     }
                     if (responseexpenditure.data[is].Receivableslist === '不分期' && responseexpenditure.data[is].SupplierName === this.$route.params.id && responseprojectList.data[i].id === responseexpenditure.data[is].projectId) {
+                      responseexpenditure.data[is].listid = responseexpenditure.data[is].id
                       responseexpenditure.data[is].projectdata = responseexpenditure.data[is].contractdate
                       responseexpenditure.data[is].projectlist = responseprojectList.data[i].projectName
                       responseexpenditure.data[is].projectname = responseexpenditure.data[is].ReceivablesName
@@ -135,6 +137,7 @@ export default {
                   }
                 }
                 for (let i = 0; i < this.tableData.length; i++) {
+                  // console.log(this.tableData[i].projectId)
                   if(this.tableData[i].number == ''){ //eslint-disable-line
                     this.tableData[i].Receivablesend = ''
                   } else if (this.tableData[i].Receivableslist === '不分期') {
@@ -162,9 +165,9 @@ export default {
                 this.tableData = this.tableData.sort(function (a, b) { return (a.projectlist + '').localeCompare(b.projectlist + '') }) // 排序.reverse()
                 this.Suppliertitle = responsegys.data[0].SupplierName
                 this.dataList = this.jsondata.getSpanArr(this.tableData, 'projectlist')
-                this.dataList1 = this.getSpanArrs(this.tableData, 'projectname', 'projectlist')
+                this.dataList1 = this.getSpanArrs(this.tableData, 'listid', 'projectId')
                 // this.dataList2 = this.getSpanArrs(this.tableData, 'Receivableslist', 'projectname')
-                this.dataList2 = this.getSpanArrss(this.tableData, 'Receivableslist', 'projectname', 'projectlist')
+                this.dataList2 = this.getSpanArrss(this.tableData, 'Receivableslist', 'projectname', 'projectId')
               })
                 .catch(error => {
                   console.log(error)

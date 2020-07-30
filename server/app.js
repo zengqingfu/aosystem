@@ -139,8 +139,8 @@ app.use('/loigndata/',function(req, res, next){
   req.on("end", () => {
     var token = 'bigmind'
     var post = JSON.parse(resdata);
-    // console.log(CryptoJS.AES.decrypt(post.password, 'bigmind').toString(CryptoJS.enc.Utf8));
-    post.password = CryptoJS.AES.decrypt(post.password, 'bigmind').toString(CryptoJS.enc.Utf8)
+    post.password = CryptoJS.AES.decrypt(post.password, 'bigmind').toString(CryptoJS.enc.Utf8) // 解密码
+
     let sql = `SELECT * FROM login WHERE user = '${post.username}' and password = '${post.password}'`;
     db.query(sql, (err, result) => {
       if (err || result.length == 0) {

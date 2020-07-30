@@ -2,7 +2,7 @@
 <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3 style="text-align:center">
-      登录
+      记账系统
     </h3>
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm" style="width:300px; margin:auto">
         <el-form-item label="帐号" prop="username">
@@ -22,11 +22,18 @@
 </template>
 <script>
 import CryptoJS from 'crypto-js'
+// import axios from 'axios'
 export default {
   data () {
     return {
+      saveDays: '',
+      logintext: '',
       infoLogin: false,
       form: {
+        username: '',
+        password: ''
+      },
+      loginForm: {
         username: '',
         password: ''
       },
@@ -58,16 +65,16 @@ export default {
       })
     },
     postData () { // 请求数据
-      // console.log(CryptoJS.AES.encrypt('1111', '123456'))
-      // var jiami = CryptoJS.AES.encrypt(this.form.password, 'bigmind').toString() // 加密码
-      // var bytes = CryptoJS.AES.decrypt(jiami, 'bigmind').toString(CryptoJS.enc.Utf8) // 解密码
-      this.form.password = CryptoJS.AES.encrypt(this.form.password, 'bigmind').toString() // 加密
-      this.jsondata.postlogin(this.form).then(response => {
-        sessionStorage.setItem('Token', response.data)
+      console.log(Date.now())
+      this.loginForm.password = CryptoJS.AES.encrypt(this.form.password, 'bigmind').toString() // 加密
+      this.loginForm.username = this.form.username
+      this.jsondata.postlogin(this.loginForm).then(response => {
         if (response.data === '登陆失败') {
           this.infoLogin = true
           document.getElementById('infoLogin').innerHTML = '登陆失败'
         } else {
+          this.setCookie(this.form.username, this.form.password, 7)
+          sessionStorage.setItem('Token', response.data)
           // console.log(sessionStorage.getItem('Token'))
           this.$router.push('/index')
         }
@@ -75,6 +82,14 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+    setCookie (mobile, password, days) {
+      this.logintext = CryptoJS.AES.encrypt(password, 'bigmind').toString() // 加密
+      this.saveDays = new Date() // 获取时间
+      this.saveDays.setTime(this.saveDays.getTime() + 24 * 60 * 60 * 1000 * days) // 保存的天数
+      window.document.cookie = 'mobile' + '=' + mobile + ';path=/;saveDays=' + this.saveDays.toGMTString()
+      window.document.cookie = 'password' + '=' + this.logintext + ';path=/;saveDays=' + this.saveDays.toGMTString()
+      console.log()
     }
   }
 }
