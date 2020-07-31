@@ -90,6 +90,16 @@ export default {
       }
     })
   },
+  getDatalogin (token) { // token查询
+    return axios({
+      url: geturl() + '/getDatalogin/' + token,
+      method: 'GET',
+      dataType: 'JSON',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+  },
   postData (form, jsondata) {
     return axios({
       url: geturl() + '/postdata/' + form,
@@ -190,7 +200,7 @@ export default {
       }
     })
     for (let ins in sums) { // eslint-disable-line0
-      if (sums[ins] > 0) {
+      if (sums[ins] !== 0) {
         // console.log(sums[ins])
         sums[ins] = this.jsondata.currency(sums[ins], '￥', 2)
       }

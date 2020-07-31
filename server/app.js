@@ -129,6 +129,21 @@ app.get('/getDataClass/:form/:id/:class', (req, res) => {
   });
 });
 
+// 查询token
+app.get('/getDatalogin/:token', (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // 设置可访问的源
+  let sql = `SELECT * FROM login WHERE token = ${req.params.token}`;
+  db.query(sql, (err, result) => {
+    if (err || result.length == 0) {
+      console.log(result);
+      res.json('NO');
+    }else{
+      console.log(result);
+      res.json('OK');
+    }
+  });
+});
+
 //登录数据
 app.use('/loigndata/',function(req, res, next){
   res.writeHead(200, {"Content-Type": "text/html;charset=utf8","Access-Control-Allow-Origin": "*"})

@@ -18,6 +18,7 @@ import profitlist from '@/components/profitlist'
 import stafflist from '@/components/stafflist'
 import SupplierDatalist from '@/components/SupplierDatalist'
 import login from '@/components/login'
+import axios from 'axios'
 
 Vue.use(VueRouter)
 
@@ -147,15 +148,34 @@ const router = new VueRouter({
 
 // 挂载一个路由导航守卫
 router.beforeEach((to, from, next) => {
-  // console.log(to, from, sessionStorage.getItem('Token'))
+  // console.log(sessionStorage.getItem('Token'))
+  var geturlFn
+  if (window.location.href.match('bigmind')) {
+    geturlFn = ''
+  } else {
+    geturlFn = 'http://localhost:3000'
+  }
   if (to.path === '/login') {
     next()
   } else {
-    if (sessionStorage.getItem('Token') !== '') {
-      next()
-    } else {
-      next('/login')
-    }
+    axios({
+      url: geturlFn + '/getDatalogin/' + sessionStorage.getItem('Token'),
+      method: 'GET',
+      dataType: 'JSON',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(response => { // token通过
+      console.log(response.data)
+      if (response.data === 'OK') {
+        next()
+      } else {
+        next('/login')
+      }
+    })
+      .catch(error => {
+        console.log(error)
+      })
   }
 })
 export default router

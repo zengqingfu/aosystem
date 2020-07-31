@@ -101,7 +101,7 @@ export default {
                           // this.thisdata = response.data[is]
                           // this.thisdata.SupplierName = responsegys.data[iss].SupplierName
                           // if (response.data[is].SupplierName == '33') {
-                          //   console.log(this.fromprojectList[i].projectName)
+                          //   console.log(this.response.data[is])
                           // }
                           this.fromexpenditure.push(response.data[is]) // 进行中项目的所有合同
                         }

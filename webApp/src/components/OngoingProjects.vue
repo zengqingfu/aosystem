@@ -149,7 +149,7 @@ export default {
         this.tableData = response.data
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
-          this.tableData[i].ContractDate = response.data[0].ContractDate.substr(0, 10)
+          this.tableData[i].ContractDate = response.data[i].ContractDate.substr(0, 10)
           this.tableData[i].ContractAmount = this.jsondata.currency(Number(this.tableData[i].ContractAmount), '￥', 2)
           // this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
           this.tableData[i].Receivables = 0

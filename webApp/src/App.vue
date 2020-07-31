@@ -128,11 +128,32 @@ export default {
     padding: 5px 0px !important;
     text-align: left !important;
   }
-  .el-table__footer-wrapper {
+  /* .el-table__footer-wrapper {
     font-weight: bold;
-}
+    position: absolute;
+    bottom: -35px;
+} */
 .el-table__body-wrapper{
   height: auto !important;
   max-height: 85%;
+}
+.el-table {
+  border: none;
+  overflow: visible;
+}
+.el-table--border::after, .el-table--group::after, .el-table::before {
+    content: '';
+    position: absolute;
+    background-color: #fff;
+    z-index: 1;
+}
+.el-table__body-wrapper, .el-table__header-wrapper {
+  border: 1px solid #eee;
+  box-sizing: border-box;
+  width: 99.9%;
+}
+.el-table .gutter{
+  border-right: 1px solid #eee;
+  background-color: #ebeef5;
 }
 </style>
