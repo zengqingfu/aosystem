@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const geturl = (geturlFn) => { // 环境变量,放到域名bigmind上
-  if (window.location.href.match('bigmind')) {
+  if (window.location.href.match('jz.bigmind.pro')) {
     geturlFn = ''
   } else {
     geturlFn = 'http://localhost:3000'
@@ -50,19 +50,9 @@ export default {
       }
     })
   },
-  loginjiami (jsondata) { // 登录加密
-    return axios({
-      url: geturl() + '/loginjiami/' + jsondata,
-      method: 'GET',
-      dataType: 'JSON',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-  },
   getDataId (form, listid) {
     return axios({
-      url: geturl() + '/getpost/' + form + '/' + listid,
+      url: geturl() + '/getpost/' + form + '/' + listid + '/' + sessionStorage.getItem('Token'),
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -72,7 +62,7 @@ export default {
   },
   getData (form) {
     return axios({
-      url: geturl() + '/getposts/' + form,
+      url: geturl() + '/getposts/' + form + '/' + sessionStorage.getItem('Token'),
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -82,7 +72,7 @@ export default {
   },
   getDataClass (form, id, dataclass) {
     return axios({
-      url: geturl() + '/getDataClass/' + form + '/' + id + '/' + dataclass,
+      url: geturl() + '/getDataClass/' + form + '/' + id + '/' + dataclass + '/' + sessionStorage.getItem('Token'),
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -102,7 +92,7 @@ export default {
   },
   postData (form, jsondata) {
     return axios({
-      url: geturl() + '/postdata/' + form,
+      url: geturl() + '/postdata/' + form + '/' + sessionStorage.getItem('Token'),
       method: 'POST',
       data: jsondata,
       dataType: 'JSON',
@@ -113,7 +103,7 @@ export default {
   },
   deletepost (form, listid) { // 删除收款
     return axios({
-      url: geturl() + '/deletepost/' + form + '/' + listid,
+      url: geturl() + '/deletepost/' + form + '/' + listid + '/' + sessionStorage.getItem('Token'),
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -123,7 +113,7 @@ export default {
   },
   updatpostData (form, jsondata) {
     return axios({
-      url: geturl() + '/deletepost/' + form + '/' + jsondata.id,
+      url: geturl() + '/deletepost/' + form + '/' + jsondata.id + '/' + sessionStorage.getItem('Token'),
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -132,7 +122,7 @@ export default {
     }).then(response => {
       if (response.data === 'OK') {
         return axios({
-          url: geturl() + '/postdata/' + form,
+          url: geturl() + '/postdata/' + form + '/' + sessionStorage.getItem('Token'),
           method: 'POST',
           data: jsondata,
           dataType: 'JSON',
@@ -200,7 +190,7 @@ export default {
       }
     })
     for (let ins in sums) { // eslint-disable-line0
-      if (sums[ins] > 0 || sums[ins] < 0.0001) {
+      if (sums[ins] > 0 || sums[ins] < 0) {
         // console.log(sums[ins])
         sums[ins] = this.jsondata.currency(sums[ins], '￥', 2)
       }
