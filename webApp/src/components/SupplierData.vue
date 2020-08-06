@@ -5,11 +5,11 @@
     </h3>
     <el-table @row-click="handle" :data="fromsupplierlist" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
       <el-table-column prop="SupplierName" label="供应商名称" width="300"></el-table-column>
-      <el-table-column prop="number" label="应付金额"></el-table-column>
-      <el-table-column prop="Receivables" label="已付金额"></el-table-column>
-      <el-table-column prop="Receivablesend" label="未付金额"></el-table-column>
-      <el-table-column prop="kaifapiao" label="已收发票"></el-table-column>
-      <el-table-column prop="weishoufapiao" label="已付款未收发票"></el-table-column>
+      <el-table-column prop="number" label="应付金额" sortable></el-table-column>
+      <el-table-column prop="Receivables" label="已付金额" sortable></el-table-column>
+      <el-table-column prop="Receivablesend" label="未付金额" sortable></el-table-column>
+      <el-table-column prop="kaifapiao" label="已收发票" sortable></el-table-column>
+      <el-table-column prop="weishoufapiao" label="已付款未收发票" sortable></el-table-column>
       <!-- <el-table-column prop="biujifapiao" label="不计发票"></el-table-column> -->
     </el-table>
   </el-main>
@@ -86,8 +86,8 @@ export default {
     getdata () {
       this.biujifapiao = 0
       this.weikaifapiao = 0
-      this.jsondata.getData('expenditureData').then(response => { // 支出
-        this.fromexpenditureData = response.data
+      this.jsondata.getData('expenditureData').then(responsedata => { // 支出
+        this.fromexpenditureData = responsedata.data
         this.jsondata.getDataClass('projectList', '0', 'complete').then(response => { // 项目
           this.fromprojectList = response.data
           this.jsondata.getData('expenditure').then(response => { // 支出合同
@@ -100,9 +100,6 @@ export default {
                         if(response.data[is].SupplierName == responsegys.data[iss].id){ //eslint-disable-line
                           // this.thisdata = response.data[is]
                           // this.thisdata.SupplierName = responsegys.data[iss].SupplierName
-                          // if (response.data[is].SupplierName == '33') {
-                          //   console.log(this.response.data[is])
-                          // }
                           this.fromexpenditure.push(response.data[is]) // 进行中项目的所有合同
                         }
                       }
@@ -110,8 +107,14 @@ export default {
                   }
                 }
                 for (let i = 0; i < this.fromexpenditure.length; i++) {
+                  // if (this.fromexpenditure[i].SupplierName === '33') {
+                  //   console.log(this.fromexpenditure[i].Receivableslist)
+                  // }
                   this.fromexpenditure[i].kaifapiao = 0
                   this.fromexpenditure[i].biujifapiao = 0
+                  if(this.fromexpenditure[i].Receivableslist != '不分期'){ //eslint-disable-line
+                    this.fromexpenditure[i].number = 0 // 应收款~~~~~~~~~~~不确定,最后选择用收款列表计算,原本是用收款合同计算
+                  }
                   for (let il = 0; il < responselist.data.length; il++) {
                     if(responselist.data[il].id == this.fromexpenditure[i].projectClass){ //eslint-disable-line
                       this.fromexpenditure[i].projectClass = responselist.data[il].expenditureClass
@@ -124,9 +127,11 @@ export default {
                       } else {
                         this.fromexpenditure[i].kaifapiao += Number(this.fromexpenditureData[is].invoice)
                       }
-                    if(this.fromexpenditure[i].Receivableslist == '不分期'){ //eslint-disable-line
+                      if(this.fromexpenditure[i].Receivableslist == '不分期'){ //eslint-disable-line
                         // this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(response.data[i].Receivables)
+                        // this.fromexpenditure[i].number += Number(this.fromexpenditureData[is].Receivables)
                       } else {
+                        this.fromexpenditure[i].number += Number(this.fromexpenditureData[is].number) // 应收款~~~~~~~~~~~不确定,最后选择用收款列表计算,原本是用收款合同计算
                         this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(this.fromexpenditureData[is].Receivables) // 已付金额
                       }
                     }

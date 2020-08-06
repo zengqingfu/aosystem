@@ -36,7 +36,9 @@ export default {
   body {
     margin: 0px;
   }
-
+  html{
+    overflow: hidden !important;
+  }
   html,
   body,
   #app,
@@ -135,25 +137,30 @@ export default {
 } */
 .el-table__body-wrapper{
   height: auto !important;
-  max-height: 85%;
+  max-height: 93%;
 }
 .el-table {
-  border: none;
+  border: none !important;
   overflow: visible;
 }
 .el-table--border::after, .el-table--group::after, .el-table::before {
     content: '';
     position: absolute;
-    background-color: #fff;
+    background-color: #fff !important;
     z-index: 1;
 }
 .el-table__body-wrapper, .el-table__header-wrapper {
   border: 1px solid #eee;
   box-sizing: border-box;
-  width: 99.9%;
+  width: 99.9% !important;
 }
 .el-table .gutter{
-  border-right: 1px solid #eee;
-  background-color: #ebeef5;
+  border-right: 1px solid #eee !important;
+  background-color: #ebeef5 !important;
+}
+.el-table__footer-wrapper {
+    z-index: 9 !important;
+    position: relative !important;
+    width: 99.9% !important;
 }
 </style>

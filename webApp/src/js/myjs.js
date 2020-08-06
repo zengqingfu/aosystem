@@ -200,7 +200,7 @@ export default {
       }
     })
     for (let ins in sums) { // eslint-disable-line0
-      if (sums[ins] !== 0) {
+      if (sums[ins] > 0 || sums[ins] < 0.0001) {
         // console.log(sums[ins])
         sums[ins] = this.jsondata.currency(sums[ins], '￥', 2)
       }

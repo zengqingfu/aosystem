@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const app = express();
 const bodyParser = require('body-parser');
 const CryptoJS = require("crypto-js");
+let multer = require('multer');
 
 const db = mysql.createConnection({
   host: 'localhost',
