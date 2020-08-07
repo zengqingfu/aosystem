@@ -18,6 +18,7 @@ import profitlist from '@/components/profitlist'
 import stafflist from '@/components/stafflist'
 import SupplierDatalist from '@/components/SupplierDatalist'
 import login from '@/components/login'
+import upimg from '@/components/upimg'
 import axios from 'axios'
 
 Vue.use(VueRouter)
@@ -62,6 +63,14 @@ const router = new VueRouter({
       components: {
         Nav: Nav,
         content: stafflist
+      }
+    },
+    {
+      path: '/upimg',
+      name: 'upimg',
+      components: {
+        Nav: Nav,
+        content: upimg
       }
     },
     {

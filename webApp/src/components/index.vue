@@ -12,7 +12,6 @@
       </el-container>
     </el-container>
   </div>
-
 </template>
 
 <script scoped>
