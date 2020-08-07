@@ -2,12 +2,12 @@
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
       供应商例表
-      <el-input
+      <!-- <el-input
         placeholder="请输入内容"
         v-model="inputSearchS"
         clearable style="width:300px;">
       </el-input>
-      <el-button type="primary">提交</el-button>
+      <el-button type="primary">提交</el-button> -->
     </h3>
     <el-table @row-click="handle" :data="fromsupplierlist" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
       <el-table-column prop="SupplierName" label="供应商名称" width="300"></el-table-column>

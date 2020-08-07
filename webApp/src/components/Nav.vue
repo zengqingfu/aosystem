@@ -53,10 +53,10 @@
         </el-menu-item>
         </el-menu-item-group>
     </el-submenu>
-    <el-menu-item index="3">
+    <!-- <el-menu-item index="3">
       <i class="el-icon-setting"></i>
       <span slot="title">暂无内容</span>
-    </el-menu-item>
+    </el-menu-item> -->
   </el-menu>
 </template>
 <script scoped>

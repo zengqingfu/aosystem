@@ -141,7 +141,7 @@ export default {
 }
 .el-table {
   border: none !important;
-  overflow: visible;
+  overflow: visible !important;
 }
 .el-table--border::after, .el-table--group::after, .el-table::before {
     content: '';
