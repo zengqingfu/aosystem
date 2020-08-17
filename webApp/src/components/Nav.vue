@@ -10,7 +10,7 @@
     :collapse="isCollapse"
     :default-openeds="openeds"
   >
-    <el-submenu index="1" :collapse="true">
+    <el-submenu index="1">
       <template slot="title">
         <i class="el-icon-location"></i>
         <span slot="title">项目管理</span>
@@ -30,7 +30,7 @@
         </el-menu-item>
       </el-menu-item-group>
     </el-submenu>
-    <el-submenu index="2" :collapse="true">
+    <el-submenu index="2">
       <template slot="title">
         <i class="el-icon-location"></i>
         <span slot="title">帐目报表</span>
@@ -52,22 +52,33 @@
           <i class="el-icon-s-check"></i>外包应付表
         </el-menu-item>
         </el-menu-item-group>
-    </el-submenu>
-    <!-- <el-menu-item index="3">
-      <i class="el-icon-setting"></i>
-      <span slot="title">暂无内容</span>
-    </el-menu-item> -->
-  </el-menu>
+      </el-submenu>
+      <el-menu-item v-show="hidebox" @click="boxshow">
+        <i class="el-icon-arrow-left"></i>
+        <span slot="title">收起</span>
+      </el-menu-item>
+      <el-menu-item v-show="showbox" @click="boxshow">
+        <i class="el-icon-arrow-right" ></i>
+        <span slot="title">展开</span>
+      </el-menu-item>
+    </el-menu>
 </template>
 <script scoped>
 export default {
   data () {
     return {
       openeds: ['1', '2'],
-      isCollapse: false
+      isCollapse: false,
+      showbox: false,
+      hidebox: true
     }
   },
   methods: {
+    boxshow () {
+      this.showbox = !this.showbox
+      this.hidebox = !this.hidebox
+      this.isCollapse = !this.isCollapse
+    },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },

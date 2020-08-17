@@ -38,10 +38,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 .slide-fade-enter-active {
-  transition: all .5s ease;
+  transition: all 1s cubic-bezier(1.0, 0, 0, 0);
 }
 .slide-fade-leave-active {
-  transition: all .5s ease;
+  transition: all .3s ease ;
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active for below version 2.1.8 */ {

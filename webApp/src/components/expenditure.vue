@@ -332,7 +332,7 @@ export default {
           .catch(error => {
             console.log(error)
           })
-        if(Number(this.hetongjiner) == Number(this.yingshou)){  //eslint-disable-line
+        if(Number(this.hetongjiner).toFixed(2) == Number(this.yingshou).toFixed(2)){  //eslint-disable-line
           document.querySelector('.colorRed').style.color = '#555'
         } else {
           document.querySelector('.colorRed').style.color = '#f00'
