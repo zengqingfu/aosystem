@@ -12,7 +12,7 @@
   >
     <el-submenu index="1">
       <template slot="title">
-        <i class="el-icon-location"></i>
+        <i class="el-icon-s-fold"></i>
         <span slot="title">项目管理</span>
       </template>
       <el-menu-item-group>
@@ -32,7 +32,7 @@
     </el-submenu>
     <el-submenu index="2">
       <template slot="title">
-        <i class="el-icon-location"></i>
+        <i class="el-icon-menu"></i>
         <span slot="title">帐目报表</span>
       </template>
       <el-menu-item-group>

@@ -8,11 +8,11 @@
       <el-table-column prop="projectId" label="项目名称"></el-table-column>
       <el-table-column prop="CustomerName" label="签约公司"></el-table-column>
       <el-table-column prop="ReceivablesName" label="项目内容"></el-table-column>
-      <el-table-column prop="number" label="合同金额"></el-table-column>
-      <el-table-column prop="Receivables" label="到账金额"></el-table-column>
-      <el-table-column prop="Receivablesend" label="未收金额"></el-table-column>
-      <el-table-column prop="invoice" label="已开发票未收款"></el-table-column>
-      <el-table-column prop="ReceivablesData" label="签约时间"></el-table-column>
+      <el-table-column prop="number" label="合同金额" sortable></el-table-column>
+      <el-table-column prop="Receivables" label="到账金额" sortable></el-table-column>
+      <el-table-column prop="Receivablesend" label="未收金额" sortable></el-table-column>
+      <el-table-column prop="invoice" label="已开发票未收款" sortable></el-table-column>
+      <el-table-column prop="ReceivablesData" label="签约时间" sortable></el-table-column>
     </el-table>
   </el-main>
 </template>

@@ -5,7 +5,7 @@
         <router-view name="Nav"></router-view>
       <el-container>
         <el-header style="text-align: left;background-color:#2396F0; color: #fff;">
-          <span>BigMind 大迈</span>
+          <span>{{comtitle}}</span>
           <span @click="exitloign()" style="float:right ;cursor: pointer;" >退出登录</span>
         </el-header>
         <transition name="slide-fade" mode="out-in">
@@ -20,7 +20,13 @@
 export default {
   data () {
     return {
-      public: []
+      public: [],
+      comtitle: 'BigMind 大迈'
+    }
+  },
+  mounted () {
+    if (window.location.href.match('mdjz')) {
+      this.comtitle = '迈动'
     }
   },
   methods: {
