@@ -287,6 +287,7 @@ export default {
       handler (val, oldVal) {
         // console.log(val.invoicebo)
         if(val.invoicebo == '不计发票'){ //eslint-disable-line
+          this.form.invoice = ''
           this.boxvalue = false
         } else {
           this.boxvalue = true
@@ -295,6 +296,7 @@ export default {
           this.boxvalue1 = true
         } else {
           this.boxvalue1 = false
+          this.form.Receivables = ''
         }
       },
       deep: true // true 深度监听
@@ -303,6 +305,7 @@ export default {
       handler (val, oldVal) {
         // console.log(val.invoicebo)
         if(val.invoicebo == '不计发票'){ //eslint-disable-line
+          this.formModify.invoice = ''
           this.boxvalue = false
         } else {
           this.boxvalue = true
@@ -310,6 +313,7 @@ export default {
         if(val.Receivableslist == '不分期'){ //eslint-disable-line
           this.boxvalue1 = true
         } else {
+          this.formModify.Receivables = ''
           this.boxvalue1 = false
         }
       },

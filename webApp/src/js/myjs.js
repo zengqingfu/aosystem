@@ -1,4 +1,6 @@
 import axios from 'axios'
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 
 const geturl = (geturlFn) => { // 环境变量,放到域名bigmind上
   if (window.location.href.match('localhost')) {
@@ -10,6 +12,23 @@ const geturl = (geturlFn) => { // 环境变量,放到域名bigmind上
 }
 // console.log(geturl())
 export default {
+  exportExcel (boxid) {
+    var wb = XLSX.utils.table_to_book(document.querySelector(boxid))
+    var wbout = XLSX.write(wb, {
+      bookType: 'xlsx',
+      bookSST: true,
+      type: 'array'
+    })
+    try {
+      FileSaver.saveAs(
+        new Blob([wbout], { type: 'application/octet-stream' }),
+        'sheetjs.xlsx'
+      )
+    } catch (e) {
+      if (typeof console !== 'undefined') console.log(e, wbout)
+    }
+    return wbout
+  },
   fordata (data1, data2, listclass1, listclass2) { // 循环函数
     for (let i = 0; i < data1.length; i++) {
       for (let is = 0; is < data2.length; is++) {

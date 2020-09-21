@@ -1,8 +1,9 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      进行中项目<button @click="exportExcel">点击导出</button>
+      进行中项目
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加项目</el-button>
+      <el-button style="float: right;margin-right:20px" @click="jsondata.exportExcel('#projectid')">点击导出</el-button>
     </h3>
     <el-dialog title="添加项目" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="120px" class="demo-ruleForm">
@@ -53,8 +54,6 @@
   </el-main>
 </template>
 <script>
-import FileSaver from 'file-saver'
-import XLSX from 'xlsx'
 
 export default {
   data () {
@@ -113,23 +112,6 @@ export default {
     this.getFormData('Customerlist')
   },
   methods: {
-    exportExcel () {
-      var wb = XLSX.utils.table_to_book(document.querySelector('#projectid'))
-      var wbout = XLSX.write(wb, {
-        bookType: 'xlsx',
-        bookSST: true,
-        type: 'array'
-      })
-      try {
-        FileSaver.saveAs(
-          new Blob([wbout], { type: 'application/octet-stream' }),
-          'sheetjs.xlsx'
-        )
-      } catch (e) {
-        if (typeof console !== 'undefined') console.log(e, wbout)
-      }
-      return wbout
-    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {

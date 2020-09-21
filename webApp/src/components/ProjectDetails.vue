@@ -51,7 +51,9 @@
       <!-- <el-button type="primary" style="float: right; margin-left:10px;" >结项</el-button> -->
       <el-button type="primary" style="float: right; margin-left:10px;" @click="ReceivablesGo">项目收款</el-button>
       <el-button type="primary" style="float: right; margin-left:10px;" @click="expenditureGo">项目支出</el-button>
+      <el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#projectdate')">点击导出</el-button>
     </h3>
+    <div id="projectdate">
     <el-table class="projectdateil" :data="tableData" border style="width: 100%; font-weight: bold;">
       <el-table-column prop="pojname" label="名称" width="120"></el-table-column>
       <el-table-column prop="contents" label="内容" ></el-table-column>
@@ -85,6 +87,7 @@
         <!-- <el-table-column prop="invoiceend" label="已付款未收票" ></el-table-column> -->
       </el-table>
     </el-row>
+    </div>
   </el-main>
 </template>
 <style>
@@ -411,7 +414,9 @@ export default {
                 } else {
                   this.invoiceintp += Number(this.hegongzhichun[item1].invoice)
                 }
-                this.hegongzhichun[item1].Receivables = Number(this.hegongzhichun[item1].Receivables)
+                if (this.hegongzhichun[item1].Receivableslist !== '不分期') {
+                  this.hegongzhichun[item1].Receivables = 0
+                }
                 this.hegongzhichun[item1].invoice = Number(this.hegongzhichun[item1].invoice)
                 this.hegongzhichun[item1].Receivablesend = 0
                 for(let item2 in responselist.data){  //eslint-disable-line
@@ -436,6 +441,7 @@ export default {
                 }
                 this.contentsintp += Number(this.hegongzhichun[item1].number)
                 this.Receivablesintp += Number(this.hegongzhichun[item1].Receivables)
+                console.log()
                 this.hegongzhichun[item1].invoiceend = this.jsondata.currency(Number(this.hegongzhichun[item1].Receivables) - this.hegongzhichun[item1].invoice, '￥', 2)
                 this.hegongzhichun[item1].Receivablesend = Number(this.hegongzhichun[item1].number) - this.hegongzhichun[item1].Receivables
                 this.hegongzhichun[item1].Receivables = this.jsondata.currency(this.hegongzhichun[item1].Receivables, '￥', 2)

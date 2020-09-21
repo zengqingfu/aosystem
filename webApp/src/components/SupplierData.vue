@@ -1,7 +1,7 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      供应商例表
+      供应商例表<el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#gongyingshangliebiao')">点击导出</el-button>
       <!-- <el-input
         placeholder="请输入内容"
         v-model="inputSearchS"
@@ -9,7 +9,7 @@
       </el-input>
       <el-button type="primary">提交</el-button> -->
     </h3>
-    <el-table @row-click="handle" :data="fromsupplierlist" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
+    <el-table @row-click="handle" :data="fromsupplierlist" id="gongyingshangliebiao" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
       <el-table-column prop="SupplierName" label="供应商名称" width="300"></el-table-column>
       <el-table-column prop="number" label="应付金额" sortable></el-table-column>
       <el-table-column prop="Receivables" label="已付金额" sortable></el-table-column>
@@ -117,7 +117,6 @@ export default {
                   // if (this.fromexpenditure[i].SupplierName === '20' && this.fromexpenditure[i].Receivableslist != '不分期') {  //eslint-disable-line
                   //   console.log(this.fromexpenditure[i].Receivables, this.fromexpenditure[i].projectId)
                   // }
-                  this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables)
                   this.fromexpenditure[i].kaifapiao = 0
                   this.fromexpenditure[i].biujifapiao = 0
                   if(this.fromexpenditure[i].Receivableslist != '不分期'){ //eslint-disable-line
