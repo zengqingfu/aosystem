@@ -3,7 +3,7 @@
     <h3>
       {{this.Suppliertitle}}
     </h3>
-    <el-table :data="tableData" border :span-method="objectSpanMethod" :summary-method="jsondata.getSummaries" show-summary  style="width: 100%">
+    <el-table :data="tableData" border :span-method="objectSpanMethod" :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
       <el-table-column prop="projectlist" label="所属项目"></el-table-column>
       <el-table-column prop="projectname" label="应付内容"></el-table-column>
       <el-table-column prop="projectdata" label="签约日期"></el-table-column>
@@ -96,8 +96,8 @@ export default {
     getdata () {
       this.biujifapiao = 0
       this.weikaifapiao = 0
-      this.jsondata.getData('expenditureData').then(responseexpenditureData => { // 支出
-        this.jsondata.getDataClass('projectList', '0', 'complete').then(responseprojectList => { // 项目
+      this.jsondata.getData('expendituredata').then(responseexpenditureData => { // 支出
+        this.jsondata.getDataClass('projectlist', '0', 'complete').then(responseprojectList => { // 项目
           this.jsondata.getData('expenditure').then(responseexpenditure => { // 支出合同
             this.jsondata.getDataClass('supplierlist', this.$route.params.id, 'id').then(responsegys => { // 供应商例表
               this.jsondata.getData('expenditureclass').then(responselist => { // 支出分类
@@ -140,13 +140,13 @@ export default {
                   // console.log(this.tableData[i].projectId)
                   if(this.tableData[i].number == ''){ //eslint-disable-line
                     this.tableData[i].Receivablesend = ''
-                  } else if (this.tableData[i].Receivableslist === '不分期') {
-                    this.tableData[i].Receivablesend = Number(this.tableData[i].number) - Number(this.tableData[i].Receivables)
                   } else {
                     this.tableData[i].Receivablesend = Number(this.tableData[i].number)
                     this.tableData[i].weikaifapiao = 0
+
                     for (let is = 0; is < this.tableData.length; is++) {
-                      if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist && this.tableData[i].projectname == this.tableData[is].projectname){ //eslint-disable-line
+                      if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist && this.tableData[i].projectname == this.tableData[is].projectname && this.tableData[i].projectlist == this.tableData[is].projectlist){ //eslint-disable-line
+                        // console.log(this.tableData[i].Receivableslist, this.tableData[is].Receivableslist, this.tableData[i].projectname, this.tableData[is].projectname,this.tableData[i].Receivablesend,this.tableData[is].Receivables)
                         this.tableData[i].Receivablesend -= Number(this.tableData[is].Receivables)
                         this.tableData[i].weikaifapiao += Number(this.tableData[is].Receivables) - Number(this.tableData[is].invoice)
                       }

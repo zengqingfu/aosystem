@@ -18,6 +18,7 @@ import profitlist from '@/components/profitlist'
 import stafflist from '@/components/stafflist'
 import SupplierDatalist from '@/components/SupplierDatalist'
 import login from '@/components/login'
+// import excelpage from '@/components/excelpage'
 import upimg from '@/components/upimg'
 import axios from 'axios'
 
@@ -57,6 +58,14 @@ const router = new VueRouter({
         content: SupplierDatalist
       }
     },
+    // {
+    //   path: '/excelpage',
+    //   name: 'excelpage',
+    //   components: {
+    //     Nav: Nav,
+    //     content: excelpage
+    //   }
+    // },
     {
       path: '/stafflist',
       name: 'stafflist',
@@ -159,10 +168,10 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // console.log(sessionStorage.getItem('Token'))
   var geturlFn
-  if (window.location.href.match('bigmind')) {
-    geturlFn = ''
-  } else {
+  if (window.location.href.match('localhost')) {
     geturlFn = 'http://localhost:3000'
+  } else {
+    geturlFn = ''
   }
   if (to.path === '/login') {
     next()

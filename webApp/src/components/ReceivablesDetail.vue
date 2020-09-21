@@ -203,7 +203,7 @@ export default {
       })
     },
     updatpostData () { // 更新数据
-      this.jsondata.updatpostData('Receivables', this.formModify).then(response => {
+      this.jsondata.updatpostData('receivables', this.formModify).then(response => {
         // console.log(response)
         this.dialogAddVisible = false
         this.formTransaction.AmountMoney = this.formModify.Receivables
@@ -247,7 +247,7 @@ export default {
       return false
     },
     getdata () {
-      this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectId').then(response => {
+      this.jsondata.getDataClass('receivables', this.$route.params.id, 'projectId').then(response => {
         this.tableData = response.data
         for (let i = 0; i < this.tableData.length; i++) {
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
@@ -264,7 +264,7 @@ export default {
       return false
     },
     deletepost () { // 删除收款
-      this.jsondata.deletepost('Receivables', this.formModify.id).then(response => {
+      this.jsondata.deletepost('receivables', this.formModify.id).then(response => {
         console.log(response.data)
         if (response.data === 'OK') {
           this.dialogAddVisible = false
@@ -277,7 +277,7 @@ export default {
     },
     handle (row, event, column) {
       this.dialogAddVisible = true
-      this.jsondata.getDataId('Receivables', row.id).then(response => {
+      this.jsondata.getDataId('receivables', row.id).then(response => {
         this.formModify = response.data[0]
       })
         .catch(error => {
@@ -304,7 +304,7 @@ export default {
         })
     },
     getFormDataPojname () {
-      this.jsondata.getDataId('projectList', this.$route.params.id).then(response => {
+      this.jsondata.getDataId('projectlist', this.$route.params.id).then(response => {
         this.projectName = response.data[0].projectName
       })
         .catch(error => {

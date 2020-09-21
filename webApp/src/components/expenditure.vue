@@ -349,8 +349,9 @@ export default {
       this.zongshouru = 0 //
       this.weishou = 0 //
       this.weikaifapiao = 0
-      this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectId').then(response => {
-        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
+      this.jsondata.getDataClass('expendituredata', this.$route.params.id, 'projectId').then(response => {
+        // this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
+        this.tableData = response.data
         this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
@@ -402,7 +403,7 @@ export default {
       return false
     },
     deletepost () { // 删除收款
-      this.jsondata.deletepost('expenditureData', this.formModify.id).then(response => {
+      this.jsondata.deletepost('expendituredata', this.formModify.id).then(response => {
         console.log(response.data)
         if (response.data === 'OK') {
           this.dialogAddVisible = false
@@ -416,7 +417,7 @@ export default {
 
     handle (row) {
       this.dialogAddVisible = true
-      this.jsondata.getDataId('expenditureData', row.id).then(response => {
+      this.jsondata.getDataId('expendituredata', row.id).then(response => {
         this.formModify = response.data[0]
       })
         .catch(error => {
@@ -443,7 +444,7 @@ export default {
         })
     },
     getFormDataPojname () {
-      this.jsondata.getDataId('projectList', this.$route.params.id).then(response => {
+      this.jsondata.getDataId('projectlist', this.$route.params.id).then(response => {
         this.projectName = response.data[0].projectName
       })
         .catch(error => {

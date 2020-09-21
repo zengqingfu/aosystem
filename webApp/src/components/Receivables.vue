@@ -117,7 +117,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary  :span-method="objectSpanMethod" style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary height="90%" :span-method="objectSpanMethod" style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
       <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
       <el-table-column prop="number" label="应收金额" ></el-table-column>
@@ -240,7 +240,7 @@ export default {
       })
     },
     updatpostData () { // 更新数据
-      this.jsondata.updatpostData('Receivables', this.formModify).then(response => {
+      this.jsondata.updatpostData('receivables', this.formModify).then(response => {
         // console.log(response)
         // this.formTransaction.AmountMoney = this.formModify.Receivables
         // this.formTransaction.MoneyClass = 1
@@ -272,7 +272,7 @@ export default {
       this.form.Receivableslist = ''
     },
     postData () { // 添加数据
-      this.jsondata.postData('Receivables', this.form).then(response => {
+      this.jsondata.postData('receivables', this.form).then(response => {
         // console.log(response.data, this.form)
         if (response.data === 'OK') {
           // console.log(response.data, this.form)
@@ -287,7 +287,7 @@ export default {
       return false
     },
     getdataincome () {
-      this.jsondata.getDataClass('RevenueContract', this.$route.params.id, 'id').then(response => {
+      this.jsondata.getDataClass('revenuecontract', this.$route.params.id, 'id').then(response => {
         // this.tableData = response.data
         this.projectName = response.data[0].ReceivablesName
         this.projectNameid = response.data[0].projectId
@@ -312,7 +312,7 @@ export default {
       this.zongshouru = 0 // 到账金额初始化
       this.weishou = 0 // 未收金额初始化
       this.weikaifapiao = 0 // 未收金额初始化
-      this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectId').then(response => {
+      this.jsondata.getDataClass('receivables', this.$route.params.id, 'projectId').then(response => {
         this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
         this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)
@@ -357,7 +357,7 @@ export default {
       return false
     },
     deletepost () { // 删除收款
-      this.jsondata.deletepost('Receivables', this.formModify.id).then(response => {
+      this.jsondata.deletepost('receivables', this.formModify.id).then(response => {
         // console.log(response.data)
         if (response.data === 'OK') {
           this.dialogAddVisible = false
@@ -372,7 +372,7 @@ export default {
     handle (row) {
       // console.log(row)
       this.dialogAddVisible = true
-      this.jsondata.getDataId('Receivables', row.id).then(response => {
+      this.jsondata.getDataId('receivables', row.id).then(response => {
         this.formModify = response.data[0]
       })
         .catch(error => {
@@ -399,7 +399,7 @@ export default {
         })
     },
     getFormDataPojname () {
-      this.jsondata.getDataId('projectList', this.$route.params.id).then(response => {
+      this.jsondata.getDataId('projectlist', this.$route.params.id).then(response => {
         this.projectName = response.data[0].projectName
       })
         .catch(error => {

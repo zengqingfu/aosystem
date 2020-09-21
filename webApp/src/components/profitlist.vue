@@ -4,7 +4,7 @@
       利润报表
     </h3>
 
-    <el-table @row-click="handle" :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border :summary-method="jsondata.getSummaries"  height="90%" show-summary style="width: 100%">
       <el-table-column prop="ContractDate" label="签约时间" sortable></el-table-column>
       <el-table-column prop="projectName" label="项目名称" sortable></el-table-column>
       <!-- <el-table-column prop="CustomerName" label="甲方" sortable></el-table-column> -->
@@ -92,7 +92,7 @@ export default {
       console.log(this.form)
     },
     postData () {
-      this.jsondata.postData('projectList', this.form).then(response => {
+      this.jsondata.postData('projectlist', this.form).then(response => {
         if (response.statusText === 'OK') {
           this.getdata()
           this.dialogFormVisible = false
@@ -104,13 +104,13 @@ export default {
       return false
     },
     getdata () {
-      this.jsondata.getData('expenditureData').then(response => {
+      this.jsondata.getData('expendituredata').then(response => {
         this.formexpenditureData = response.data
       })
         .catch(error => {
           console.log(error)
         })
-      this.jsondata.getDataClass('projectList', '0', 'complete').then(response => {
+      this.jsondata.getDataClass('projectlist', '0', 'complete').then(response => {
         this.tableData = response.data
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
@@ -139,8 +139,8 @@ export default {
         })
     },
     getdataReceivables () {
-      this.jsondata.getData('Receivables').then(response => {
-        this.jsondata.getData('RevenueContract').then(responseContract => {
+      this.jsondata.getData('receivables').then(response => {
+        this.jsondata.getData('revenuecontract').then(responseContract => {
           this.jsondata.getData('expenditure').then(responseexpenditure => { // 已付合同
             for (var i = 0; i < this.tableData.length; i++) {
               this.tableData[i].Receivables = 0

@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 const geturl = (geturlFn) => { // 环境变量,放到域名bigmind上
-  if (window.location.href.match('jz.bigmind.pro')) {
-    geturlFn = ''
-  } else {
+  if (window.location.href.match('localhost')) {
     geturlFn = 'http://localhost:3000'
+  } else {
+    geturlFn = ''
   }
   return geturlFn
 }

@@ -238,10 +238,10 @@ export default {
     },
     getdata () { // 初始化数据
       this.weikaifapiao = 0 // 未收金额初始化
-      this.jsondata.getData('Receivables').then(responselist => {
+      this.jsondata.getData('receivables').then(responselist => {
         this.formTransactionList = responselist.data
         // console.log(responselist.data)
-        this.jsondata.getDataClass('RevenueContract', this.$route.params.id, 'projectId').then(response => {
+        this.jsondata.getDataClass('revenueContract', this.$route.params.id, 'projectId').then(response => {
           this.tableData = response.data
           for (let i = 0; i < this.tableData.length; i++) {
             // this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)

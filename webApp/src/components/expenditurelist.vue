@@ -44,9 +44,9 @@ export default {
   },
   methods: {
     getdata () {
-      this.jsondata.getDataClass('projectList', '0', 'complete').then(responserojectList => { // 项目
+      this.jsondata.getDataClass('projectlist', '0', 'complete').then(responserojectList => { // 项目
         this.jsondata.getData('expenditure').then(responsErexpenditure => { // 付款合同
-          this.jsondata.getData('expenditureData').then(responserExpenditureData => { // 付款
+          this.jsondata.getData('expendituredata').then(responserExpenditureData => { // 付款
             this.jsondata.getData('supplierlist').then(responsesupplierlist => { // 供应商例表
               this.jsondata.getData('expenditureclass').then(responexpenditureclass => { // 支出分类
                 for (let i = 0; i < responserojectList.data.length; i++) {

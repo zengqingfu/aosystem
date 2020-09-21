@@ -388,7 +388,7 @@ export default {
       this.biujifapiao = 0
       this.jsondata.getDataClass('expenditure', this.$route.params.id, 'projectId').then(response => {
         this.tableData = response.data
-        this.jsondata.getData('expenditureData').then(responselist => {
+        this.jsondata.getData('expendituredata').then(responselist => {
           this.formTransactionList = responselist.data
           for (let i = 0; i < this.tableData.length; i++) {
             this.tableData[i].Receivableslistbo = ''
@@ -421,7 +421,7 @@ export default {
             this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
             this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
           }
-          this.jsondata.getData('SupplierList').then(response => { // 客户例表
+          this.jsondata.getData('supplierlist').then(response => { // 客户例表
             this.tableData = this.jsondata.fordata(response.data, this.tableData, 'SupplierName', 'SupplierName')
             this.jsondata.getData('expenditureclass').then(response => { // 支出类别例表
               this.tableData = this.jsondata.fordata(response.data, this.tableData, 'expenditureClass', 'projectClass')
@@ -493,7 +493,7 @@ export default {
         })
     },
     getFormDataPojname () {
-      this.jsondata.getDataId('projectList', this.$route.params.id).then(response => {
+      this.jsondata.getDataId('projectlist', this.$route.params.id).then(response => {
         this.projectName = response.data[0].projectName
       })
         .catch(error => {
@@ -501,7 +501,7 @@ export default {
         })
     },
     goToHome () {
-      this.$router.push('/ProjectDetails/' + this.$route.params.id)
+      this.$router.push('/projectdetails/' + this.$route.params.id)
     }
   }
 }

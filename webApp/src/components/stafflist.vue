@@ -86,12 +86,12 @@ export default {
     getdata () {
       this.biujifapiao = 0
       this.weikaifapiao = 0
-      this.jsondata.getData('expenditureData').then(responsedata => { // 支出
+      this.jsondata.getData('expendituredata').then(responsedata => { // 支出
         this.fromexpenditureData = responsedata.data
         this.jsondata.getDataClass('projectList', '0', 'complete').then(response => { // 项目
           this.fromprojectList = response.data
           this.jsondata.getData('expenditure').then(response => { // 支出合同
-            this.jsondata.getDataClass('supplierlist', '3', 'SupplierClass').then(responsegys => { // 供应商例表
+            this.jsondata.getDataClass('supplierlist', '3', 'supplierClass').then(responsegys => { // 供应商例表
               this.jsondata.getData('expenditureclass').then(responselist => { // 支出分类
                 for (let i = 0; i < this.fromprojectList.length; i++) {
                   for (let is = 0; is < response.data.length; is++) {
