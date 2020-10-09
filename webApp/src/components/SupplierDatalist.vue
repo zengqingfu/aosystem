@@ -4,6 +4,7 @@
       {{this.Suppliertitle}}<el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#gongyingshangxiangxi')">点击导出</el-button>
     </h3>
     <el-table :data="tableData" border :span-method="objectSpanMethod" id="gongyingshangxiangxi" :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
+      <el-table-column type="index"></el-table-column>
       <el-table-column prop="projectlist" label="所属项目"></el-table-column>
       <el-table-column prop="projectname" label="应付内容"></el-table-column>
       <el-table-column prop="projectdata" label="签约日期"></el-table-column>

@@ -42,6 +42,7 @@
       </el-form>
     </el-dialog>
     <el-table @row-click="handle" :data="tableData" id="projectid" border :summary-method="jsondata.getSummaries" height="90%" show-summary style="width: 100%">
+      <el-table-column type="index"></el-table-column>
       <el-table-column prop="ContractDate" label="签约时间" sortable></el-table-column>
       <el-table-column prop="projectName" label="项目名称" sortable></el-table-column>
       <!-- <el-table-column prop="CustomerName" label="甲方" sortable></el-table-column> -->

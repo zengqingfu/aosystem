@@ -77,6 +77,7 @@
     <el-row v-for="item in ReceivableslistData" :key="item.ReceivablesName">
       <h3>{{item.expenditureClass}}</h3>
       <el-table :data="item.hetongzhichundata" border show-summary :summary-method="jsondata.getSummaries"  style="width: 100%">
+        <el-table-column type="index"></el-table-column>
         <el-table-column prop="contractdate" label="签约日期" ></el-table-column>
         <el-table-column prop="SupplierName" label="收款名称" ></el-table-column>
         <el-table-column prop="ReceivablesName" label="应付内容" ></el-table-column>
@@ -195,8 +196,8 @@ export default {
   },
   mounted () {
     this.getdata()
-    this.getFormData('supplierlist')
-    this.getFormDataClass('expenditureclass')
+    this.getFormData('SupplierList')
+    this.getFormDataClass('expenditureClass')
   },
   methods: {
     dstaplayb () { // 数据初始化
@@ -212,9 +213,9 @@ export default {
     },
     getdata () {
       this.dstaplayb()
-      this.jsondata.getDataClass('revenuecontract', this.$route.params.id, 'projectId').then(response => {
+      this.jsondata.getDataClass('RevenueContract', this.$route.params.id, 'projectId').then(response => {
         this.projectContract = response.data
-        this.jsondata.getDataClass('receivables', this.$route.params.id, 'projectlist').then(responseitem => {
+        this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectlist').then(responseitem => {
           this.projectContractcon = responseitem.data
           for (let irr in this.projectContract) { //eslint-disable-line
             this.projectContract[irr].projectidlist = []
@@ -249,7 +250,7 @@ export default {
             this.projectContract[irr].projectidlist = this.projectContract[irr].projectidlist.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 表格合并数组排序 .reverse()
             this.projectContract[irr].projectidlist = this.projectContract[irr].projectidlist.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') })
             // console.log(this.projectContract[irr].projectidlist)
-            this.dataList.push(this.jsondata.getSpanArr(this.projectContract[irr].projectidlist, 'receivableslist'))
+            this.dataList.push(this.jsondata.getSpanArr(this.projectContract[irr].projectidlist, 'Receivableslist'))
           }
         })
           .catch(error => {
@@ -259,11 +260,11 @@ export default {
         .catch(error => {
           console.log(error)
         })
-      this.jsondata.getDataId('projectlist', this.$route.params.id).then(response => {
+      this.jsondata.getDataId('projectList', this.$route.params.id).then(response => {
         // console.log(response.data[0].ContractDate)
         this.form = response.data[0]
         this.form.ContractDate = response.data[0].ContractDate.substr(0, 10)
-        this.jsondata.getData('customerlist').then(response => { // 客户列表
+        this.jsondata.getData('Customerlist').then(response => { // 客户列表
           this.optionsproject = response.data
           for (let is = 0; is < response.data.length; is++) {
             if (this.form.CustomerName == response.data[is].id) { //eslint-disable-line
@@ -288,7 +289,7 @@ export default {
         console.log(this.form.ContractDate)
       }
       // console.log(this.form)
-      this.jsondata.updatpostData('projectlist', this.form).then(response => {
+      this.jsondata.updatpostData('projectList', this.form).then(response => {
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.dialogFormVisible = false
@@ -306,7 +307,7 @@ export default {
         this.form.CustomerName = this.form.CustomerNameid
       }
       // console.log(this.form.CustomerNameid)
-      this.jsondata.updatpostData('projectlist', this.form).then(response => {
+      this.jsondata.updatpostData('projectList', this.form).then(response => {
         if (response.data === 'OK') {
           this.$router.push('/index')
         }
@@ -327,7 +328,7 @@ export default {
       })
     },
     deletepost () { // 删除
-      this.jsondata.deletepost('projectlist', this.$route.params.id).then(response => {
+      this.jsondata.deletepost('projectList', this.$route.params.id).then(response => {
         // console.log(response.data)
         if (response.data === 'OK') {
           this.$router.push('/index')
@@ -349,7 +350,7 @@ export default {
       this.tableData[3].contents = '合同金额:' + this.jsondata.currency(this.form.ContractAmount, '￥', 2)
       this.tableData[4].contents = '预算支出:' + this.jsondata.currency(this.form.ExpenditureBudget, '￥', 2)
       this.tableData[7].contents = this.form.projectContent
-      this.jsondata.getDataClass('receivables', this.$route.params.id, 'projectlist').then(response => {
+      this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectlist').then(response => {
         this.projectdata = response.data
         for (let i = 0; i < response.data.length; i++) {
           for (let is = 0; is < this.projectContract.length; is++) {
@@ -381,7 +382,7 @@ export default {
       return false
     },
     getdataexpenditure () {
-      this.jsondata.getDataClass('expendituredata', this.$route.params.id, 'projectlist').then(response => {
+      this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectlist').then(response => {
         this.invoiceintp = 0
         this.contentsintp = 0
         this.invoicebo = 0
@@ -401,7 +402,7 @@ export default {
     getdatae1 () { // 支出数据
       this.jsondata.getDataClass('expenditure', this.$route.params.id, 'projectId').then(response => {
         this.hegongzhichun = response.data
-        this.jsondata.getDataClass('expendituredata', this.$route.params.id, 'projectlist').then(responselist => {
+        this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectlist').then(responselist => {
           this.ReceivableslistData = this.optionsprojectClass
           for(let item in this.ReceivableslistData) { //eslint-disable-line
             // console.log(this.ReceivableslistData[item].id)
@@ -414,11 +415,11 @@ export default {
                 } else {
                   this.invoiceintp += Number(this.hegongzhichun[item1].invoice)
                 }
+                this.hegongzhichun[item1].Receivables = Number(this.hegongzhichun[item1].Receivables)
+                this.hegongzhichun[item1].invoice = Number(this.hegongzhichun[item1].invoice)
                 if (this.hegongzhichun[item1].Receivableslist !== '不分期') {
                   this.hegongzhichun[item1].Receivables = 0
                 }
-                this.hegongzhichun[item1].invoice = Number(this.hegongzhichun[item1].invoice)
-                this.hegongzhichun[item1].Receivablesend = 0
                 for(let item2 in responselist.data){  //eslint-disable-line
                   if(this.hegongzhichun[item1].id == responselist.data[item2].projectId){  //eslint-disable-line
                     if (this.hegongzhichun[item1].Receivableslist === '不分期') {
@@ -441,7 +442,6 @@ export default {
                 }
                 this.contentsintp += Number(this.hegongzhichun[item1].number)
                 this.Receivablesintp += Number(this.hegongzhichun[item1].Receivables)
-                console.log()
                 this.hegongzhichun[item1].invoiceend = this.jsondata.currency(Number(this.hegongzhichun[item1].Receivables) - this.hegongzhichun[item1].invoice, '￥', 2)
                 this.hegongzhichun[item1].Receivablesend = Number(this.hegongzhichun[item1].number) - this.hegongzhichun[item1].Receivables
                 this.hegongzhichun[item1].Receivables = this.jsondata.currency(this.hegongzhichun[item1].Receivables, '￥', 2)

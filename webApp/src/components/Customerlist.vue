@@ -36,6 +36,7 @@
       </el-form>
     </el-dialog>
     <el-table @row-click="handle" :data="tableData" border style="width: 100%">
+      <el-table-column type="index"></el-table-column>
       <el-table-column prop="CustomerName" label="客户名称" sortable ></el-table-column>
       <!-- <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
       <el-table-column prop="Receivables" label="到帐金额" sortable></el-table-column>

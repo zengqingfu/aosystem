@@ -92,6 +92,7 @@
       </el-form>
     </el-dialog>
     <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
+      <el-table-column type="index"></el-table-column>
       <el-table-column @cell-click="handle" prop="ReceivablesName" label="合同名称"  width="300" sortable></el-table-column>
       <el-table-column prop="Receivableslist" label="收款分期" sortable></el-table-column>
       <el-table-column prop="number" label="同合金额" sortable></el-table-column>
@@ -237,7 +238,7 @@ export default {
       return false
     },
     getdata () { // 初始化数据
-      this.weikaifapiao = 0 // 未收金额初始化
+      this.weikaifapiao = 0 // 未收初始化
       this.jsondata.getData('receivables').then(responselist => {
         this.formTransactionList = responselist.data
         // console.log(responselist.data)
@@ -255,7 +256,12 @@ export default {
                 this.tableData[i].invoice += Number(this.formTransactionList[is].invoice)
               }
             }
-            this.tableData[i].weikaifapiao = this.jsondata.currency(Number(this.tableData[i].invoice) - Number(this.tableData[i].Receivables), '￥', 2)
+            if (this.tableData[i].Receivables > this.tableData[i].invoice) {
+              this.tableData[i].weikaifapiao = 0
+            } else {
+              this.tableData[i].weikaifapiao = Number(this.tableData[i].invoice) - Number(this.tableData[i].Receivables)
+            }
+            this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
             this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)

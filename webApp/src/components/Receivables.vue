@@ -119,6 +119,7 @@
     </el-dialog>
     <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary height="90%" :span-method="objectSpanMethod" style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
+      <el-table-column type="index"></el-table-column>
       <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
       <el-table-column prop="number" label="应收金额" ></el-table-column>
       <el-table-column prop="ReceivablesData" label="收款时间" ></el-table-column>
@@ -332,6 +333,10 @@ export default {
                 this.tableData[i].weikaifapiao += Number(this.tableData[is].invoice) - Number(this.tableData[is].Receivables)
               }
             }
+          }
+          console.log(this.tableData[i].weikaifapiao)
+          if (this.tableData[i].weikaifapiao < 0) {
+            this.tableData[i].weikaifapiao = 0
           }
           this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)

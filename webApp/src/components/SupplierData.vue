@@ -10,6 +10,7 @@
       <el-button type="primary">提交</el-button> -->
     </h3>
     <el-table @row-click="handle" :data="fromsupplierlist" id="gongyingshangliebiao" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
+      <el-table-column type="index"></el-table-column>
       <el-table-column prop="SupplierName" label="供应商名称" width="300"></el-table-column>
       <el-table-column prop="number" label="应付金额" sortable></el-table-column>
       <el-table-column prop="Receivables" label="已付金额" sortable></el-table-column>

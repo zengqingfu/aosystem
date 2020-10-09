@@ -51,6 +51,7 @@
       </el-form>
     </el-dialog>
     <el-table @row-click="handle" :data="tableData" border style="width: 100%">
+      <el-table-column type="index"></el-table-column>
       <el-table-column prop="SupplierName" label="付款名称" sortable ></el-table-column>
       <!-- <el-table-column prop="SupplierClass" label="分类" sortable></el-table-column> -->
       <!-- <el-table-column prop="Receivables" label="已支付金额" sortable></el-table-column>

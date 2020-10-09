@@ -4,6 +4,7 @@
       支出列表
     </h3>
     <el-table @row-click="handle" :data="tableData" border :span-method="objectSpanMethod"  :summary-method="jsondata.getSummaries" show-summary  style="width: 100%">
+      <el-table-column type="index"></el-table-column>
       <el-table-column prop="projectId" label="项目名称"></el-table-column>
       <el-table-column prop="SupplierName" label="收款方"></el-table-column>
       <el-table-column prop="ReceivablesName" label="项目内容"></el-table-column>
