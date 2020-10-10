@@ -119,7 +119,7 @@
     </el-dialog>
     <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary height="90%" :span-method="objectSpanMethod" style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
-      <el-table-column type="index"></el-table-column>
+      <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
       <el-table-column prop="number" label="应收金额" ></el-table-column>
       <el-table-column prop="ReceivablesData" label="收款时间" ></el-table-column>
@@ -314,8 +314,9 @@ export default {
       this.weishou = 0 // 未收金额初始化
       this.weikaifapiao = 0 // 未收金额初始化
       this.jsondata.getDataClass('receivables', this.$route.params.id, 'projectId').then(response => {
-        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
-        this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
+        // this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 排序
+        // this.tableData = this.tableData.reverse(function (a, b) { return (a.ReceivablesData + '').localeCompare(b.ReceivablesData + '') }) // 排序
+        this.tableData = response.data.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
           this.tableData[i].weikaifapiao = 0

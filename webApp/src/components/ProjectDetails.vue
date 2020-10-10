@@ -77,7 +77,7 @@
     <el-row v-for="item in ReceivableslistData" :key="item.ReceivablesName">
       <h3>{{item.expenditureClass}}</h3>
       <el-table :data="item.hetongzhichundata" border show-summary :summary-method="jsondata.getSummaries"  style="width: 100%">
-        <el-table-column type="index"></el-table-column>
+        <!-- <el-table-column type="index"></el-table-column> -->
         <el-table-column prop="contractdate" label="签约日期" ></el-table-column>
         <el-table-column prop="SupplierName" label="收款名称" ></el-table-column>
         <el-table-column prop="ReceivablesName" label="应付内容" ></el-table-column>
@@ -247,7 +247,7 @@ export default {
                 this.projectContract[irr].projectidlist[iss].daozhangdate += this.projectContract[irr].projectidlist[iss].kaifapiaodate
               }
             }
-            this.projectContract[irr].projectidlist = this.projectContract[irr].projectidlist.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 表格合并数组排序 .reverse()
+            // this.projectContract[irr].projectidlist = this.projectContract[irr].projectidlist.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 表格合并数组排序 .reverse()
             this.projectContract[irr].projectidlist = this.projectContract[irr].projectidlist.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') })
             // console.log(this.projectContract[irr].projectidlist)
             this.dataList.push(this.jsondata.getSpanArr(this.projectContract[irr].projectidlist, 'Receivableslist'))

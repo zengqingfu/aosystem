@@ -163,4 +163,7 @@ export default {
     position: relative !important;
     width: 99.9% !important;
 }
+.el-table .cell{
+  min-height: 24px;
+}
 </style>
