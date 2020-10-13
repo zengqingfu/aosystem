@@ -245,10 +245,11 @@ export default {
         for (let i = 0; i < this.tableData.length; i++) {
           if(val.Receivableslist == this.tableData[i].Receivableslist){ //eslint-disable-line
             this.boxvalue2 = false
+            this.form.number = 0
             return
           }
           this.boxvalue2 = true
-          console.log(val.Receivableslist, this.tableData[i].Receivableslist, this.boxvalue2)
+          // console.log(val.Receivableslist, this.tableData[i].Receivableslist, this.boxvalue2)
         }
       },
       deep: true // true 深度监听
@@ -313,7 +314,7 @@ export default {
       // this.form.Receivableslist = ''
     },
     postData () { // 添加数据
-      this.jsondata.postData('expenditureData', this.form).then(response => {
+      this.jsondata.postData('expendituredata', this.form).then(response => {
         console.log(response.data, this.form)
         if (response.data === 'OK') {
           console.log(response.data, this.form)

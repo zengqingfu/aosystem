@@ -137,7 +137,7 @@ export default {
       this.$refs[formName].resetFields()
     },
     postData () { // 添加数据
-      this.jsondata.getData('SupplierList').then(response => {
+      this.jsondata.getData('supplierlist').then(response => {
         for (let i = 0; i < response.data.length; i++) {
           if (this.form.SupplierName === response.data[i].SupplierName) {
             document.querySelector('#infoint').style.display = 'block'

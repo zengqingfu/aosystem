@@ -105,12 +105,12 @@ export default {
       return false
     },
     getdata () {
-      this.jsondata.getData('expendituredata').then(response => {
-        this.formexpenditureData = response.data
-      })
-        .catch(error => {
-          console.log(error)
-        })
+      // this.jsondata.getData('expendituredata').then(response => {
+      //   this.formexpenditureData = response.data
+      // })
+      //   .catch(error => {
+      //     console.log(error)
+      //   })
       this.jsondata.getDataClass('projectlist', '0', 'complete').then(response => {
         this.tableData = response.data
         // console.log(this.tableData)
@@ -143,39 +143,44 @@ export default {
       this.jsondata.getData('receivables').then(response => {
         this.jsondata.getData('revenuecontract').then(responseContract => {
           this.jsondata.getData('expenditure').then(responseexpenditure => { // 已付合同
-            for (var i = 0; i < this.tableData.length; i++) {
-              this.tableData[i].Receivables = 0
-              this.tableData[i].expenditure = 0
-              this.tableData[i].ExpenditureBudget = 0
-              for (var is = 0; is < responseContract.data.length; is++) {
-                for (var iss = 0; iss < response.data.length; iss++) {
-                  if (responseContract.data[is].id === response.data[iss].projectId && Number(responseContract.data[is].projectId) === Number(this.tableData[i].id)) {
-                    this.tableData[i].Receivables += Number(response.data[iss].Receivables)
+            this.jsondata.getData('expendituredata').then(responsehetong => { // 已付合同
+              for (var i = 0; i < this.tableData.length; i++) {
+                this.tableData[i].Receivables = 0
+                this.tableData[i].expenditure = 0
+                this.tableData[i].ExpenditureBudget = 0
+                for (var is = 0; is < responseContract.data.length; is++) {
+                  for (var iss = 0; iss < response.data.length; iss++) {
+                    if (responseContract.data[is].id === response.data[iss].projectId && Number(responseContract.data[is].projectId) === Number(this.tableData[i].id)) {
+                      this.tableData[i].Receivables += Number(response.data[iss].Receivables)
+                    }
                   }
                 }
-              }
-              for (var ie = 0; ie < responseexpenditure.data.length; ie++) {
-                responseexpenditure.data[ie].expenditure = 0
-                if (this.tableData[i].id === responseexpenditure.data[ie].projectId) {
-                  this.tableData[i].ExpenditureBudget += Number(responseexpenditure.data[ie].number)
-                }
-                for (var iee = 0; iee < this.formexpenditureData.length; iee++) {
-                  if (responseexpenditure.data[ie].id === this.formexpenditureData[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
-                    responseexpenditure.data[ie].expenditure += Number(this.formexpenditureData[iee].Receivables)
+                for (var ie = 0; ie < responseexpenditure.data.length; ie++) {
+                  responseexpenditure.data[ie].expenditure = 0
+                  if (this.tableData[i].id === responseexpenditure.data[ie].projectId) {
+                    this.tableData[i].ExpenditureBudget += Number(responseexpenditure.data[ie].number)
+                  }
+                  for (var iee = 0; iee < responsehetong.data.length; iee++) {
+                    if (responseexpenditure.data[ie].id === responsehetong.data[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
+                      responseexpenditure.data[ie].expenditure += Number(responsehetong.data[iee].Receivables)
+                    }
+                  }
+                  if (responseexpenditure.data[ie].Receivableslist === '不分期' && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
+                    this.tableData[i].expenditure += Number(responseexpenditure.data[ie].Receivables)
+                  } else {
+                    this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
                   }
                 }
-                if (responseexpenditure.data[ie].Receivableslist === '不分期' && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
-                  this.tableData[i].expenditure += Number(responseexpenditure.data[ie].Receivables)
-                } else {
-                  this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
-                }
+                this.tableData[i].profit = this.jsondata.currency(Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].ExpenditureBudget), '￥', 2)
+                this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
+                this.tableData[i].expenditure = this.jsondata.currency(this.tableData[i].expenditure, '￥', 2)
+                this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
+                this.tableData[i].ContractAmount = this.jsondata.currency(Number(this.tableData[i].ContractAmount), '￥', 2)
               }
-              this.tableData[i].profit = this.jsondata.currency(Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].ExpenditureBudget), '￥', 2)
-              this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
-              this.tableData[i].expenditure = this.jsondata.currency(this.tableData[i].expenditure, '￥', 2)
-              this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
-              this.tableData[i].ContractAmount = this.jsondata.currency(Number(this.tableData[i].ContractAmount), '￥', 2)
-            }
+            })
+              .catch(error => {
+                console.log(error)
+              })
           })
             .catch(error => {
               console.log(error)

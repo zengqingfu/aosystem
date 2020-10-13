@@ -154,7 +154,7 @@ export default {
   },
   currency (value, currency, decimals) { // 生成货币格式
     const digitsRE = /(\d{3})(?=\d)/g
-    value = parseFloat(value)
+    value = parseFloat(value).toFixed(2)
     if (!isFinite(value) || (!value && value !== 0)) return ''
     currency = currency != null ? currency : '$'
     decimals = decimals != null ? decimals : 2

@@ -3,7 +3,7 @@
     <h3>
       {{this.Suppliertitle}}<el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#gongyingshangxiangxi')">点击导出</el-button>
     </h3>
-    <el-table :data="tableData" border :span-method="objectSpanMethod" id="gongyingshangxiangxi" :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border :span-method="objectSpanMethod" id="gongyingshangxiangxi" :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column prop="projectlist" label="所属项目"></el-table-column>
       <el-table-column prop="projectname" label="应付内容"></el-table-column>
@@ -106,11 +106,13 @@ export default {
                   for (let is = 0; is < responseexpenditure.data.length; is++) {
                     for (let iss = 0; iss < responseexpenditureData.data.length; iss++) {
                       if (responseprojectList.data[i].id === responseexpenditure.data[is].projectId && Number(responseexpenditureData.data[iss].projectId) === Number(responseexpenditure.data[is].id) && responseexpenditure.data[is].SupplierName === this.$route.params.id) {
+                        responseexpenditureData.data[iss].hetongid = responseexpenditure.data[is].id
                         responseexpenditureData.data[iss].projectdata = responseexpenditure.data[is].contractdate
                         responseexpenditureData.data[iss].projectlist = responseprojectList.data[i].projectName
                         responseexpenditureData.data[iss].projectname = responseexpenditure.data[is].ReceivablesName
                         responseexpenditureData.data[iss].listid = responseexpenditure.data[is].id
                         responseexpenditureData.data[iss].weikaifapiao = Number(responseexpenditureData.data[iss].Receivables) - Number(responseexpenditureData.data[iss].invoice)
+                        responseexpenditureData.data[iss].porjectidset = responseprojectList.data[i].id
                         if (responseexpenditure.data[is].number != '') { //eslint-disable-line
                           responseexpenditureData.data[iss].projectnumber = Number(responseexpenditure.data[is].number)
                           responseexpenditure.data[is].number = '' // 应付总额合并
@@ -122,7 +124,11 @@ export default {
                         } else {
                           responseexpenditureData.data[iss].biujifapiao = 0
                         }
+                        if (responseexpenditure.data[is].Receivableslist === '不分期') {
+                        } else {
+                        }
                         this.tableData.push(responseexpenditureData.data[iss])
+                        // console.log(responseexpenditureData.data[iss].invoicebo)
                         // this.tableData[i].Receivables += Number(response.data[iss].Receivables)
                       }
                     }
@@ -133,31 +139,45 @@ export default {
                       responseexpenditure.data[is].projectname = responseexpenditure.data[is].ReceivablesName
                       responseexpenditure.data[is].projectnumber = responseexpenditure.data[is].number
                       responseexpenditure.data[is].weikaifapiao = Number(responseexpenditure.data[is].Receivables) - Number(responseexpenditure.data[is].invoice)
+                      responseexpenditure.data[is].porjectidset = responseprojectList.data[i].id
+                      responseexpenditure.data[is].hetongid = responseexpenditure.data[is].id
                       this.tableData.push(responseexpenditure.data[is])
+                      // console.log(responseexpenditure.data[is].Receivables, responseexpenditure.data[is].projectnumber)
                     }
                   }
                 }
+                // console.log(this.tableData)
                 for (let i = 0; i < this.tableData.length; i++) {
+                  // console.log(this.tableData[i].Receivableslist, this.tableData[i].hetongid, this.tableData[i].projectClass, this.tableData[i].listid)
                   // console.log(this.tableData[i].projectId)
                   if(this.tableData[i].number == ''){ //eslint-disable-line
                     this.tableData[i].Receivablesend = ''
                   } else {
                     this.tableData[i].Receivablesend = Number(this.tableData[i].number)
                     this.tableData[i].weikaifapiao = 0
-
                     for (let is = 0; is < this.tableData.length; is++) {
-                      if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist && this.tableData[i].projectname == this.tableData[is].projectname && this.tableData[i].projectlist == this.tableData[is].projectlist){ //eslint-disable-line
+                      if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist && this.tableData[i].projectname == this.tableData[is].projectname && this.tableData[i].listid == this.tableData[is].listid ){ //eslint-disable-line
                         // console.log(this.tableData[i].Receivableslist, this.tableData[is].Receivableslist, this.tableData[i].projectname, this.tableData[is].projectname,this.tableData[i].Receivablesend,this.tableData[is].Receivables)
                         this.tableData[i].Receivablesend -= Number(this.tableData[is].Receivables)
-                        this.tableData[i].weikaifapiao += Number(this.tableData[is].Receivables) - Number(this.tableData[is].invoice)
+                        if (this.tableData[i].invoicebo === '不计发票') {
+                          this.tableData[i].biujifapiao = Number(this.tableData[i].Receivables)
+                          this.tableData[i].weikaifapiao = 0
+                        } else {
+                          this.tableData[i].weikaifapiao += Number(this.tableData[is].Receivables) - Number(this.tableData[is].invoice)
+                        }
                       }
                     }
                   }
+
                   this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
                   this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
                   this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
                   this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
-                  this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
+                  if (this.tableData[i].invoice === '') {
+                    this.tableData[i].kaifapiaodate = ''
+                  } else {
+                    this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)
+                  }
                   this.tableData[i].projectnumber = this.jsondata.currency(this.tableData[i].projectnumber, '￥', 2)
                   this.tableData[i].biujifapiao = this.jsondata.currency(this.tableData[i].biujifapiao, '￥', 2)
                 }
@@ -192,8 +212,8 @@ export default {
       return false
     },
     handle (row, event, column) {
-      this.$router.push('/ProjectDetails/' + row.id)
-      // console.log(row, event, column)
+      this.$router.push('/expenditureContract/' + row.porjectidset)
+      // console.log(row.porjectidset)
     },
     getSpanArrss (data, list, list2, list3) { // 合并表格数组生成
       this.spanArr = []

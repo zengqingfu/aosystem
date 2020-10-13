@@ -368,7 +368,7 @@ export default {
         this.tableData[5].contents = '开出发票:' + this.jsondata.currency(this.invoiceint, '￥', 2) + ' / (已开票未收款:' + this.jsondata.currency(this.invoiceint - this.Receivablesint, '', 2) + ')'
         this.shoukuan = response.data
         for (let i = 0; i < this.shoukuan.length; i++) {
-          this.shoukuan[i].Receivablesend = this.jsondata.currency(this.shoukuan[i].number - this.shoukuan[i].Receivables, '￥', 2)
+          this.shoukuan[i].Receivablesend = this.jsondata.currency((this.shoukuan[i].number - this.shoukuan[i].Receivables).toFixed(2), '￥', 2)
           this.shoukuan[i].number = this.jsondata.currency(this.shoukuan[i].number, '￥', 2)
           this.shoukuan[i].Receivables = this.jsondata.currency(this.shoukuan[i].Receivables, '￥', 2)
           this.shoukuan[i].invoice = this.jsondata.currency(this.shoukuan[i].invoice, '￥', 2)

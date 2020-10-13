@@ -1,16 +1,22 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      供应商例表
+      供应商例表<el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#gongyingshangliebiao')">点击导出</el-button>
+      <!-- <el-input
+        placeholder="请输入内容"
+        v-model="inputSearchS"
+        clearable style="width:300px;">
+      </el-input>
+      <el-button type="primary">提交</el-button> -->
     </h3>
-    <el-table @row-click="handle" :data="fromsupplierlist" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
+    <el-table @row-click="handle" :data="fromsupplierlist" id="gongyingshangliebiao" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="SupplierName" label="供应商名称" width="300"></el-table-column>
-      <el-table-column prop="number" label="应付金额"></el-table-column>
-      <el-table-column prop="Receivables" label="已付金额"></el-table-column>
-      <el-table-column prop="Receivablesend" label="未付金额"></el-table-column>
-      <el-table-column prop="kaifapiao" label="已收发票"></el-table-column>
-      <el-table-column prop="weishoufapiao" label="已付款未收发票"></el-table-column>
+      <el-table-column prop="number" label="应付金额" sortable></el-table-column>
+      <el-table-column prop="Receivables" label="已付金额" sortable></el-table-column>
+      <el-table-column prop="Receivablesend" label="未付金额" sortable></el-table-column>
+      <el-table-column prop="kaifapiao" label="已收发票" sortable></el-table-column>
+      <el-table-column prop="weishoufapiao" label="已付款未收发票" sortable></el-table-column>
       <!-- <el-table-column prop="biujifapiao" label="不计发票"></el-table-column> -->
     </el-table>
   </el-main>
@@ -19,6 +25,7 @@
 export default {
   data () {
     return {
+      inputSearchS: '',
       biujifapiao: '',
       weikaifapiao: '',
       thisdata: {},
@@ -73,7 +80,7 @@ export default {
       console.log(this.form)
     },
     postData () {
-      this.jsondata.postData('projectlist', this.form).then(response => {
+      this.jsondata.postData('projectList', this.form).then(response => {
         if (response.statusText === 'OK') {
           this.getdata()
           this.dialogFormVisible = false
@@ -89,8 +96,8 @@ export default {
       this.weikaifapiao = 0
       this.jsondata.getData('expendituredata').then(responsedata => { // 支出
         this.fromexpenditureData = responsedata.data
-        this.jsondata.getDataClass('projectlist', '0', 'complete').then(response => { // 项目
-          this.fromprojectList = response.data
+        this.jsondata.getDataClass('projectlist', '0', 'complete').then(responseproject => { // 项目
+          this.fromprojectList = responseproject.data
           this.jsondata.getData('expenditure').then(response => { // 支出合同
             this.jsondata.getDataClass('supplierlist', '3', 'supplierClass').then(responsegys => { // 供应商例表
               this.jsondata.getData('expenditureclass').then(responselist => { // 支出分类
@@ -108,13 +115,14 @@ export default {
                   }
                 }
                 for (let i = 0; i < this.fromexpenditure.length; i++) {
-                  // if (this.fromexpenditure[i].SupplierName === '33') {
-                  //   console.log(this.fromexpenditure[i].Receivableslist)
+                  // if (this.fromexpenditure[i].SupplierName === '20' && this.fromexpenditure[i].Receivableslist != '不分期') {  //eslint-disable-line
+                  //   console.log(this.fromexpenditure[i].Receivables, this.fromexpenditure[i].projectId)
                   // }
                   this.fromexpenditure[i].kaifapiao = 0
                   this.fromexpenditure[i].biujifapiao = 0
                   if(this.fromexpenditure[i].Receivableslist != '不分期'){ //eslint-disable-line
-                    this.fromexpenditure[i].number = 0
+                    this.fromexpenditure[i].number = 0 // 应收款~~~~~~~~~~~不确定,最后选择用收款列表计算,原本是用收款合同计算
+                    this.fromexpenditure[i].Receivables = 0
                   }
                   for (let il = 0; il < responselist.data.length; il++) {
                     if(responselist.data[il].id == this.fromexpenditure[i].projectClass){ //eslint-disable-line
@@ -128,14 +136,17 @@ export default {
                       } else {
                         this.fromexpenditure[i].kaifapiao += Number(this.fromexpenditureData[is].invoice)
                       }
-                      if(this.fromexpenditure[i].Receivableslist == '不分期'){ //eslint-disable-line
-                        // this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(response.data[i].Receivables)
-                        // this.fromexpenditure[i].number += Number(this.fromexpenditureData[is].Receivables)
+                      if (this.fromexpenditure[i].Receivableslist == '不分期') { //eslint-disable-line
                       } else {
-                        this.fromexpenditure[i].number += Number(this.fromexpenditureData[is].number)
-                        this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(this.fromexpenditureData[is].Receivables) // 已付金额
+                        this.fromexpenditure[i].number += Number(this.fromexpenditureData[is].number) // 应收款~~~~~~~~~~~不确定,最后选择用收款列表计算,原本是用收款合同计算
+                        this.fromexpenditure[i].Receivables += Number(this.fromexpenditureData[is].Receivables) // 已付金额
                       }
                     }
+                  }
+                  if(this.fromexpenditure[i].Receivableslist == '不分期'){ //eslint-disable-line
+                    // this.fromexpenditure[i].Receivables = Number(this.fromexpenditure[i].Receivables) + Number(response.data[i].Receivables)
+                    // this.fromexpenditure[i].number += Number(this.fromexpenditureData[is].Receivables)
+                    this.fromexpenditure[i].kaifapiao = this.fromexpenditure[i].invoice
                   }
                   // this.weikaifapiao = Number(this.weikaifapiao) + Number(this.fromexpenditure[i].Receivables) - Number(this.fromexpenditure[i].kaifapiao)
                   if(this.fromexpenditure[i].invoicebo == '不计发票'){ //eslint-disable-line
@@ -161,6 +172,9 @@ export default {
                       this.fromsupplierlist[i].kaifapiao += Number(this.fromexpenditure[is].kaifapiao)
                       this.fromsupplierlist[i].Receivablesend += Number(this.fromexpenditure[is].Receivablesend)
                       // this.fromsupplierlist[i].biujifapiao += Number(this.fromexpenditure[i].biujifapiao)
+                      // if (this.fromsupplierlist[i].SupplierName === '广州市科驰广告制作有限公司') {
+                      //   console.log(this.fromexpenditure[is].Receivables, this.fromsupplierlist[i].Receivables)
+                      // }
                     }
                   }
                   this.fromsupplierlist[i].weishoufapiao = this.jsondata.currency(this.fromsupplierlist[i].Receivables - this.fromsupplierlist[i].kaifapiao, '￥', 2)
