@@ -323,8 +323,8 @@ export default {
   },
   mounted () {
     this.getdata()
-    this.getFormData('SupplierList')
-    this.getFormDataClass('expenditureClass')
+    this.getFormData('supplierlist')
+    this.getFormDataClass('expenditureclass')
     this.getFormDataPojname()
   },
   methods: {
@@ -396,6 +396,11 @@ export default {
         this.jsondata.getData('expendituredata').then(responselist => {
           this.formTransactionList = responselist.data
           for (let i = 0; i < this.tableData.length; i++) {
+            if(this.tableData[i].invoicebo == '不计发票'){ //eslint-disable-line
+              this.biujifapiao += Number(this.tableData[i].Receivables)
+              this.tableData[i].invoice = this.tableData[i].invoicebo
+              this.tableData[i].weikaifapiao = this.tableData[i].invoicebo
+            }
             this.tableData[i].Receivableslistbo = ''
             if(this.tableData[i].Receivableslist == '不分期'){ //eslint-disable-line
             } else {
@@ -414,11 +419,6 @@ export default {
                   this.tableData[i].Receivables += Number(this.formTransactionList[is].Receivables)
                 }
               }
-            }
-            if(this.tableData[i].invoicebo == '不计发票'){ //eslint-disable-line
-              this.biujifapiao += Number(this.tableData[i].Receivables)
-              this.tableData[i].invoice = this.tableData[i].invoicebo
-              this.tableData[i].weikaifapiao = this.tableData[i].invoicebo
             }
             this.tableData[i].weikaifapiao = this.jsondata.currency(Number(this.tableData[i].Receivables) - Number(this.tableData[i].invoice), '￥', 2)
             this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)

@@ -73,7 +73,7 @@ export default {
   },
   mounted () {
     this.getdata()
-    this.getFormData('Customerlist')
+    this.getFormData('customerlist')
   },
   methods: {
     submitForm (formName) {

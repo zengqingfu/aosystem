@@ -5,7 +5,7 @@
       <!-- <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加收款</el-button> -->
     </h3>
     <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries"  height="90%" show-summary :span-method="objectSpanMethod" fixed style="width: 100%">
-      <el-table-column type="index"></el-table-column>
+      <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column prop="projectId" label="项目名称"></el-table-column>
       <el-table-column prop="CustomerName" label="签约公司"></el-table-column>
       <el-table-column prop="ReceivablesName" label="项目内容"></el-table-column>
@@ -54,7 +54,7 @@ export default {
   methods: {
     getdata () {
       this.jsondata.getDataClass('projectlist', '0', 'complete').then(responserojectList => { // 项目
-        this.jsondata.getData('revenueContract').then(responserRevenueContract => { // 收款合同
+        this.jsondata.getData('revenuecontract').then(responserRevenueContract => { // 收款合同
           this.jsondata.getData('receivables').then(responserReceivables => { // 收款
             this.jsondata.getData('customerlist').then(responsegys => { // 客户
               for (let i = 0; i < responserojectList.data.length; i++) {

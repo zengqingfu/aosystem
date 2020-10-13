@@ -8,20 +8,20 @@
     </h3>
     <el-dialog title="添加付款" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
-        <el-form-item label="付款名称" prop="ReceivablesName">
-          <el-input v-model="form.ReceivablesName"></el-input>
+        <el-form-item label="付款名称" prop="ReceivablesName"  v-if="boxvalue2">
+          <el-input v-model="form.ReceivablesName"  :v-if="true"></el-input>
         </el-form-item>
-        <el-form-item label="付款时间" prop="ReceivablesData">
-          <el-input v-model="form.ReceivablesData"></el-input>
+        <el-form-item label="付款时间" prop="ReceivablesData"  v-if="boxvalue2">
+          <el-input v-model="form.ReceivablesData"  v-if="boxvalue2"></el-input>
         </el-form-item>
-        <el-form-item label="付款方式" prop="ReceivablesMode">
-            <el-select v-model="form.ReceivablesMode" placeholder="请选择" style="width:46%" >
+        <el-form-item label="付款方式" prop="ReceivablesMode"  v-if="boxvalue2">
+            <el-select v-model="form.ReceivablesMode" placeholder="请选择" style="width:46%"  v-if="boxvalue2">
               <el-option label="现金" value="现金"></el-option>
               <el-option label="银行" value="银行"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="应付金额" prop="number">
-          <el-input type="number"  v-model="form.number" style="width:46%" ></el-input>
+        <el-form-item label="应付金额" prop="number"  v-if="boxvalue2">
+          <el-input type="number"  v-model="form.number" style="width:46%"  v-if="boxvalue2"></el-input>
         </el-form-item>
         <el-form-item label="有无合同" prop="contract">
             <el-select v-model="form.contract" placeholder="请选择" style="width:46%" >
@@ -67,27 +67,27 @@
 
     <el-dialog :title="formModify.ReceivablesName" :visible.sync="dialogAddVisible" >
       <el-form ref="formModify" :model="formModify" :rules="rules"  label-width="80px" class="demo-ruleForm">
-        <el-form-item label="付款名称" prop="ReceivablesName">
-          <el-input v-model="formModify.ReceivablesName"></el-input>
+        <el-form-item label="付款名称" prop="ReceivablesName" v-if="boxvalue2">
+          <el-input v-model="formModify.ReceivablesName" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="付款时间" prop="ReceivablesData">
-          <el-input v-model="formModify.ReceivablesData"></el-input>
+        <el-form-item label="付款时间" prop="ReceivablesData"  v-if="boxvalue2">
+          <el-input v-model="formModify.ReceivablesData" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="付款方式" prop="ReceivablesMode">
-            <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:46%" >
+        <el-form-item label="付款方式" prop="ReceivablesMode"  v-if="boxvalue2">
+            <el-select v-model="formModify.ReceivablesMode" :disabled="true" placeholder="请选择" style="width:46%" >
               <el-option label="现金" value="现金"></el-option>
               <el-option label="银行" value="银行"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="付款金额" prop="number">
-          <el-input type="number"  v-model="formModify.number" style="width:46%" ></el-input>
+        <el-form-item label="应付金额" prop="number"  v-if="boxvalue2">
+          <el-input type="number" :disabled="true" v-model="formModify.number" style="width:46%" ></el-input>
         </el-form-item>
-        <el-form-item label="有无合同" prop="contract">
-            <el-select v-model="formModify.contract" placeholder="请选择" style="width:46%" >
+        <el-form-item label="有无合同" prop="contract"  v-if="boxvalue2">
+            <el-select v-model="formModify.contract" placeholder="请选择" :disabled="true" style="width:46%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="无" value="无"></el-option>
             </el-select>
-            <el-select v-model="formModify.Receivableslist" :disabled="false" placeholder="请选择" style="width:46%" >
+            <el-select v-model="formModify.Receivableslist" :disabled="true" placeholder="请选择" style="width:46%" >
               <el-option label="第1期" value="第1期"></el-option>
               <el-option label="第2期" value="第2期"></el-option>
               <el-option label="第3期" value="第3期"></el-option>
@@ -105,10 +105,10 @@
         </el-form-item>
         <el-form-item label="收到发票" prop="invoice">
           <el-col :span="11" style="margin-right:10px" v-if="boxvalue" >
-            <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.kaifapiaodate" style="width: 100%;" ></el-date-picker>
+            <el-date-picker value-format="yyyy-MM-dd" type="date" :disabled="true" placeholder="选择日期" v-model="formModify.kaifapiaodate" style="width: 100%;" ></el-date-picker>
           </el-col>
-          <el-input type="number"  v-model="formModify.invoice" style="width:25%" v-if="boxvalue" ></el-input>
-          <el-select v-model="formModify.invoicebo" placeholder="请选择" style="width:20%" >
+          <el-input type="number"  v-model="formModify.invoice" style="width:25%" v-if="boxvalue" :disabled="true" ></el-input>
+          <el-select v-model="formModify.invoicebo" placeholder="请选择" :disabled="true" style="width:20%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="不计发票" value="不计发票"></el-option>
           </el-select>
@@ -145,6 +145,7 @@
 export default {
   data () {
     return {
+      boxvalue2: true,
       boxvalue: true,
       titleSupplierName: '',
       hetongjiner: 0, // 合同金额
@@ -240,6 +241,14 @@ export default {
           this.boxvalue = false
         } else {
           this.boxvalue = true
+        }
+        for (let i = 0; i < this.tableData.length; i++) {
+          if(val.Receivableslist == this.tableData[i].Receivableslist){ //eslint-disable-line
+            this.boxvalue2 = false
+            return
+          }
+          this.boxvalue2 = true
+          console.log(val.Receivableslist, this.tableData[i].Receivableslist, this.boxvalue2)
         }
       },
       deep: true // true 深度监听
@@ -351,7 +360,7 @@ export default {
       this.weishou = 0 //
       this.weikaifapiao = 0
       this.jsondata.getDataClass('expendituredata', this.$route.params.id, 'projectId').then(response => {
-        // this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
+        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
         this.tableData = response.data
         this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)

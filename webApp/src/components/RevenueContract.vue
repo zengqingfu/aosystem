@@ -200,7 +200,7 @@ export default {
       })
     },
     updatpostData () { // 更新数据
-      this.jsondata.updatpostData('RevenueContract', this.formModify).then(response => {
+      this.jsondata.updatpostData('revenuecontract', this.formModify).then(response => {
         this.dialogAddVisible = false
         this.getdata()
       })
@@ -223,7 +223,7 @@ export default {
       this.$refs[formName].resetFields()
     },
     postData () { // 添加数据
-      this.jsondata.postData('RevenueContract', this.form).then(response => {
+      this.jsondata.postData('revenuecontract', this.form).then(response => {
         console.log(response.data, this.form)
         if (response.data === 'OK') {
           console.log(response.data, this.form)
@@ -242,7 +242,7 @@ export default {
       this.jsondata.getData('receivables').then(responselist => {
         this.formTransactionList = responselist.data
         // console.log(responselist.data)
-        this.jsondata.getDataClass('revenueContract', this.$route.params.id, 'projectId').then(response => {
+        this.jsondata.getDataClass('revenuecontract', this.$route.params.id, 'projectId').then(response => {
           this.tableData = response.data
           for (let i = 0; i < this.tableData.length; i++) {
             // this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
@@ -297,7 +297,7 @@ export default {
     },
     handle (row) {
       this.dialogAddVisible = true
-      this.jsondata.getDataId('RevenueContract', row.id).then(response => {
+      this.jsondata.getDataId('revenuecontract', row.id).then(response => {
         this.formModify = response.data[0]
       })
         .catch(error => {
@@ -324,7 +324,7 @@ export default {
         })
     },
     getFormDataPojname () {
-      this.jsondata.getDataId('projectList', this.$route.params.id).then(response => {
+      this.jsondata.getDataId('projectlist', this.$route.params.id).then(response => {
         this.projectName = response.data[0].projectName
       })
         .catch(error => {

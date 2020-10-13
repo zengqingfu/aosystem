@@ -196,8 +196,8 @@ export default {
   },
   mounted () {
     this.getdata()
-    this.getFormData('SupplierList')
-    this.getFormDataClass('expenditureClass')
+    this.getFormData('supplierlist')
+    this.getFormDataClass('expenditureclass')
   },
   methods: {
     dstaplayb () { // 数据初始化
@@ -213,9 +213,9 @@ export default {
     },
     getdata () {
       this.dstaplayb()
-      this.jsondata.getDataClass('RevenueContract', this.$route.params.id, 'projectId').then(response => {
+      this.jsondata.getDataClass('revenuecontract', this.$route.params.id, 'projectId').then(response => {
         this.projectContract = response.data
-        this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectlist').then(responseitem => {
+        this.jsondata.getDataClass('receivables', this.$route.params.id, 'projectlist').then(responseitem => {
           this.projectContractcon = responseitem.data
           for (let irr in this.projectContract) { //eslint-disable-line
             this.projectContract[irr].projectidlist = []
@@ -260,11 +260,11 @@ export default {
         .catch(error => {
           console.log(error)
         })
-      this.jsondata.getDataId('projectList', this.$route.params.id).then(response => {
+      this.jsondata.getDataId('projectlist', this.$route.params.id).then(response => {
         // console.log(response.data[0].ContractDate)
         this.form = response.data[0]
         this.form.ContractDate = response.data[0].ContractDate.substr(0, 10)
-        this.jsondata.getData('Customerlist').then(response => { // 客户列表
+        this.jsondata.getData('customerlist').then(response => { // 客户列表
           this.optionsproject = response.data
           for (let is = 0; is < response.data.length; is++) {
             if (this.form.CustomerName == response.data[is].id) { //eslint-disable-line
@@ -289,7 +289,7 @@ export default {
         console.log(this.form.ContractDate)
       }
       // console.log(this.form)
-      this.jsondata.updatpostData('projectList', this.form).then(response => {
+      this.jsondata.updatpostData('projectlist', this.form).then(response => {
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.dialogFormVisible = false
@@ -307,7 +307,7 @@ export default {
         this.form.CustomerName = this.form.CustomerNameid
       }
       // console.log(this.form.CustomerNameid)
-      this.jsondata.updatpostData('projectList', this.form).then(response => {
+      this.jsondata.updatpostData('projectlist', this.form).then(response => {
         if (response.data === 'OK') {
           this.$router.push('/index')
         }
@@ -328,7 +328,7 @@ export default {
       })
     },
     deletepost () { // 删除
-      this.jsondata.deletepost('projectList', this.$route.params.id).then(response => {
+      this.jsondata.deletepost('projectlist', this.$route.params.id).then(response => {
         // console.log(response.data)
         if (response.data === 'OK') {
           this.$router.push('/index')
@@ -350,7 +350,7 @@ export default {
       this.tableData[3].contents = '合同金额:' + this.jsondata.currency(this.form.ContractAmount, '￥', 2)
       this.tableData[4].contents = '预算支出:' + this.jsondata.currency(this.form.ExpenditureBudget, '￥', 2)
       this.tableData[7].contents = this.form.projectContent
-      this.jsondata.getDataClass('Receivables', this.$route.params.id, 'projectlist').then(response => {
+      this.jsondata.getDataClass('receivables', this.$route.params.id, 'projectlist').then(response => {
         this.projectdata = response.data
         for (let i = 0; i < response.data.length; i++) {
           for (let is = 0; is < this.projectContract.length; is++) {
@@ -382,7 +382,7 @@ export default {
       return false
     },
     getdataexpenditure () {
-      this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectlist').then(response => {
+      this.jsondata.getDataClass('expendituredata', this.$route.params.id, 'projectlist').then(response => {
         this.invoiceintp = 0
         this.contentsintp = 0
         this.invoicebo = 0
@@ -402,7 +402,7 @@ export default {
     getdatae1 () { // 支出数据
       this.jsondata.getDataClass('expenditure', this.$route.params.id, 'projectId').then(response => {
         this.hegongzhichun = response.data
-        this.jsondata.getDataClass('expenditureData', this.$route.params.id, 'projectlist').then(responselist => {
+        this.jsondata.getDataClass('expendituredata', this.$route.params.id, 'projectlist').then(responselist => {
           this.ReceivableslistData = this.optionsprojectClass
           for(let item in this.ReceivableslistData) { //eslint-disable-line
             // console.log(this.ReceivableslistData[item].id)

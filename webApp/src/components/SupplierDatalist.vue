@@ -162,7 +162,7 @@ export default {
                   this.tableData[i].biujifapiao = this.jsondata.currency(this.tableData[i].biujifapiao, '￥', 2)
                 }
                 this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 排序.reverse()
-                this.tableData = this.tableData.sort(function (a, b) { return (a.projectname + '').localeCompare(b.projectname + '') }) // 排序.reverse()
+                this.tableData = this.tableData.sort(function (a, b) { return (a.listid + '').localeCompare(b.listid + '') }) // 排序.reverse()
                 this.tableData = this.tableData.sort(function (a, b) { return (a.projectlist + '').localeCompare(b.projectlist + '') }) // 排序.reverse()
                 this.Suppliertitle = responsegys.data[0].SupplierName
                 this.dataList = this.jsondata.getSpanArr(this.tableData, 'projectlist')

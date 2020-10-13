@@ -25,7 +25,7 @@ export default {
     }
   },
   mounted () {
-    if (window.location.href.match('mdjz')) {
+    if (window.location.href.match('mdjz') || window.location.href.match('3100')) {
       this.comtitle = '迈动'
     }
   },

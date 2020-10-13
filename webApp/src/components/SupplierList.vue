@@ -112,7 +112,7 @@ export default {
       })
     },
     updatpostData () { // 更新数据
-      this.jsondata.updatpostData('SupplierList', this.formModify).then(response => {
+      this.jsondata.updatpostData('supplierlist', this.formModify).then(response => {
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.getdata()
@@ -146,7 +146,7 @@ export default {
             document.querySelector('#infoint').style.display = 'none'
           }
         }
-        this.jsondata.postData('SupplierList', this.form).then(response => {
+        this.jsondata.postData('supplierlist', this.form).then(response => {
           if (response.data === 'OK') {
           // console.log(response.data, this.form)
             this.dialogFormVisible = false
@@ -163,7 +163,7 @@ export default {
         })
     },
     getdata () {
-      this.jsondata.getData('SupplierList').then(response => {
+      this.jsondata.getData('supplierlist').then(response => {
         this.tableData = response.data
       })
         .catch(error => {
@@ -172,7 +172,7 @@ export default {
       return false
     },
     deletepost () { // 删除
-      this.jsondata.deletepost('SupplierList', this.formModify.id).then(response => {
+      this.jsondata.deletepost('supplierlist', this.formModify.id).then(response => {
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.getdata()

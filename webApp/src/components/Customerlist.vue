@@ -93,7 +93,7 @@ export default {
       })
     },
     updatpostData () { // 更新数据
-      this.jsondata.updatpostData('Customerlist', this.formModify).then(response => {
+      this.jsondata.updatpostData('customerlist', this.formModify).then(response => {
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.getdata()
@@ -118,7 +118,7 @@ export default {
       this.$refs[formName].resetFields()
     },
     postData () { // 添加数据
-      this.jsondata.postData('Customerlist', this.form).then(response => {
+      this.jsondata.postData('customerlist', this.form).then(response => {
         if (response.data === 'OK') {
           console.log(response.data, this.form)
           this.dialogFormVisible = false
@@ -132,7 +132,7 @@ export default {
       return false
     },
     getdata () {
-      this.jsondata.getData('Customerlist').then(response => {
+      this.jsondata.getData('customerlist').then(response => {
         this.tableData = response.data
       })
         .catch(error => {
@@ -141,7 +141,7 @@ export default {
       return false
     },
     deletepost () { // 删除
-      this.jsondata.deletepost('Customerlist', this.formModify.id).then(response => {
+      this.jsondata.deletepost('customerlist', this.formModify.id).then(response => {
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.getdata()
@@ -153,7 +153,7 @@ export default {
     },
     handle (row, event, column) { // 点击列表
       this.dialogAddVisible = true
-      this.jsondata.getDataId('Customerlist', row.id).then(response => {
+      this.jsondata.getDataId('customerlist', row.id).then(response => {
         this.formModify = response.data[0]
         console.log(this.formModify)
       })

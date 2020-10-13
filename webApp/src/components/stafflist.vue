@@ -73,7 +73,7 @@ export default {
       console.log(this.form)
     },
     postData () {
-      this.jsondata.postData('projectList', this.form).then(response => {
+      this.jsondata.postData('projectlist', this.form).then(response => {
         if (response.statusText === 'OK') {
           this.getdata()
           this.dialogFormVisible = false
@@ -89,7 +89,7 @@ export default {
       this.weikaifapiao = 0
       this.jsondata.getData('expendituredata').then(responsedata => { // 支出
         this.fromexpenditureData = responsedata.data
-        this.jsondata.getDataClass('projectList', '0', 'complete').then(response => { // 项目
+        this.jsondata.getDataClass('projectlist', '0', 'complete').then(response => { // 项目
           this.fromprojectList = response.data
           this.jsondata.getData('expenditure').then(response => { // 支出合同
             this.jsondata.getDataClass('supplierlist', '3', 'supplierClass').then(responsegys => { // 供应商例表

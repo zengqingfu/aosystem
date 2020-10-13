@@ -94,9 +94,9 @@ export default {
     getdata () {
       this.biujifapiao = 0
       this.weikaifapiao = 0
-      this.jsondata.getData('expenditureData').then(responsedata => { // 支出
+      this.jsondata.getData('expendituredata').then(responsedata => { // 支出
         this.fromexpenditureData = responsedata.data
-        this.jsondata.getDataClass('projectList', '0', 'complete').then(responseproject => { // 项目
+        this.jsondata.getDataClass('projectlist', '0', 'complete').then(responseproject => { // 项目
           this.fromprojectList = responseproject.data
           this.jsondata.getData('expenditure').then(response => { // 支出合同
             this.jsondata.getDataClass('supplierlist', '1', 'supplierClass').then(responsegys => { // 供应商例表
