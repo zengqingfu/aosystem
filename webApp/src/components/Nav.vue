@@ -73,7 +73,17 @@ export default {
       hidebox: true
     }
   },
+  mounted () {
+    this.boxplay()
+  },
   methods: {
+    boxplay () {
+      if (document.body.offsetWidth < 980) {
+        this.isCollapse = true
+        this.showbox = false
+        this.hidebox = false
+      }
+    },
     boxshow () {
       this.showbox = !this.showbox
       this.hidebox = !this.hidebox

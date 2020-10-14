@@ -4,7 +4,7 @@
       <span  @click="goToHome1" style="cursor: pointer;color:#409EFF">返回项目 > </span>
       <span  @click="goToHome" style="cursor: pointer;color:#409EFF">返回合同 > </span>{{this.titleSupplierName}} ----- {{this.projectName}}
       <span class="colorRed"> ----- 合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
-      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加付款</el-button>
+      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true, boxvalue2 = true">添加付款</el-button>
     </h3>
     <el-dialog title="添加付款" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
@@ -68,22 +68,22 @@
     <el-dialog :title="formModify.ReceivablesName" :visible.sync="dialogAddVisible" >
       <el-form ref="formModify" :model="formModify" :rules="rules"  label-width="80px" class="demo-ruleForm">
         <el-form-item label="付款名称" prop="ReceivablesName" v-if="boxvalue2">
-          <el-input v-model="formModify.ReceivablesName" :disabled="true"></el-input>
+          <el-input v-model="formModify.ReceivablesName" ></el-input>
         </el-form-item>
         <el-form-item label="付款时间" prop="ReceivablesData"  v-if="boxvalue2">
-          <el-input v-model="formModify.ReceivablesData" :disabled="true"></el-input>
+          <el-input v-model="formModify.ReceivablesData"></el-input>
         </el-form-item>
         <el-form-item label="付款方式" prop="ReceivablesMode"  v-if="boxvalue2">
-            <el-select v-model="formModify.ReceivablesMode" :disabled="true" placeholder="请选择" style="width:46%" >
+            <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:46%" >
               <el-option label="现金" value="现金"></el-option>
               <el-option label="银行" value="银行"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="应付金额" prop="number"  v-if="boxvalue2">
-          <el-input type="number" :disabled="true" v-model="formModify.number" style="width:46%" ></el-input>
+        <el-form-item label="应付金额" prop="number" v-if="boxvalue2">
+          <el-input type="number" v-model="formModify.number" style="width:46%" ></el-input>
         </el-form-item>
         <el-form-item label="有无合同" prop="contract"  v-if="boxvalue2">
-            <el-select v-model="formModify.contract" placeholder="请选择" :disabled="true" style="width:46%" >
+            <el-select v-model="formModify.contract" placeholder="请选择" style="width:46%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="无" value="无"></el-option>
             </el-select>
@@ -105,10 +105,10 @@
         </el-form-item>
         <el-form-item label="收到发票" prop="invoice">
           <el-col :span="11" style="margin-right:10px" v-if="boxvalue" >
-            <el-date-picker value-format="yyyy-MM-dd" type="date" :disabled="true" placeholder="选择日期" v-model="formModify.kaifapiaodate" style="width: 100%;" ></el-date-picker>
+            <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.kaifapiaodate" style="width: 100%;" ></el-date-picker>
           </el-col>
-          <el-input type="number"  v-model="formModify.invoice" style="width:25%" v-if="boxvalue" :disabled="true" ></el-input>
-          <el-select v-model="formModify.invoicebo" placeholder="请选择" :disabled="true" style="width:20%" >
+          <el-input type="number"  v-model="formModify.invoice" style="width:25%" v-if="boxvalue"  ></el-input>
+          <el-select v-model="formModify.invoicebo" placeholder="请选择" style="width:20%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="不计发票" value="不计发票"></el-option>
           </el-select>
@@ -119,11 +119,11 @@
         <el-form-item>
           <el-button type="primary" @click="submitFormModify('formModify')">更新</el-button>
           <el-button @click="dialogAddVisible = false">取消</el-button>
-          <el-button style="float:right" @click="deletepost">删除收款</el-button>
+          <el-button style="float:right" @click="deletepost" v-if="!boxvalue2">删除收款</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" show-summary height='90%' :span-method="objectSpanMethod" style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" :span-method="objectSpanMethod"  show-summary height='90%' style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column prop="Receivableslist" label="付款分期" ></el-table-column>
@@ -239,13 +239,14 @@ export default {
         // console.log(val.invoicebo)
         if(val.invoicebo == '不计发票'){ //eslint-disable-line
           this.boxvalue = false
+          this.form.invoice = ''
         } else {
           this.boxvalue = true
         }
         for (let i = 0; i < this.tableData.length; i++) {
           if(val.Receivableslist == this.tableData[i].Receivableslist){ //eslint-disable-line
             this.boxvalue2 = false
-            this.form.number = 0
+            this.form.number = ''
             return
           }
           this.boxvalue2 = true
@@ -259,6 +260,7 @@ export default {
         // console.log(val.invoicebo)
         if(val.invoicebo == '不计发票'){ //eslint-disable-line
           this.boxvalue = false
+          this.formModify.invoice = ''
         } else {
           this.boxvalue = true
         }
@@ -282,7 +284,7 @@ export default {
       })
     },
     updatpostData () { // 更新数据
-      this.jsondata.updatpostData('expenditureData', this.formModify).then(response => {
+      this.jsondata.updatpostData('expendituredata', this.formModify).then(response => {
         // console.log(response)
         // this.formTransaction.AmountMoney = this.formModify.Receivables
         // this.formTransaction.MoneyClass = 1
@@ -361,18 +363,23 @@ export default {
       this.weishou = 0 //
       this.weikaifapiao = 0
       this.jsondata.getDataClass('expendituredata', this.$route.params.id, 'projectId').then(response => {
-        this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
+        // for (let i = 0; i < response.data.length; i++) {
+        //   response.data[i].ctid = response.data[i].id
+        //   if (response.data[i].number > 0) {
+        //     response.data[i].ctid = 99999999
+        //   }
+        // }
+        // this.tableData = response.data.sort(function (a, b) { return (a.id + '').localeCompare(b.id + '') }) // 根据期数排序
+        // this.tableData = response.data.reverse(function (a, b) { return (a.ctid + '').localeCompare(b.ctid + '') }) // 根据期数排序
         this.tableData = response.data
         this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 根据期数排序.reverse()
         // console.log(this.tableData)
         for (let i = 0; i < this.tableData.length; i++) {
-          this.tableData[i].weikaifapiao = 0
+          this.tableData[i].weikaifapiao = 0 // 未开票需要每条记录清0,然后统计到每期主要信息
           if(this.tableData[i].daozhangdate === '' || this.tableData[i].daozhangdate == null){  //eslint-disable-line
             this.tableData[i].daozhangdate = this.tableData[i].kaifapiaodate
           }
-          if(this.tableData[i].number == ''){ //eslint-disable-line
-            this.tableData[i].Receivablesend = ''
-          } else {
+          if(this.tableData[i].number  > 1){ //eslint-disable-line
             this.tableData[i].Receivablesend = Number(this.tableData[i].number)
             for (let is = 0; is < this.tableData.length; is++) {
               if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist){ //eslint-disable-line
@@ -380,11 +387,14 @@ export default {
                 this.tableData[i].Receivablesend -= Number(this.tableData[is].Receivables)
                 if (this.tableData[is].invoicebo !== '不计发票') {
                   this.tableData[i].weikaifapiao += Number(this.tableData[is].Receivables) - Number(this.tableData[is].invoice)
+                  console.log(Number(this.tableData[is].Receivables), Number(this.tableData[is].invoice), this.tableData[i].weikaifapiao)
                 } else {
                   // this.tableData[i].weikaifapiao += Number(this.tableData[is].number)
                 }
               }
             }
+          } else {
+            this.tableData[i].Receivablesend = ''
           }
           this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
@@ -427,6 +437,12 @@ export default {
     },
 
     handle (row) {
+      // console.log(row.number.length)
+      if (row.number.length > 4) { // 应付金额大于0的  是每期主要信息,不能删,可修改
+        this.boxvalue2 = true
+      } else {
+        this.boxvalue2 = false
+      }
       this.dialogAddVisible = true
       this.jsondata.getDataId('expendituredata', row.id).then(response => {
         this.formModify = response.data[0]

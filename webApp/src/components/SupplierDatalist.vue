@@ -3,7 +3,7 @@
     <h3>
       {{this.Suppliertitle}}<el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#gongyingshangxiangxi')">点击导出</el-button>
     </h3>
-    <el-table @row-click="handle" :data="tableData" border :span-method="objectSpanMethod" id="gongyingshangxiangxi" :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
+    <el-table @row-click="handle" :data="tableData" border id="gongyingshangxiangxi" :summary-method="jsondata.getSummaries" :span-method="objectSpanMethod"  show-summary height='90%' style="width: 100%">
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column prop="projectlist" label="所属项目"></el-table-column>
       <el-table-column prop="projectname" label="应付内容"></el-table-column>
@@ -150,11 +150,9 @@ export default {
                 for (let i = 0; i < this.tableData.length; i++) {
                   // console.log(this.tableData[i].Receivableslist, this.tableData[i].hetongid, this.tableData[i].projectClass, this.tableData[i].listid)
                   // console.log(this.tableData[i].projectId)
-                  if(this.tableData[i].number == ''){ //eslint-disable-line
-                    this.tableData[i].Receivablesend = ''
-                  } else {
+                  this.tableData[i].weikaifapiao = 0 // 未开票需要每条记录清0,然后统计到每期主要信息
+                  if(this.tableData[i].number > 1){ //eslint-disable-line
                     this.tableData[i].Receivablesend = Number(this.tableData[i].number)
-                    this.tableData[i].weikaifapiao = 0
                     for (let is = 0; is < this.tableData.length; is++) {
                       if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist && this.tableData[i].projectname == this.tableData[is].projectname && this.tableData[i].listid == this.tableData[is].listid ){ //eslint-disable-line
                         // console.log(this.tableData[i].Receivableslist, this.tableData[is].Receivableslist, this.tableData[i].projectname, this.tableData[is].projectname,this.tableData[i].Receivablesend,this.tableData[is].Receivables)
@@ -167,8 +165,9 @@ export default {
                         }
                       }
                     }
+                  } else {
+                    this.tableData[i].Receivablesend = ''
                   }
-
                   this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
                   this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
                   this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)

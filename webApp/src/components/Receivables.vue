@@ -4,7 +4,7 @@
       <span  @click="goToHome1" style="cursor: pointer;color:#409EFF">返回项目 > </span>
       <span  @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}} > </span>收款明细收入列表
       <span class="colorRed"> ----- 合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
-      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加收款</el-button>
+      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true, boxvalue2 = true">添加收款</el-button>
     </h3>
     <el-dialog title="添加收款" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
@@ -64,27 +64,27 @@
 
     <el-dialog :title="formModify.ReceivablesName" :visible.sync="dialogAddVisible" >
       <el-form ref="formModify" :model="formModify" :rules="rules"  label-width="80px" class="demo-ruleForm">
-        <el-form-item label="收款名称" prop="ReceivablesName">
+        <el-form-item label="收款名称" prop="ReceivablesName" v-if="boxvalue2">
           <el-input v-model="formModify.ReceivablesName"></el-input>
         </el-form-item>
-        <el-form-item label="收款时间" prop="ReceivablesData">
+        <el-form-item label="收款时间" prop="ReceivablesData" v-if="boxvalue2">
           <el-input v-model="formModify.ReceivablesData"></el-input>
         </el-form-item>
-        <el-form-item label="收款方式" prop="ReceivablesMode">
+        <el-form-item label="收款方式" prop="ReceivablesMode" v-if="boxvalue2">
             <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:46%" >
               <el-option label="现金" value="现金"></el-option>
               <el-option label="银行" value="银行"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="应收金额" prop="number">
+        <el-form-item label="应收金额" prop="number" v-if="boxvalue2">
           <el-input type="number"  v-model="formModify.number" style="width:46%" ></el-input>
         </el-form-item>
-        <el-form-item label="有无合同" prop="contract">
+        <el-form-item label="有无合同" prop="contract" v-if="boxvalue2">
             <el-select v-model="formModify.contract" placeholder="请选择" style="width:46%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="无" value="无"></el-option>
             </el-select>
-            <el-select v-model="formModify.Receivableslist" placeholder="请选择" :disabled="true" style="width:46%" >
+            <el-select v-model="formModify.Receivableslist" placeholder="请选择" :disabled="true" style="width:46%"  v-if="boxvalue2">
               <el-option label="第1期" value="第1期"></el-option>
               <el-option label="第2期" value="第2期"></el-option>
               <el-option label="第3期" value="第3期"></el-option>
@@ -113,7 +113,7 @@
         <el-form-item>
           <el-button type="primary" @click="submitFormModify('formModify')">更新</el-button>
           <el-button @click="dialogAddVisible = false">取消</el-button>
-          <el-button style="float:right" @click="deletepost">删除收款</el-button>
+          <el-button style="float:right" @click="deletepost" v-if="!boxvalue2">删除收款</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -338,9 +338,7 @@ export default {
           if(this.tableData[i].daozhangdate === ''){  //eslint-disable-line
             this.tableData[i].daozhangdate = this.tableData[i].kaifapiaodate
           }
-          if(this.tableData[i].number == ''){ //eslint-disable-line
-            this.tableData[i].Receivablesend = ''
-          } else {
+          if(this.tableData[i].number > 1){ //eslint-disable-line
             this.tableData[i].Receivablesend = Number(this.tableData[i].number)
             for (let is = 0; is < this.tableData.length; is++) {
               if (this.tableData[i].Receivableslist == this.tableData[is].Receivableslist){ //eslint-disable-line
@@ -349,6 +347,8 @@ export default {
                 this.tableData[i].weikaifapiao += Number(this.tableData[is].invoice) - Number(this.tableData[is].Receivables)
               }
             }
+          } else {
+            this.tableData[i].Receivablesend = ''
           }
           console.log(this.tableData[i].weikaifapiao)
           if (this.tableData[i].weikaifapiao < 0) {
@@ -392,6 +392,11 @@ export default {
 
     handle (row) {
       // console.log(row)
+      if (row.number.length > 4) { // 应付金额大于0的  是每期主要信息,不能删,可修改
+        this.boxvalue2 = true
+      } else {
+        this.boxvalue2 = false
+      }
       this.dialogAddVisible = true
       this.jsondata.getDataId('receivables', row.id).then(response => {
         this.formModify = response.data[0]

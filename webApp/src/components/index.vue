@@ -5,7 +5,7 @@
         <router-view name="Nav"></router-view>
       <el-container>
         <el-header style="text-align: left;background-color:#2396F0; color: #fff;">
-          <span>{{comtitle}}</span>
+          <span class="titlebox">{{comtitle}}</span>
           <span @click="exitloign()" style="float:right ;cursor: pointer;" >退出登录</span>
         </el-header>
         <transition name="slide-fade" mode="out-in">

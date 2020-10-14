@@ -227,7 +227,7 @@ export default {
             }
 
             for (let iss in this.projectContract[irr].projectidlist) { //eslint-disable-line
-              if(this.projectContract[irr].projectidlist[iss].number != ''){ //eslint-disable-line
+              if(this.projectContract[irr].projectidlist[iss].number > 1){ //eslint-disable-line
                 this.projectContract[irr].projectidlist[iss].hetongwidthou = Number(this.projectContract[irr].projectidlist[iss].number)
                 for (let issr in this.projectContract[irr].projectidlist) {
                   if (this.projectContract[irr].projectidlist[iss].Receivableslist == this.projectContract[irr].projectidlist[issr].Receivableslist){ //eslint-disable-line

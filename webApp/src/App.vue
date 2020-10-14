@@ -166,4 +166,36 @@ export default {
 .el-table .cell{
   min-height: 24px;
 }
+
+@media screen and (max-width: 780px) {
+  .el-menu--collapse {
+    position: absolute !important;
+    z-index: 999 !important;
+    top: 0px !important;
+    left: 0px !important;
+    background-color:rgb(35, 150, 240) !important;
+    width: 130px !important;
+  }
+  .el-submenu__title{
+    background-color:rgb(35, 150, 240) !important;
+  }
+  .el-menu .el-icon-s-fold, .el-menu .el-icon-menu {
+    color: #fff !important;
+  }
+  .el-menu--collapse .el-submenu{
+    display: inline-block;
+    width: 60px;
+  }
+  .titlebox{
+    display: inline-block;
+    padding-left: 140px;
+  }
+  .el-menu--vertical{
+    margin-top: 60px !important;
+    margin-left: -60px !important;
+  }
+  .el-table .cell{
+    white-space: nowrap;
+  }
+}
 </style>
