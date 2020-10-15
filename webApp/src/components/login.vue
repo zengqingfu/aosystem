@@ -74,7 +74,7 @@ export default {
           document.getElementById('infoLogin').innerHTML = '登陆失败'
         } else {
           // this.setCookie(this.form.username, this.form.password, 7)
-          if (this.loginForm.username.macth('djz')) {
+          if (this.form.username === 'bigmindjz') {
             sessionStorage.setItem('Token', '1602668909527')
             sessionStorage.setItem('user', this.loginForm.username)
           } else {

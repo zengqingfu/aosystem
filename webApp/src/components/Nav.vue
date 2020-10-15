@@ -5,6 +5,8 @@
     background-color="#545c64"
     text-color="#fff"
     class="el-menu-vertical-demo"
+    :mode="horizontalfn"
+    menu-trigger="click"
     @open="handleOpen"
     @close="handleClose"
     :collapse="isCollapse"
@@ -67,6 +69,7 @@
 export default {
   data () {
     return {
+      horizontalfn: 'vertical',
       openeds: ['1', '2'],
       isCollapse: false,
       showbox: false,
@@ -77,8 +80,13 @@ export default {
     this.boxplay()
   },
   methods: {
+    // clickend () {
+    //   setTimeout(() => {
+    //   }, timeout);
+    // }
     boxplay () {
       if (document.body.offsetWidth < 980) {
+        this.horizontalfn = 'horizontal'
         this.isCollapse = true
         this.showbox = false
         this.hidebox = false
@@ -90,10 +98,10 @@ export default {
       this.isCollapse = !this.isCollapse
     },
     handleOpen (key, keyPath) {
-      console.log(key, keyPath)
+      // console.log(key, keyPath)
     },
     handleClose (key, keyPath) {
-      console.log(key, keyPath)
+      // console.log(key, keyPath)
     }
 
   }
