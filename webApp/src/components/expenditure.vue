@@ -285,6 +285,7 @@ export default {
     },
     updatpostData () { // 更新数据
       this.jsondata.updatpostData('expendituredata', this.formModify).then(response => {
+        this.jsondata.postDatabf(response.data, 'end')
         // console.log(response)
         // this.formTransaction.AmountMoney = this.formModify.Receivables
         // this.formTransaction.MoneyClass = 1

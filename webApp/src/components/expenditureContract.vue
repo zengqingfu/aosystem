@@ -339,15 +339,17 @@ export default {
       })
     },
     updatpostData () { // 更新数据
-      if ( Number(this.formModify.SupplierName) < 999) { //eslint-disable-line
+      if ( Number(this.formModify.SupplierName) < 99999) { //eslint-disable-line
       } else {
         this.formModify.SupplierName = this.formbf.SupplierName
       }
-      if ( Number(this.formModify.projectClass) < 999) { //eslint-disable-line
+      if ( Number(this.formModify.projectClass) < 99999) { //eslint-disable-line
       } else {
         this.formModify.projectClass = this.formbf.projectClass
       }
+      console.log(this.formModify)
       this.jsondata.updatpostData('expenditure', this.formModify).then(response => {
+        this.jsondata.postDatabf(response.data, 'updatpostData')
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.getdata()

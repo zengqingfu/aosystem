@@ -123,6 +123,7 @@ export default {
     })
   },
   deletepost (form, listid) { // 删除收款
+    this.postDatabf(form + '--' + listid, 'deletepost-')
     return axios({
       url: geturl() + '/deletepost/' + form + '/' + listid + '/' + sessionStorage.getItem('Token'),
       method: 'GET',
@@ -132,7 +133,24 @@ export default {
       }
     })
   },
+  postDatabf (jsondata, listdata) { // 添加缺失数据
+    axios({
+      url: geturl() + '/postdata/transaction/' + sessionStorage.getItem('Token'),
+      method: 'POST',
+      data: {
+        'data': JSON.stringify(jsondata),
+        'projectId': sessionStorage.getItem('user'),
+        'invoice': Date(),
+        'AmountMoney': listdata
+      },
+      dataType: 'JSON',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+  },
   updatpostData (form, jsondata) {
+    this.postDatabf(jsondata, 'updatpostData-')
     return axios({
       url: geturl() + '/deletepost/' + form + '/' + jsondata.id + '/' + sessionStorage.getItem('Token'),
       method: 'GET',
@@ -142,6 +160,7 @@ export default {
       }
     }).then(response => {
       if (response.data === 'OK') {
+        this.postDatabf(jsondata, 'updatpostData+')
         return axios({
           url: geturl() + '/postdata/' + form + '/' + sessionStorage.getItem('Token'),
           method: 'POST',

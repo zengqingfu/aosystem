@@ -289,6 +289,7 @@ export default {
       }
       // console.log(this.form)
       this.jsondata.updatpostData('projectlist', this.form).then(response => {
+        this.jsondata.postDatabf(response.data, 'updatpostData')
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.dialogFormVisible = false
