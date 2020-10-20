@@ -72,6 +72,7 @@ export default {
                     this.projectcon.number = this.jsondata.currency(this.projectcon.number, '￥', 2)
                     this.projectcon.invoice = this.jsondata.currency(this.kaifapiao - this.Receivablesnb, '￥', 2)
                     this.projectcon.Receivables = this.jsondata.currency(this.Receivablesnb, '￥', 2)
+                    this.projectcon.projectIdthis = this.projectcon.projectId
                     this.projectcon.projectId = responserojectList.data[i].projectName
                     this.tableData.push(this.projectcon)
                     this.Receivablesnb = 0
@@ -100,6 +101,7 @@ export default {
       return false
     },
     handle (row, event, column) {
+      this.$router.push('/ProjectDetails/' + row.projectIdthis)
       // this.dialogAddVisible = true
       // this.jsondata.getDataId('Receivables', row.id).then(response => {
       //   this.formModify = response.data[0]

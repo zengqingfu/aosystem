@@ -1,6 +1,5 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
-
     <el-dialog title="修改项目" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
         <el-form-item label="项目名称" prop="projectName">
@@ -410,15 +409,16 @@ export default {
             for(let item1 in this.hegongzhichun){ //eslint-disable-line
               this.ReceivableslistData[item].hetongzhichundata.hetongzhichunlist = []
               if(this.ReceivableslistData[item].id == this.hegongzhichun[item1].projectClass){  //eslint-disable-line
-                if(this.hegongzhichun[item1].invoicebo == '不计发票'){ //eslint-disable-line
-                  this.invoicebo += Number(this.hegongzhichun[item1].Receivables)
-                } else {
-                  this.invoiceintp += Number(this.hegongzhichun[item1].invoice)
-                }
                 this.hegongzhichun[item1].Receivables = Number(this.hegongzhichun[item1].Receivables)
                 this.hegongzhichun[item1].invoice = Number(this.hegongzhichun[item1].invoice)
                 if (this.hegongzhichun[item1].Receivableslist !== '不分期') {
                   this.hegongzhichun[item1].Receivables = 0
+                  this.hegongzhichun[item1].invoice = 0
+                }
+                if(this.hegongzhichun[item1].invoicebo == '不计发票'){ //eslint-disable-line
+                  this.invoicebo += Number(this.hegongzhichun[item1].Receivables)
+                } else {
+                  this.invoiceintp += Number(this.hegongzhichun[item1].invoice)
                 }
                 for(let item2 in responselist.data){  //eslint-disable-line
                   if(this.hegongzhichun[item1].id == responselist.data[item2].projectId){  //eslint-disable-line
@@ -456,7 +456,8 @@ export default {
           this.tableData[4].contents += ' 　　已付金额:' + this.jsondata.currency(this.Receivablesintp, '￥', 2)
           this.tableData[4].contents += ' 　　未支付金额:' + this.jsondata.currency(this.contentsintp - this.Receivablesintp, '￥', 2)
           this.tableData[5].contents += ' 　　收到发票:' + this.jsondata.currency(this.invoiceintp, '￥', 2) + ' / (已付款未收票' + this.jsondata.currency(this.Receivablesintp - this.invoiceintp - this.invoicebo, '', 2) + ') --- 不计发票:' + this.jsondata.currency(this.invoicebo, '￥', 2)
-          this.tableData[6].contents = this.jsondata.currency(this.contentsint - this.contentsintp, '￥', 2)
+          // this.tableData[6].contents = this.jsondata.currency(this.contentsint - this.contentsintp, '￥', 2)
+          this.tableData[6].contents = this.jsondata.currency(this.form.ContractAmount - this.contentsintp, '￥', 2)
         })
           .catch(error => {
             console.log(error)

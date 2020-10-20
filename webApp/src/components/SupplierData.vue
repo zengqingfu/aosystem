@@ -131,15 +131,15 @@ export default {
                   }
                   for (let is = 0; is < this.fromexpenditureData.length; is++) {
                     if(this.fromexpenditure[i].id == this.fromexpenditureData[is].projectId){ //eslint-disable-line
-                      if(this.fromexpenditureData[is].invoicebo == '不计发票'){ //eslint-disable-line
-                        this.fromexpenditure[i].biujifapiao += Number(this.fromexpenditureData[is].Receivables)
-                      } else {
-                        this.fromexpenditure[i].kaifapiao += Number(this.fromexpenditureData[is].invoice)
-                      }
                       if (this.fromexpenditure[i].Receivableslist == '不分期') { //eslint-disable-line
                       } else {
                         this.fromexpenditure[i].number += Number(this.fromexpenditureData[is].number) // 应收款~~~~~~~~~~~不确定,最后选择用收款列表计算,原本是用收款合同计算
                         this.fromexpenditure[i].Receivables += Number(this.fromexpenditureData[is].Receivables) // 已付金额
+                      }
+                      if(this.fromexpenditureData[is].invoicebo == '不计发票'){ //eslint-disable-line
+                        this.fromexpenditure[i].biujifapiao += Number(this.fromexpenditureData[is].Receivables)
+                      } else {
+                        this.fromexpenditure[i].kaifapiao += Number(this.fromexpenditureData[is].invoice)
                       }
                     }
                   }

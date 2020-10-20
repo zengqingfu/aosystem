@@ -12,8 +12,10 @@ const geturl = (geturlFn) => { // 环境变量,放到域名bigmind上
 }
 // console.log(geturl())
 export default {
-  exportExcel (boxid) {
+  exportExcel (boxid) { // 表格导出
     var wb = XLSX.utils.table_to_book(document.querySelector(boxid))
+    // console.log(wb)
+    // return
     var wbout = XLSX.write(wb, {
       bookType: 'xlsx',
       bookSST: true,
