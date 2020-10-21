@@ -218,9 +218,14 @@ app.get('/getpost/:form/:id/:token', (req, res) => {
 });
 
 // 删除内容
-app.get('/deletepost/:form/:id/:token', (req, res) => {
+app.get('/deletepost/:form/:id/:user/:token', (req, res) => {
   let sql = `DELETE FROM ${req.params.form} WHERE id = ${req.params.id}`;
   db.query(sql, (err, result) => {
+    let postdata = {'data': JSON.stringify(req.params), 'projectId': req.params.token + "-" + req.params.user, 'invoice': Date()};
+    let sqlx = 'INSERT INTO transaction SET ?';
+    db.query(sqlx, postdata, (err, result) => {
+      if (err) throw err;
+    });
     if (err) throw err;
     // console.log(result);
     res.json('OK');
