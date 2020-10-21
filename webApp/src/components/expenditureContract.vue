@@ -347,7 +347,7 @@ export default {
       } else {
         this.formModify.projectClass = this.formbf.projectClass
       }
-      console.log(this.formModify)
+      // console.log(this.formModify)
       this.jsondata.updatpostData('expenditure', this.formModify).then(response => {
         this.jsondata.postDatabf(response.data, 'updatpostData')
         if (response.data === 'OK') {

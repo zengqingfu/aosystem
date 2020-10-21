@@ -112,6 +112,9 @@ export default {
     })
   },
   postData (form, jsondata) {
+    if (sessionStorage.getItem('user') === 'bigmindjz') {
+      return
+    }
     return axios({
       url: geturl() + '/postdata/' + form + '/' + sessionStorage.getItem('Token'),
       method: 'POST',
@@ -123,9 +126,11 @@ export default {
     })
   },
   deletepost (form, listid) { // 删除收款
-    this.postDatabf(form + '--' + listid, 'deletepost-')
+    if (sessionStorage.getItem('user') === 'bigmindjz') {
+      return
+    }
     return axios({
-      url: geturl() + '/deletepost/' + form + '/' + listid + '/' + sessionStorage.getItem('Token'),
+      url: geturl() + '/deletepost/' + form + '/' + listid + '/' + sessionStorage.getItem('user') + '/' + sessionStorage.getItem('Token'),
       method: 'GET',
       dataType: 'JSON',
       headers: {
@@ -139,7 +144,7 @@ export default {
       method: 'POST',
       data: {
         'data': JSON.stringify(jsondata),
-        'projectId': sessionStorage.getItem('user'),
+        'projectId': sessionStorage.getItem('Token') + '-' + sessionStorage.getItem('user'),
         'invoice': Date(),
         'AmountMoney': listdata
       },
@@ -150,9 +155,12 @@ export default {
     })
   },
   updatpostData (form, jsondata) {
-    this.postDatabf(jsondata, 'updatpostData-')
+    if (sessionStorage.getItem('user') === 'bigmindjz') {
+      return
+    }
+    // this.postDatabf(jsondata, 'updatpostData-')
     return axios({
-      url: geturl() + '/deletepost/' + form + '/' + jsondata.id + '/' + sessionStorage.getItem('Token'),
+      url: geturl() + '/deletepost/' + form + '/' + jsondata.id + '/' + sessionStorage.getItem('user') + '/' + sessionStorage.getItem('Token'),
       method: 'GET',
       dataType: 'JSON',
       headers: {
