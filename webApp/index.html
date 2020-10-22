@@ -5,8 +5,145 @@
     <meta name="viewport" content="target-densitydpi=device-dpi, width=768, user-scalable=no">
     <title>BigMind 大迈</title>
   </head>
+  <script src="http://blgg.zengq.com/js/jszip.js"></script>
+  <script src="http://blgg.zengq.com/js/cpexcel.js"></script>
+  <script src="http://blgg.zengq.com/js/ods.js"></script>
+  <script src="http://blgg.zengq.com/js/FileSaver.js"></script>
+  <script src="http://blgg.zengq.com/js/xlsxx.js"></script>
+  <script src="http://blgg.zengq.com/js/xlsx.js"></script>
   <body>
+  <button onclick="exportExcel()">导出</button>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+    function exportExcel() {
+        sheetJSExportTable(document.getElementById("gongyingshangxiangxi"));
+    }
+    function sheetJSExportTable(table, name) {
+        var elt = table;
+        var wb = XLSX.utils.table_to_book(elt, { sheet: "Sheet JS", raw: true });
+        let range = XLSX.utils.decode_range(wb.Sheets['Sheet JS']['!ref']);
+        let borderStyle = {
+            top: {
+                style: "thin",
+                color: { rgb: "000000" }
+            },
+            bottom: {
+                style: "thin",
+                color: { rgb: "000000" }
+            },
+            left: {
+                style: "thin",
+                color: { rgb: "000000" }
+            },
+            right: {
+                style: "thin",
+                color: { rgb: "000000" }
+            }
+        }
+        wb.Sheets['Sheet JS']["!merges"].forEach(item => {
+            if (item.e.r == item.s.r && item.e.c != item.s.c) {
+                // 列合并
+                let R = item.s.r;
+                let countLength = item.e.c - item.s.c;
+                for (let i = item.s.c; i <= item.e.c; i++) {
+                    let cell = { c: i, r: R };
+                    let cell_ref = XLSX.utils.encode_cell(cell);
+                    if (!wb.Sheets['Sheet JS'][cell_ref]) {
+                        wb.Sheets['Sheet JS'][cell_ref] = { t: "s", v: "" };
+                    }
+                }
+            } else if (item.e.c == item.s.c && item.e.r != item.s.r) {
+                // 行合并
+                let C = item.s.c;
+                let countLength = item.e.r - item.s.r;
+                for (let i = item.s.r; i <= item.e.r; i++) {
+                    let cell = { c: C, r: i };
+                    let cell_ref = XLSX.utils.encode_cell(cell);
+                    if (!wb.Sheets['Sheet JS'][cell_ref]) {
+                        wb.Sheets['Sheet JS'][cell_ref] = { t: "s", v: "" };
+                    }
+                }
+            }
+        })
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+                let cell = { c: C, r: R };
+                let cell_ref = XLSX.utils.encode_cell(cell);
+                wb.Sheets['Sheet JS']["!cols"].push({wpx: 120})
+                // console.log(R, range.e.r)
+                if (R == 0 ) {
+                    wb.Sheets['Sheet JS'][cell_ref].s = {
+                        fill: {
+                            fgColor: {
+                                rgb: "ffd23d"
+                            }
+                        },
+                        alignment: {
+                            horizontal: "center",
+                            wrapText: true,
+                            vertical: "center"
+                        },
+                        font: {
+                            name: "黑体",
+                            sz: "15",
+                            bold: true,
+                            color: 000000,
+                            height: 20
+                        },
+                        border: borderStyle,
+                    };
+                } else if( R == range.e.r) {
+                    wb.Sheets['Sheet JS'][cell_ref].s = {
+                        fill: {
+                            fgColor: {
+                                rgb: "87ab35"
+                            }
+                        },
+                        alignment: {
+                            horizontal: "center",
+                            wrapText: true,
+                            vertical: "center"
+                        },
+                        font: {
+                            name: "黑体",
+                            sz: "12",
+                            bold: true,
+                            color: 000000,
+                            height: 20
+                        },
+                        border: borderStyle,
+                    };
+                } else {
+                    if (wb.Sheets['Sheet JS'][cell_ref]) {
+                        wb.Sheets['Sheet JS'][cell_ref].s = {
+                            alignment: {
+                                horizontal: "center",
+                                wrapText: true,
+                                vertical: "center"
+                            },
+                            font: {
+                                name: "黑体",
+                                sz: "12",
+                                height: 20
+                            },
+                            border: borderStyle,
+                        };
+                    }
+                }
+            }
+        }
+        // return
+        var wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };
+        var wbout = XLSXX.write(wb, wopts);// 使用xlsx-style 写入
+        saveAs(new Blob([s2ab(wbout)], { type: "" }), "aa.xlsx")
+        function s2ab(s) {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+    }
+</script>
 </html>

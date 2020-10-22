@@ -14,8 +14,8 @@ const geturl = (geturlFn) => { // 环境变量,放到域名bigmind上
 export default {
   exportExcel (boxid) { // 表格导出
     var wb = XLSX.utils.table_to_book(document.querySelector(boxid))
-    // console.log(wb)
     // return
+    console.log(wb)
     var wbout = XLSX.write(wb, {
       bookType: 'xlsx',
       bookSST: true,
@@ -23,11 +23,11 @@ export default {
     })
     try {
       FileSaver.saveAs(
-        new Blob([wbout], { type: 'application/octet-stream' }),
-        'sheetjs.xlsx'
+        // new Blob([wbout], { type: 'application/octet-stream' }),
+        // 'sheetjs.xlsx'
       )
     } catch (e) {
-      if (typeof console !== 'undefined') console.log(e, wbout)
+      // if (typeof console !== 'undefined') console.log(e, wbout)
     }
     return wbout
   },

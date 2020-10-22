@@ -194,9 +194,9 @@ export default {
     }
   },
   mounted () {
-    this.getdata()
     this.getFormData('supplierlist')
     this.getFormDataClass('expenditureclass')
+    this.getdata()
   },
   methods: {
     dstaplayb () { // 数据初始化
