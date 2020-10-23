@@ -69,12 +69,22 @@
                 }
             }
         })
-        for (let C = range.s.c; C <= range.e.c; ++C) {
-            for (let R = range.s.r; R <= range.e.r; ++R) {
+        for (let R = range.s.r; R <= range.e.r; ++R) {
+            let sytlebottom = 0;
+            let sytletop = 0;
+            for (let C = range.s.c; C <= range.e.c - 1; ++C) {
                 let cell = { c: C, r: R };
                 let cell_ref = XLSX.utils.encode_cell(cell);
                 wb.Sheets['Sheet JS']["!cols"].push({wpx: 120})
-                if (R == 0 ) {
+                if (wb.Sheets['Sheet JS'][cell_ref] != undefined) {
+                    if (wb.Sheets['Sheet JS'][cell_ref].v == "合计") {
+                      sytlebottom = R
+                    }
+                    if (wb.Sheets['Sheet JS'][cell_ref].v == "收款分期" || wb.Sheets['Sheet JS'][cell_ref].v == "签约日期") {
+                      sytletop = R
+                    }
+                }
+                if (R == 0 || sytletop == R ) {
                     wb.Sheets['Sheet JS'][cell_ref].s = {
                         fill: {
                             fgColor: {
@@ -95,7 +105,7 @@
                         },
                         border: borderStyle,
                     };
-                } else if( R == range.e.r) {
+                } else if( R == sytlebottom) {
                     wb.Sheets['Sheet JS'][cell_ref].s = {
                         fill: {
                             fgColor: {
@@ -133,13 +143,12 @@
                         };
                     }
                 }
-                // console.log(wb.Sheets['Sheet JS'][cell_ref])
             }
         }
         // return
         var wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };
         var wbout = XLSXX.write(wb, wopts);// 使用xlsx-style 写入
-        saveAs(new Blob([s2ab(wbout)], { type: "" }), "aa.xlsx")
+        saveAs(new Blob([s2ab(wbout)], { type: "" }), "bigmind.xlsx")
         function s2ab(s) {
             var buf = new ArrayBuffer(s.length);
             var view = new Uint8Array(buf);

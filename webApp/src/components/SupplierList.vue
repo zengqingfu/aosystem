@@ -4,7 +4,7 @@
       供应商及付款人列表{{this.$route.params.id}}
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加</el-button>
       <el-button style="float: right;margin-right:20px" onclick="exportExcel('#SupplierList')">点击导出</el-button>
-      <el-button style="float: right;margin-right:20px" @click="jsondata.exportExcel('#SupplierList')">点击导出</el-button>
+      <!-- <el-button style="float: right;margin-right:20px" @click="jsondata.exportExcel('#SupplierList')">点击导出</el-button> -->
     </h3>
     <el-dialog title="添加付款方" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">

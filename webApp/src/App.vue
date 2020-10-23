@@ -127,8 +127,12 @@ export default {
     text-align: center !important;
   }
   .projectdateil td, .projectdateil th{
-    padding: 5px 0px !important;
+    padding: 5px 15px !important;
     text-align: left !important;
+    background-color: #fff;
+    font-size: 14px;
+    color: #666;
+    line-height: 24px;
   }
   /* .el-table__footer-wrapper {
     font-weight: bold;
@@ -142,6 +146,7 @@ export default {
 .el-table {
   border: none !important;
   overflow: visible !important;
+  border-bottom: 1px solid #eee !important;
 }
 .el-table--border::after, .el-table--group::after, .el-table::before {
     content: '';

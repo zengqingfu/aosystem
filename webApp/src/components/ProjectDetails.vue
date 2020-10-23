@@ -50,19 +50,61 @@
       <!-- <el-button type="primary" style="float: right; margin-left:10px;" >结项</el-button> -->
       <el-button type="primary" style="float: right; margin-left:10px;" @click="ReceivablesGo">项目收款</el-button>
       <el-button type="primary" style="float: right; margin-left:10px;" @click="expenditureGo">项目支出</el-button>
-      <el-button style="float: right;margin-right:20px" onclick="exportExcel('#projectdate')">点击导出</el-button>
-      <el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#projectdate')">点击导出</el-button>
+      <el-button style="float: right;margin-right:0px" onclick="exportExcel('#projectdate')">点击导出</el-button>
     </h3>
     <div id="projectdate">
-    <el-table class="projectdateil" :data="tableData" border style="width: 100%; font-weight: bold;">
-      <el-table-column prop="pojname" label="名称" width="120"></el-table-column>
-      <el-table-column prop="contents" label="内容" ></el-table-column>
+    <el-table class="projectdateil" border style="width: 100%; font-weight: bold; display:none">
+      <el-table-column prop="" label=""></el-table-column>
+      <el-table-column prop="" label=""></el-table-column>
+      <el-table-column prop="" label=""></el-table-column>
+      <el-table-column prop="" label=""></el-table-column>
+      <el-table-column prop="" label=""></el-table-column>
+      <el-table-column prop="" label=""></el-table-column>
+      <el-table-column prop="" label=""></el-table-column>
+      <el-table-column prop="" label=""></el-table-column>
     </el-table>
-    <h3>收款</h3>
+    <table class="projectdateil" style="width: 100%; background-color:#eee;font-weight: bold;" cellpadding="20" cellspacing="1">
+      <tr>
+        <th colspan="1" width="120" ><strong>名称</strong></th>
+        <th colspan="7" ><strong>内容</strong></th>
+      </tr>
+      <tr>
+        <td colspan="1" >项目名称</td>
+        <td colspan="7" >{{this.tableData[0].contents}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" >项目启动时间</td>
+        <td colspan="7" >{{this.tableData[1].contents}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" >甲方客户</td>
+        <td colspan="7" >{{this.tableData[2].contents}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" >项目收入</td>
+        <td colspan="7" >{{this.tableData[3].contents}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" >项目支出</td>
+        <td colspan="7" >{{this.tableData[4].contents}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" >项目发票</td>
+        <td colspan="7" >{{this.tableData[5].contents}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" >项目利润</td>
+        <td colspan="7" >{{this.tableData[6].contents}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" >项目说明</td>
+        <td colspan="7" >{{this.tableData[7].contents}}</td>
+      </tr>
+    </table>
+    <table><tr><th colspan="8" ><h3 >收款</h3></th></tr></table>
     <el-row v-for="item in projectContract" :key="item.ReceivablesName">
-      <h4>{{item.ReceivablesName}}  <span style="float:right">签约日期 {{item.ReceivablesData}}</span></h4>
+      <table><tr><th colspan="8"><h3 ><h4>{{item.ReceivablesName}} ---- <span style="float:right"> 签约日期 {{item.ReceivablesData}}</span></h4></h3></th></tr></table>
       <el-table :data="item.projectidlist" show-summary :summary-method="jsondata.getSummaries" :span-method="objectSpanMethod" border style="width: 100%">
-        <!-- <el-table-column prop="ReceivablesName" label="合同名称" sortable></el-table-column> -->
         <el-table-column prop="Receivableslist" label="收款分期" ></el-table-column>
         <el-table-column prop="ReceivablesData" label="合同收款时间" ></el-table-column>
         <el-table-column prop="number" label="应收金额" ></el-table-column>
@@ -75,7 +117,7 @@
     </el-row>
     <hr style="height: 30px;background-color: #eee;border: 0px;" />
     <el-row v-for="item in ReceivableslistData" :key="item.ReceivablesName">
-      <h3>{{item.expenditureClass}}</h3>
+      <table><tr><th colspan="8" > <h3>{{item.expenditureClass}}</h3></th></tr></table>
       <el-table :data="item.hetongzhichundata" border show-summary :summary-method="jsondata.getSummaries"  style="width: 100%">
         <!-- <el-table-column type="index"></el-table-column> -->
         <el-table-column prop="contractdate" label="签约日期" ></el-table-column>
@@ -85,6 +127,7 @@
         <el-table-column prop="Receivables" label="已支付金额" ></el-table-column>
         <el-table-column prop="Receivablesend" label="未付金额" ></el-table-column>
         <el-table-column prop="invoice" label="收到发票" ></el-table-column>
+        <el-table-column prop="" label="" width="1"></el-table-column>
         <!-- <el-table-column prop="invoiceend" label="已付款未收票" ></el-table-column> -->
       </el-table>
     </el-row>
