@@ -3,6 +3,7 @@
     <h3 style="color:#333">
       <span  @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}}</span> > 支出列表
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加支出</el-button>
+      <el-button style="float: right;margin-right:20px" onclick="exportExcel('#expenditureContractlist')">点击导出</el-button>
     </h3>
     <el-dialog title="添加支出" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
@@ -181,7 +182,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
+    <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary id="expenditureContractlist" height='90%' style="width: 100%">
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="SupplierName" label="付款名称"  width="300" sortable></el-table-column>
       <el-table-column prop="ReceivablesName" label="应付内容" sortable></el-table-column>

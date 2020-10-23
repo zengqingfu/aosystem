@@ -3,7 +3,7 @@
     <h3>
       进行中项目
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加项目</el-button>
-      <el-button style="float: right;margin-right:20px" @click="jsondata.exportExcel('#projectid')">点击导出</el-button>
+      <el-button style="float: right;margin-right:20px" onclick="exportExcel('#projectid')">点击导出</el-button>
     </h3>
     <el-dialog title="添加项目" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="120px" class="demo-ruleForm">

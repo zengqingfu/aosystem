@@ -23,11 +23,11 @@ export default {
     })
     try {
       FileSaver.saveAs(
-        // new Blob([wbout], { type: 'application/octet-stream' }),
-        // 'sheetjs.xlsx'
+        new Blob([wbout], { type: 'application/octet-stream' }),
+        'sheetjs.xlsx'
       )
     } catch (e) {
-      // if (typeof console !== 'undefined') console.log(e, wbout)
+      if (typeof console !== 'undefined') console.log(e, wbout)
     }
     return wbout
   },

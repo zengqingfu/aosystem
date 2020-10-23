@@ -50,6 +50,7 @@
       <!-- <el-button type="primary" style="float: right; margin-left:10px;" >结项</el-button> -->
       <el-button type="primary" style="float: right; margin-left:10px;" @click="ReceivablesGo">项目收款</el-button>
       <el-button type="primary" style="float: right; margin-left:10px;" @click="expenditureGo">项目支出</el-button>
+      <el-button style="float: right;margin-right:20px" onclick="exportExcel('#projectdate')">点击导出</el-button>
       <el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#projectdate')">点击导出</el-button>
     </h3>
     <div id="projectdate">

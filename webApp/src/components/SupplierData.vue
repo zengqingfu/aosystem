@@ -1,7 +1,7 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      供应商例表<el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#gongyingshangliebiao')">点击导出</el-button>
+      供应商例表<el-button style="float: right;margin-right:0px" onclick="exportExcel('#gongyingshangliebiao')">点击导出</el-button>
       <!-- <el-input
         placeholder="请输入内容"
         v-model="inputSearchS"

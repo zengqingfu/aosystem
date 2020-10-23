@@ -2,9 +2,9 @@
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
       收入列表
-      <!-- <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加收款</el-button> -->
+      <el-button style="float: right;margin-right:0px" onclick="exportExcel('#Receivableslist')">点击导出</el-button>
     </h3>
-    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries"  height="90%" show-summary :span-method="objectSpanMethod" fixed style="width: 100%">
+    <el-table id="Receivableslist" @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries"  height="90%" show-summary :span-method="objectSpanMethod" fixed style="width: 100%">
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column prop="projectId" label="项目名称"></el-table-column>
       <el-table-column prop="CustomerName" label="签约公司"></el-table-column>

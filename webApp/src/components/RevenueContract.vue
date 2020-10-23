@@ -3,6 +3,7 @@
     <h3>
       <span @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}}-项目 > </span>合同列表
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加合同</el-button>
+      <el-button style="float: right;margin-right:20px" onclick="exportExcel('#RevenueContract')">点击导出</el-button>
     </h3>
     <el-dialog title="添加收款" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
@@ -91,7 +92,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
+    <el-table id="RevenueContract" :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
       <el-table-column type="index"></el-table-column>
       <el-table-column @cell-click="handle" prop="ReceivablesName" label="合同名称"  width="300" sortable></el-table-column>
       <el-table-column prop="Receivableslist" label="收款分期" sortable></el-table-column>

@@ -5,6 +5,7 @@
       <span  @click="goToHome" style="cursor: pointer;color:#409EFF">返回合同 > </span>{{this.titleSupplierName}} ----- {{this.projectName}}
       <span class="colorRed"> ----- 合同金额:{{this.jsondata.currency( this.hetongjiner, '￥', 2)}}</span>
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true, boxvalue2 = true">添加付款</el-button>
+      <el-button style="float: right;margin-right:20px" onclick="exportExcel('#expendituredata')">点击导出</el-button>
     </h3>
     <el-dialog title="添加付款" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
@@ -123,7 +124,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" :span-method="objectSpanMethod"  show-summary height='90%' style="width: 100%">
+    <el-table id="expendituredata" @row-click="handle" :data="tableData" border highligth-current-row :summary-method="jsondata.getSummaries" :span-method="objectSpanMethod"  show-summary height='90%' style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column prop="Receivableslist" label="付款分期" ></el-table-column>

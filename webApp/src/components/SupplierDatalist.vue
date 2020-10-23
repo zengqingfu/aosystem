@@ -1,7 +1,7 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      {{this.Suppliertitle}}<el-button style="float: right;margin-right:0px" @click="jsondata.exportExcel('#gongyingshangxiangxi')">点击导出</el-button>
+      {{this.Suppliertitle}}<el-button style="float: right;margin-right:0px" onclick="exportExcel('#gongyingshangxiangxi')">点击导出</el-button>
     </h3>
     <el-table @row-click="handle" :data="tableData" border id="gongyingshangxiangxi" :summary-method="jsondata.getSummaries" :span-method="objectSpanMethod"  show-summary height='90%' style="width: 100%">
       <!-- <el-table-column type="index"></el-table-column> -->

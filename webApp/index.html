@@ -12,13 +12,12 @@
   <script src="http://blgg.zengq.com/js/xlsxx.js"></script>
   <script src="http://blgg.zengq.com/js/xlsx.js"></script>
   <body>
-  <button onclick="exportExcel()">导出</button>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
   <script>
-    function exportExcel() {
-        sheetJSExportTable(document.getElementById("gongyingshangxiangxi"));
+    function exportExcel(boxid) {
+        sheetJSExportTable(document.querySelector(boxid));
     }
     function sheetJSExportTable(table, name) {
         var elt = table;
@@ -41,6 +40,9 @@
                 style: "thin",
                 color: { rgb: "000000" }
             }
+        }
+        if (!wb.Sheets['Sheet JS']["!merges"]) {
+          wb.Sheets['Sheet JS']["!merges"]=[]
         }
         wb.Sheets['Sheet JS']["!merges"].forEach(item => {
             if (item.e.r == item.s.r && item.e.c != item.s.c) {
@@ -72,7 +74,6 @@
                 let cell = { c: C, r: R };
                 let cell_ref = XLSX.utils.encode_cell(cell);
                 wb.Sheets['Sheet JS']["!cols"].push({wpx: 120})
-                // console.log(R, range.e.r)
                 if (R == 0 ) {
                     wb.Sheets['Sheet JS'][cell_ref].s = {
                         fill: {
@@ -87,7 +88,7 @@
                         },
                         font: {
                             name: "黑体",
-                            sz: "15",
+                            sz: "13",
                             bold: true,
                             color: 000000,
                             height: 20
@@ -108,7 +109,7 @@
                         },
                         font: {
                             name: "黑体",
-                            sz: "12",
+                            sz: "13",
                             bold: true,
                             color: 000000,
                             height: 20
@@ -128,10 +129,11 @@
                                 sz: "12",
                                 height: 20
                             },
-                            border: borderStyle,
+                            // border: borderStyle,
                         };
                     }
                 }
+                // console.log(wb.Sheets['Sheet JS'][cell_ref])
             }
         }
         // return
