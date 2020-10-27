@@ -482,6 +482,7 @@ export default {
                 }
                 for(let item3 in this.optionsOtherParty){  //eslint-disable-line
                   if (this.optionsOtherParty[item3].id == this.hegongzhichun[item1].SupplierName) { //eslint-disable-line
+                    this.hegongzhichun[item1].SupplierNameid = this.hegongzhichun[item1].SupplierName
                     this.hegongzhichun[item1].SupplierName = this.optionsOtherParty[item3].SupplierName
                   }
                 }
@@ -495,8 +496,10 @@ export default {
                 this.hegongzhichun[item1].number = this.jsondata.currency(this.hegongzhichun[item1].number, '￥', 2)
                 this.ReceivableslistData[item].hetongzhichundata.push(this.hegongzhichun[item1])
               }
+              this.ReceivableslistData[item].hetongzhichundata = this.ReceivableslistData[item].hetongzhichundata.sort(function (a, b) { return (a.SupplierNameid + '').localeCompare(b.SupplierNameid + '') }) // 排序
             }
           }
+
           this.tableData[4].contents += ' 　　应付金额:' + this.jsondata.currency(this.contentsintp, '￥', 2)
           this.tableData[4].contents += ' 　　已付金额:' + this.jsondata.currency(this.Receivablesintp, '￥', 2)
           this.tableData[4].contents += ' 　　未支付金额:' + this.jsondata.currency(this.contentsintp - this.Receivablesintp, '￥', 2)

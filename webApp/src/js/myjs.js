@@ -158,7 +158,7 @@ export default {
     if (sessionStorage.getItem('user') === 'bigmindjz') {
       return
     }
-    // this.postDatabf(jsondata, 'updatpostData-')
+    this.postDatabf(jsondata, 'updatpostData-')
     return axios({
       url: geturl() + '/deletepost/' + form + '/' + jsondata.id + '/' + sessionStorage.getItem('user') + '/' + sessionStorage.getItem('Token'),
       method: 'GET',

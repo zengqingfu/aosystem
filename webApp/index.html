@@ -72,7 +72,7 @@
         for (let R = range.s.r; R <= range.e.r; ++R) {
             let sytlebottom = 0;
             let sytletop = 0;
-            for (let C = range.s.c; C <= range.e.c - 1; ++C) {
+            for (let C = range.s.c; C <= range.e.c; ++C) {
                 let cell = { c: C, r: R };
                 let cell_ref = XLSX.utils.encode_cell(cell);
                 wb.Sheets['Sheet JS']["!cols"].push({wpx: 120})
