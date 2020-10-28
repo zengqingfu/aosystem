@@ -10,8 +10,8 @@ const path = require("path");
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'qq785805',
-  database: 'ao_system1'
+  password: '',
+  database: 'aosystem'
 });
 
 // Connect
@@ -128,24 +128,27 @@ app.use('/postdata/:form/:token',function(req, res, next){
 });
 
 // 更新内容
-app.use('/updatpost/:id/:token', (req, res) => {
+app.use('/updatpost/:form/:token', (req, res) => {
   var result = ""; 
   req.on("data", (chuck) => {
     result += chuck
   })
   req.on("end", () => {
     let post = JSON.parse(result);
-    // console.log(post);
-    let sql = `UPDATE Receivables SET 
-      ReceivablesName = '${post.ReceivablesName}',
-      ReceivablesData = '${post.ReceivablesData}',
-      Remarks = '${post.Remarks}',
-      invoice = '${post.invoice}',
-      Receivables = '${post.Receivables}',
-      ReceivablesMode = '${post.ReceivablesMode}',
-      contract = '${post.contract}'
-    WHERE id = 
-'${post.id}'`;
+    let posttext = "UPDATE "+ req.params.form +" SET "
+    let postfuhao = ","
+    let postint = 0
+    for (let index in post) {
+      postint++
+      if (Object.keys(post).length == postint) {
+        postfuhao = ""
+      }
+      console.log(post[index], index, postfuhao)
+      posttext += index + " = '"+post[index]+"'" + postfuhao
+    }
+    posttext += "WHERE id ='" + post.id + "'"
+    let sql = `${posttext}`;
+    // console.log(sql, "----" + posttext);
     db.query(sql, (err, result) => {
       if (err) throw err;
       // console.log(result);
@@ -153,6 +156,9 @@ app.use('/updatpost/:id/:token', (req, res) => {
     res.end('OK')
   })
 });
+
+
+
 
 app.get('/updateget/:id/:token', (req, res) => {
   let newTitle = 'update title';

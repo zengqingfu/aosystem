@@ -259,11 +259,6 @@ export default {
     updatpostData () { // 更新数据
       this.jsondata.updatpostData('receivables', this.formModify).then(response => {
         this.jsondata.postDatabf(response.data, 'updatpostData')
-        // console.log(response)
-        // this.formTransaction.AmountMoney = this.formModify.Receivables
-        // this.formTransaction.MoneyClass = 1
-        // this.formTransaction.invoice = this.formModify.invoice
-        // this.formTransaction.CollectMoney = this.formModify.id
         this.getdata()
         this.dialogAddVisible = false
         // this.postFormData('transaction', this.formTransaction)
