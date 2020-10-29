@@ -348,9 +348,9 @@ export default {
             this.tableData[i].Receivablesend = ''
           }
           console.log(this.tableData[i].weikaifapiao)
-          if (this.tableData[i].weikaifapiao < 0) {
-            this.tableData[i].weikaifapiao = 0
-          }
+          // if (this.tableData[i].weikaifapiao < 0) {
+          //   this.tableData[i].weikaifapiao = 0
+          // }
           this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
           this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].Receivablesend, '￥', 2)
         }

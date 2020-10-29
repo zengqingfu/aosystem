@@ -258,12 +258,12 @@ export default {
                 this.tableData[i].invoice += Number(this.formTransactionList[is].invoice)
               }
             }
-            if (this.tableData[i].Receivables > this.tableData[i].invoice) {
-              this.tableData[i].weikaifapiao = 0
-            } else {
-              this.tableData[i].weikaifapiao = Number(this.tableData[i].invoice) - Number(this.tableData[i].Receivables)
-            }
-            this.tableData[i].weikaifapiao = this.jsondata.currency(this.tableData[i].weikaifapiao, '￥', 2)
+            // if (this.tableData[i].Receivables > this.tableData[i].invoice) {
+            //   this.tableData[i].weikaifapiao = 0
+            // } else {
+            //   this.tableData[i].weikaifapiao = Number(this.tableData[i].invoice) - Number(this.tableData[i].Receivables)
+            // }
+            this.tableData[i].weikaifapiao = this.jsondata.currency(Number(this.tableData[i].invoice) - Number(this.tableData[i].Receivables), '￥', 2)
             this.tableData[i].Receivablesend = this.jsondata.currency(this.tableData[i].number - this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
             this.tableData[i].invoice = this.jsondata.currency(this.tableData[i].invoice, '￥', 2)

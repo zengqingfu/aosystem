@@ -10,6 +10,16 @@ const geturl = (geturlFn) => { // 环境变量,放到域名bigmind上
 }
 // console.log(geturl())
 export default {
+  fordata (data1, data2, listclass1, listclass2) { // 循环函数
+    for (let i = 0; i < data1.length; i++) {
+      for (let is = 0; is < data2.length; is++) {
+        if(data1[i].id == data2[is][listclass2]){ //eslint-disable-line
+          data2[is][listclass2] = data1[i][listclass1]
+        }
+      }
+    }
+    return data2
+  },
   getSpanArr (data, list) { // 合并表格数组生成
     this.spanArr = []
     for (var i = 0; i < data.length; i++) {
@@ -123,21 +133,11 @@ export default {
       }
     })
   },
-  uppostData (form, jsondata) {
-    return axios({
-      url: geturl() + '/updatpost/' + form + '/' + sessionStorage.getItem('Token'),
-      method: 'POST',
-      data: jsondata,
-      dataType: 'JSON',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-  },
   updatpostData (form, jsondata) {
     if (sessionStorage.getItem('user') === 'bigmindjz') {
       return
     }
+    this.postDatabf(jsondata, 'updat')
     return axios({
       url: geturl() + '/updatpost/' + form + '/' + sessionStorage.getItem('Token'),
       method: 'POST',

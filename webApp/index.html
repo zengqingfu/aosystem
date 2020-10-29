@@ -83,6 +83,10 @@
                     if (wb.Sheets['Sheet JS'][cell_ref].v == "收款分期" || wb.Sheets['Sheet JS'][cell_ref].v == "签约日期") {
                       sytletop = R
                     }
+                    if (wb.Sheets['Sheet JS'][cell_ref].v.match("￥")) {
+                        wb.Sheets['Sheet JS'][cell_ref].v = Number(wb.Sheets['Sheet JS'][cell_ref].v.replace(/,|￥/g, ''))
+                        wb.Sheets['Sheet JS'][cell_ref].t = "n"
+                    }
                 }
                 if (R == 0 || sytletop == R ) {
                     wb.Sheets['Sheet JS'][cell_ref].s = {
@@ -107,6 +111,7 @@
                     };
                 } else if( R == sytlebottom) {
                     wb.Sheets['Sheet JS'][cell_ref].s = {
+                        numFmt: "￥#,##0.00",
                         fill: {
                             fgColor: {
                                 rgb: "87ab35"
@@ -129,6 +134,7 @@
                 } else {
                     if (wb.Sheets['Sheet JS'][cell_ref]) {
                         wb.Sheets['Sheet JS'][cell_ref].s = {
+                            numFmt: "￥#,##0.00",
                             alignment: {
                                 horizontal: "center",
                                 wrapText: true,
@@ -145,7 +151,7 @@
                 }
             }
         }
-        // return
+        console.log(wb.Sheets['Sheet JS'])
         var wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };
         var wbout = XLSXX.write(wb, wopts);// 使用xlsx-style 写入
         saveAs(new Blob([s2ab(wbout)], { type: "" }), "bigmind.xlsx")
