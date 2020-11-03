@@ -114,7 +114,8 @@
         <el-form-item>
           <el-button type="primary" @click="submitFormModify('formModify')">更新</el-button>
           <el-button @click="dialogAddVisible = false">取消</el-button>
-          <el-button style="float:right" @click="deletepost" v-if="!boxvalue2">删除收款</el-button>
+          <!-- <el-button style="float:right" @click="deletepost" v-if="!boxvalue2">删除收款</el-button> -->
+          <el-button style="float:right" @click="deletepost">删除收款</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>

@@ -137,7 +137,7 @@ export default {
     if (sessionStorage.getItem('user') === 'bigmindjz') {
       return
     }
-    this.postDatabf(jsondata, 'updat')
+    // this.postDatabf(jsondata, 'updat')
     return axios({
       url: geturl() + '/updatpost/' + form + '/' + sessionStorage.getItem('Token'),
       method: 'POST',

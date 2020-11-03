@@ -18,7 +18,8 @@ import profitlist from '@/components/profitlist'
 import stafflist from '@/components/stafflist'
 import SupplierDatalist from '@/components/SupplierDatalist'
 import login from '@/components/login'
-// import excelpage from '@/components/excelpage'
+import searchpage from '@/components/searchpage'
+import searchht from '@/components/searchht'
 import upimg from '@/components/upimg'
 import axios from 'axios'
 
@@ -58,14 +59,22 @@ const router = new VueRouter({
         content: SupplierDatalist
       }
     },
-    // {
-    //   path: '/excelpage',
-    //   name: 'excelpage',
-    //   components: {
-    //     Nav: Nav,
-    //     content: excelpage
-    //   }
-    // },
+    {
+      path: '/searchpage',
+      name: 'searchpage',
+      components: {
+        Nav: Nav,
+        content: searchpage
+      }
+    },
+    {
+      path: '/searchht',
+      name: 'searchht',
+      components: {
+        Nav: Nav,
+        content: searchht
+      }
+    },
     {
       path: '/stafflist',
       name: 'stafflist',

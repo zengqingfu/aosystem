@@ -157,7 +157,6 @@ app.use('/updatpost/:form/:token', (req, res) => {
   })
 });
 
-
 app.get('/updateget/:id/:token', (req, res) => {
   let newTitle = 'update title';
   let sql = `UPDATE posts SET title = ${newTitle} WHERE id = ${req.params.id}`;

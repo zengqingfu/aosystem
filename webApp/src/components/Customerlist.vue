@@ -21,7 +21,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-
     <el-dialog :title="formModify.ReceivablesName" :visible.sync="dialogAddVisible" >
       <el-form ref="formModify" :model="formModify" :rules="rules"  label-width="80px" class="demo-ruleForm">
         <el-form-item label="客户名称" prop="CustomerName">

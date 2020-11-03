@@ -53,6 +53,12 @@
         <el-menu-item index="/stafflist">
           <i class="el-icon-s-check"></i>外包应付表
         </el-menu-item>
+        <el-menu-item index="/searchpage">
+          <i class="el-icon-s-check"></i>表单检索-每期
+        </el-menu-item>
+        <el-menu-item index="/searchht">
+          <i class="el-icon-s-check"></i>表单检索-合同
+        </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item v-show="hidebox" @click="boxshow">
