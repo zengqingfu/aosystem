@@ -259,7 +259,7 @@ export default {
     },
     updatpostData () { // 更新数据
       this.jsondata.updatpostData('receivables', this.formModify).then(response => {
-        this.jsondata.postDatabf(response.data, 'updatpostData')
+        // this.jsondata.postDatabf(response.data, 'updatpostData')
         this.getdata()
         this.dialogAddVisible = false
         // this.postFormData('transaction', this.formTransaction)

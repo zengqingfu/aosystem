@@ -4,6 +4,7 @@
       <span  @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}}</span> > 支出列表
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加支出</el-button>
       <el-button style="float: right;margin-right:20px" onclick="exportExcel('#expenditureContractlist')">点击导出</el-button>
+      <el-input v-model="inputData" placeholder="请输入搜索内容" @input="play(inputData)" style="width:200px;float: right;;margin-right:0px"></el-input>
     </h3>
     <el-dialog title="添加支出" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
@@ -182,7 +183,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table :data="tableData" border :summary-method="jsondata.getSummaries" show-summary id="expenditureContractlist" height='90%' style="width: 100%">
+    <el-table :data="tableData_s" border :summary-method="jsondata.getSummaries" show-summary id="expenditureContractlist" height='90%' style="width: 100%">
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="SupplierName" label="付款名称"  width="300" sortable></el-table-column>
       <el-table-column prop="ReceivablesName" label="应付内容" sortable></el-table-column>
@@ -209,6 +210,9 @@
 export default {
   data () {
     return {
+      tableData_s: [],
+      table: [],
+      inputData: '',
       boxvalue: true,
       boxvalue1: false,
       hetongjiner: 0, // 合同金额
@@ -350,7 +354,7 @@ export default {
       }
       // console.log(this.formModify)
       this.jsondata.updatpostData('expenditure', this.formModify).then(response => {
-        this.jsondata.postDatabf(response.data, 'updatpostData')
+        // this.jsondata.postDatabf(response.data, 'updatpostData')
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.getdata()
@@ -430,6 +434,7 @@ export default {
             this.tableData[i].number = this.jsondata.currency(this.tableData[i].number, '￥', 2)
             this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
           }
+          this.tableData_s = this.tableData
           this.jsondata.getData('supplierlist').then(response => { // 客户例表
             this.tableData = this.jsondata.fordata(response.data, this.tableData, 'SupplierName', 'SupplierName')
             this.jsondata.getData('expenditureclass').then(response => { // 支出类别例表
@@ -511,6 +516,16 @@ export default {
     },
     goToHome () {
       this.$router.push('/projectdetails/' + this.$route.params.id)
+    },
+    play (input) {
+      let _this = this
+      _this.table = _this.tableData.filter(Val => {
+        if (Val.SupplierName.includes(input) || Val.ReceivablesName.includes(input) || Val.projectClass.includes(input) || Val.contractdate.includes(input)) {
+          _this.table.push(Val)
+          return _this.table
+        }
+      })
+      this.tableData_s = _this.table
     }
   }
 }

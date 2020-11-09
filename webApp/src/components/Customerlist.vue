@@ -4,7 +4,7 @@
       客户列表{{this.$route.params.id}}
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加</el-button>
       <el-button style="float: right;margin-right:20px" onclick="exportExcel('#Customerlist')">点击导出</el-button>
-      <!-- <el-button style="float: right;margin-right:20px" @click="jsondata.exportExcel('#Customerlist')">点击导出</el-button> -->
+      <el-input v-model="inputData" placeholder="请输入搜索内容" @input="play(inputData)" style="width:200px;float: right;;margin-right:0px"></el-input>
     </h3>
     <el-dialog title="添加客户" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px" class="demo-ruleForm">
@@ -36,7 +36,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table id="Customerlist" @row-click="handle" :data="tableData" border style="width: 100%">
+    <el-table id="Customerlist" @row-click="handle" :data="tableData_s" border style="width: 100%">
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="CustomerName" label="客户名称" sortable ></el-table-column>
       <!-- <el-table-column prop="number" label="应支付金额" sortable></el-table-column>
@@ -52,6 +52,9 @@
 export default {
   data () {
     return {
+      tableData_s: [],
+      table: [],
+      inputData: '',
       public: [],
       Customerlist: [],
       tableData: [],
@@ -135,6 +138,7 @@ export default {
     getdata () {
       this.jsondata.getData('customerlist').then(response => {
         this.tableData = response.data
+        this.tableData_s = this.tableData
       })
         .catch(error => {
           console.log(error)
@@ -162,6 +166,16 @@ export default {
           console.log(error)
         })
       return false
+    },
+    play (input) {
+      let _this = this
+      _this.table = _this.tableData.filter(Val => {
+        if (Val.CustomerName.includes(input)) {
+          _this.table.push(Val)
+          return _this.table
+        }
+      })
+      this.tableData_s = _this.table
     }
   }
 }

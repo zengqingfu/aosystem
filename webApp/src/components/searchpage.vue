@@ -3,7 +3,7 @@
     <h3>
       <el-input v-model="inputData" placeholder="请输入内容" @input="play(inputData)"></el-input>
     </h3>
-    <el-table id="expendituredata" :data="tableData_s" border height='90%' style="width: 100%">
+    <el-table id="expendituredata" @row-click="handle"  :data="tableData_s" border height='90%' style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column prop="Receivableslist" label="付款分期" ></el-table-column>
@@ -138,6 +138,9 @@ export default {
         }
       })
       this.tableData_s = _this.table
+    },
+    handle (row) {
+      this.$router.push('/expenditure/' + row.projectId)
     }
   }
 }

@@ -1,15 +1,11 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      供应商例表<el-button style="float: right;margin-right:0px" onclick="exportExcel('#gongyingshangliebiao')">点击导出</el-button>
-      <!-- <el-input
-        placeholder="请输入内容"
-        v-model="inputSearchS"
-        clearable style="width:300px;">
-      </el-input>
-      <el-button type="primary">提交</el-button> -->
+      供应商及外包例表
+      <el-button style="float: right;margin-left:20px" onclick="exportExcel('#gongyingshangliebiao')">点击导出</el-button>
+      <el-input v-model="inputData" placeholder="请输入搜索内容" @input="play(inputData)" style="width:200px;float: right;"></el-input>
     </h3>
-    <el-table @row-click="handle" :data="fromsupplierlist" id="gongyingshangliebiao" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
+    <el-table @row-click="handle" :data="tableData_s" id="gongyingshangliebiao" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="SupplierName" label="供应商名称" width="300"></el-table-column>
       <el-table-column prop="number" label="应付金额" sortable></el-table-column>
@@ -17,6 +13,7 @@
       <el-table-column prop="Receivablesend" label="未付金额" sortable></el-table-column>
       <el-table-column prop="kaifapiao" label="已收发票" sortable></el-table-column>
       <el-table-column prop="weishoufapiao" label="已付款未收发票" sortable></el-table-column>
+      <el-table-column prop="SupplierClass" label="分类" sortable></el-table-column>
       <!-- <el-table-column prop="biujifapiao" label="不计发票"></el-table-column> -->
     </el-table>
   </el-main>
@@ -25,6 +22,9 @@
 export default {
   data () {
     return {
+      tableData_s: [],
+      table: [],
+      inputData: '',
       inputSearchS: '',
       biujifapiao: '',
       weikaifapiao: '',
@@ -99,7 +99,7 @@ export default {
         this.jsondata.getDataClass('projectlist', '0', 'complete').then(responseproject => { // 项目
           this.fromprojectList = responseproject.data
           this.jsondata.getData('expenditure').then(response => { // 支出合同
-            this.jsondata.getDataClass('supplierlist', '1', 'supplierClass').then(responsegys => { // 供应商例表
+            this.jsondata.getData('supplierlist').then(responsegys => { // 供应商例表
               this.jsondata.getData('expenditureclass').then(responselist => { // 支出分类
                 for (let i = 0; i < this.fromprojectList.length; i++) {
                   for (let is = 0; is < response.data.length; is++) {
@@ -182,7 +182,18 @@ export default {
                   this.fromsupplierlist[i].Receivables = this.jsondata.currency(this.fromsupplierlist[i].Receivables, '￥', 2)
                   this.fromsupplierlist[i].Receivablesend = this.jsondata.currency(this.fromsupplierlist[i].Receivablesend, '￥', 2)
                   this.fromsupplierlist[i].kaifapiao = this.jsondata.currency(this.fromsupplierlist[i].kaifapiao, '￥', 2)
+                  if (this.fromsupplierlist[i].SupplierClass === 1) {
+                    this.fromsupplierlist[i].SupplierClass = this.fromsupplierlist[i].SupplierClass + '供应商'
+                  }
+                  if (this.fromsupplierlist[i].SupplierClass === 3) {
+                    this.fromsupplierlist[i].SupplierClass = this.fromsupplierlist[i].SupplierClass + '外包人员'
+                  }
+                  if (this.fromsupplierlist[i].SupplierClass === 2) {
+                    delete this.fromsupplierlist[i]
+                    // this.fromsupplierlist[i].SupplierClass = this.fromsupplierlist[i].SupplierClass + '员工'
+                  }
                 }
+                this.tableData_s = this.fromsupplierlist
               })
                 .catch(error => {
                   console.log(error)
@@ -209,6 +220,16 @@ export default {
       this.$router.push('/SupplierDatalist/' + row.id)
       console.log(row.id)
       // console.log(row, event, column)
+    },
+    play (input) {
+      let _this = this
+      _this.table = _this.fromsupplierlist.filter(Val => {
+        if (Val.SupplierName.includes(input) || Val.number.includes(input) || Val.Receivables.includes(input) || Val.SupplierClass.includes(input)) {
+          _this.table.push(Val)
+          return _this.table
+        }
+      })
+      this.tableData_s = _this.table
     }
   }
 }

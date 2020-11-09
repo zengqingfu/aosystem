@@ -1,7 +1,8 @@
  <template>
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
-      外包例表<el-button style="float: right;margin-left:20px" onclick="exportExcel('#gongyingshangliebiao')">点击导出</el-button>
+      员工例表
+      <el-button style="float: right;margin-left:20px" onclick="exportExcel('#gongyingshangliebiao')">点击导出</el-button>
       <el-input v-model="inputData" placeholder="请输入搜索内容" @input="play(inputData)" style="width:200px;float: right;"></el-input>
       <!-- <el-input
         placeholder="请输入内容"
@@ -12,7 +13,7 @@
     </h3>
     <el-table @row-click="handle" :data="tableData_s" id="gongyingshangliebiao" border :summary-method="jsondata.getSummaries" show-summary height='90%' style="width: 100%">
       <el-table-column type="index"></el-table-column>
-      <el-table-column prop="SupplierName" label="供应商名称" width="300"></el-table-column>
+      <el-table-column prop="SupplierName" label="名称" width="300"></el-table-column>
       <el-table-column prop="number" label="应付金额" sortable></el-table-column>
       <el-table-column prop="Receivables" label="已付金额" sortable></el-table-column>
       <el-table-column prop="Receivablesend" label="未付金额" sortable></el-table-column>
@@ -26,9 +27,6 @@
 export default {
   data () {
     return {
-      tableData_s: [],
-      table: [],
-      inputData: '',
       inputSearchS: '',
       biujifapiao: '',
       weikaifapiao: '',
@@ -52,6 +50,9 @@ export default {
       fromexpenditureData: [],
       fromprojectList: [],
       fromexpenditure: [],
+      tableData_s: [],
+      table: [],
+      inputData: '',
       fromsupplierlist: [],
       formReceivables: []
     }
@@ -103,7 +104,7 @@ export default {
         this.jsondata.getDataClass('projectlist', '0', 'complete').then(responseproject => { // 项目
           this.fromprojectList = responseproject.data
           this.jsondata.getData('expenditure').then(response => { // 支出合同
-            this.jsondata.getDataClass('supplierlist', '3', 'supplierClass').then(responsegys => { // 供应商例表
+            this.jsondata.getDataClass('supplierlist', '2', 'supplierClass').then(responsegys => { // 供应商例表
               this.jsondata.getData('expenditureclass').then(responselist => { // 支出分类
                 for (let i = 0; i < this.fromprojectList.length; i++) {
                   for (let is = 0; is < response.data.length; is++) {

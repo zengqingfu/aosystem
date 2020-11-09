@@ -16,6 +16,7 @@ import expenditureContract from '@/components/expenditureContract'
 import SupplierData from '@/components/SupplierData'
 import profitlist from '@/components/profitlist'
 import stafflist from '@/components/stafflist'
+import staff from '@/components/staff'
 import SupplierDatalist from '@/components/SupplierDatalist'
 import login from '@/components/login'
 import searchpage from '@/components/searchpage'
@@ -81,6 +82,14 @@ const router = new VueRouter({
       components: {
         Nav: Nav,
         content: stafflist
+      }
+    },
+    {
+      path: '/staff',
+      name: 'staff',
+      components: {
+        Nav: Nav,
+        content: staff
       }
     },
     {

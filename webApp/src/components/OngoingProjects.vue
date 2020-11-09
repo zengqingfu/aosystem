@@ -4,6 +4,7 @@
       进行中项目
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加项目</el-button>
       <el-button style="float: right;margin-right:20px" onclick="exportExcel('#projectid')">点击导出</el-button>
+      <el-input v-model="inputData" placeholder="请输入搜索内容" @input="play(inputData)" style="width:200px;float: right;;margin-right:0px"></el-input>
     </h3>
     <el-dialog title="添加项目" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules"  label-width="120px" class="demo-ruleForm">
@@ -41,15 +42,18 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table @row-click="handle" :data="tableData" id="projectid" border :summary-method="jsondata.getSummaries" height="90%" show-summary style="width: 100%">
+    <el-table @row-click="handle" :data="tableData_s" id="projectid" border :summary-method="jsondata.getSummaries" height="90%" show-summary style="width: 100%">
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="ContractDate" label="签约时间" sortable></el-table-column>
       <el-table-column prop="projectName" label="项目名称" sortable></el-table-column>
-      <!-- <el-table-column prop="CustomerName" label="甲方" sortable></el-table-column> -->
       <el-table-column prop="ContractAmount" label="项目金额" sortable></el-table-column>
       <el-table-column prop="Receivables" label="已收金额" sortable></el-table-column>
+      <el-table-column prop="Receivablesend" label="未收金额" sortable></el-table-column>
       <el-table-column prop="ExpenditureBudget" label="应付金额" sortable></el-table-column>
       <el-table-column prop="expenditure" label="已付金额" sortable></el-table-column>
+      <el-table-column prop="expenditureend" label="未付金额" sortable></el-table-column>
+      <el-table-column prop="projectprofit" label="毛利" sortable></el-table-column>
+      <el-table-column prop="profit" label="毛利率" sortable></el-table-column>
       <el-table-column prop="projectContent" label="项目说明" sortable></el-table-column>
     </el-table>
   </el-main>
@@ -59,6 +63,9 @@
 export default {
   data () {
     return {
+      tableData_s: [],
+      table: [],
+      inputData: '',
       contentsint: '',
       contentsintp: '',
       Customerlist: [],
@@ -141,29 +148,6 @@ export default {
         })
       return false
     },
-    getdata () {
-      // this.jsondata.getData('expendituredata').then(response => { // 已付合同
-      //   this.formexpenditureData = response.data
-      // })
-      //   .catch(error => {
-      //     console.log(error)
-      //   })
-      this.jsondata.getDataClass('projectlist', '0', 'complete').then(response => {
-        this.tableData = response.data
-        // console.log(this.tableData)
-        for (let i = 0; i < this.tableData.length; i++) {
-          this.tableData[i].ContractDate = response.data[i].ContractDate.substr(0, 10)
-          this.tableData[i].ContractAmount = this.jsondata.currency(Number(this.tableData[i].ContractAmount), '￥', 2)
-          // this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
-          this.tableData[i].Receivables = 0
-        }
-        this.getdataReceivables()
-      })
-        .catch(error => {
-          console.log(error)
-        })
-      return false
-    },
     handle (row, event, column) {
       this.$router.push('/ProjectDetails/' + row.id)
       console.log(row.id)
@@ -177,42 +161,57 @@ export default {
           console.log(error)
         })
     },
-    getdataReceivables () {
-      this.jsondata.getData('receivables').then(response => {
-        this.jsondata.getData('revenuecontract').then(responseContract => {
-          this.jsondata.getData('expenditure').then(responseexpenditure => { // 已付记录
-            this.jsondata.getData('expendituredata').then(responsehetong => { // 已付合同
-              for (var i = 0; i < this.tableData.length; i++) {
-                this.tableData[i].Receivables = 0
-                this.tableData[i].expenditure = 0
-                this.tableData[i].ExpenditureBudget = 0
-                for (var is = 0; is < responseContract.data.length; is++) {
-                  for (var iss = 0; iss < response.data.length; iss++) {
-                    if (responseContract.data[is].id === response.data[iss].projectId && Number(responseContract.data[is].projectId) === Number(this.tableData[i].id)) {
-                      this.tableData[i].Receivables += Number(response.data[iss].Receivables)
+    getdata () {
+      this.jsondata.getDataClass('projectlist', '0', 'complete').then(responseprojectlist => {
+        this.jsondata.getData('receivables').then(response => {
+          this.jsondata.getData('revenuecontract').then(responseContract => {
+            this.jsondata.getData('expenditure').then(responseexpenditure => { // 已付记录
+              this.jsondata.getData('expendituredata').then(responsehetong => { // 已付合同
+                this.tableData = responseprojectlist.data
+                for (var i = 0; i < this.tableData.length; i++) {
+                  this.tableData[i].Receivables = 0
+                  this.tableData[i].expenditure = 0
+                  this.tableData[i].Receivablesend = 0
+                  this.tableData[i].ExpenditureBudget = 0
+                  for (var is = 0; is < responseContract.data.length; is++) {
+                    for (var iss = 0; iss < response.data.length; iss++) {
+                      if (responseContract.data[is].id === response.data[iss].projectId && Number(responseContract.data[is].projectId) === Number(this.tableData[i].id)) {
+                        this.tableData[i].Receivables += Number(response.data[iss].Receivables)
+                      }
                     }
                   }
-                }
-                for (var ie = 0; ie < responseexpenditure.data.length; ie++) {
-                  responseexpenditure.data[ie].expenditure = 0
-                  if (this.tableData[i].id === responseexpenditure.data[ie].projectId) {
-                    this.tableData[i].ExpenditureBudget += Number(responseexpenditure.data[ie].number)
-                  }
-                  for (var iee = 0; iee < responsehetong.data.length; iee++) {
-                    if (responseexpenditure.data[ie].id === responsehetong.data[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
-                      responseexpenditure.data[ie].expenditure += Number(responsehetong.data[iee].Receivables)
+                  for (var ie = 0; ie < responseexpenditure.data.length; ie++) {
+                    responseexpenditure.data[ie].expenditure = 0
+                    if (this.tableData[i].id === responseexpenditure.data[ie].projectId) {
+                      this.tableData[i].ExpenditureBudget += Number(responseexpenditure.data[ie].number)
+                    }
+                    for (var iee = 0; iee < responsehetong.data.length; iee++) {
+                      if (responseexpenditure.data[ie].id === responsehetong.data[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
+                        responseexpenditure.data[ie].expenditure += Number(responsehetong.data[iee].Receivables)
+                      }
+                    }
+                    if (responseexpenditure.data[ie].Receivableslist === '不分期' && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
+                      this.tableData[i].expenditure += Number(responseexpenditure.data[ie].Receivables)
+                    } else {
+                      this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
                     }
                   }
-                  if (responseexpenditure.data[ie].Receivableslist === '不分期' && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
-                    this.tableData[i].expenditure += Number(responseexpenditure.data[ie].Receivables)
-                  } else {
-                    this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
-                  }
+                  this.tableData[i].profit = (Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].ExpenditureBudget)) / Number(this.tableData[i].ContractAmount)
+                  this.tableData[i].profit = (this.tableData[i].profit * 100).toFixed(2) + '%'
+                  this.tableData[i].expenditureend = this.jsondata.currency(Number(this.tableData[i].ExpenditureBudget) - Number(this.tableData[i].expenditure), '￥', 2)
+                  this.tableData[i].projectprofit = this.jsondata.currency(Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].ExpenditureBudget), '￥', 2)
+                  this.tableData[i].ContractDate = this.tableData[i].ContractDate.substr(0, 10)
+                  this.tableData[i].Receivablesend = this.jsondata.currency(Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].Receivables), '￥', 2)
+                  this.tableData[i].ContractAmount = this.jsondata.currency(Number(this.tableData[i].ContractAmount), '￥', 2)
+                  this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
+                  this.tableData[i].expenditure = this.jsondata.currency(this.tableData[i].expenditure, '￥', 2)
+                  this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
                 }
-                this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
-                this.tableData[i].expenditure = this.jsondata.currency(this.tableData[i].expenditure, '￥', 2)
-                this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
-              }
+                this.tableData_s = this.tableData
+              })
+                .catch(error => {
+                  console.log(error)
+                })
             })
               .catch(error => {
                 console.log(error)
@@ -230,6 +229,16 @@ export default {
           console.log(error)
         })
       return false
+    },
+    play (input) {
+      let _this = this
+      _this.table = _this.tableData.filter(Val => {
+        if (Val.ContractDate.includes(input) || Val.projectName.includes(input) || Val.projectContent.includes(input)) {
+          _this.table.push(Val)
+          return _this.table
+        }
+      })
+      this.tableData_s = _this.table
     }
   }
 }

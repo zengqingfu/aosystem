@@ -53,6 +53,9 @@
         <el-menu-item index="/stafflist">
           <i class="el-icon-s-check"></i>外包应付表
         </el-menu-item>
+        <el-menu-item index="/staff">
+          <i class="el-icon-s-check"></i>员工应付表
+        </el-menu-item>
         <el-menu-item index="/searchpage">
           <i class="el-icon-s-check"></i>表单检索-每期
         </el-menu-item>

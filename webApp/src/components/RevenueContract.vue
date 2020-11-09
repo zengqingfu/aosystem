@@ -202,7 +202,7 @@ export default {
     },
     updatpostData () { // 更新数据
       this.jsondata.updatpostData('revenuecontract', this.formModify).then(response => {
-        this.jsondata.postDatabf(response.data, 'updatpostData')
+        // this.jsondata.postDatabf(response.data, 'updatpostData')
         this.dialogAddVisible = false
         this.getdata()
       })

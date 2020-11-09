@@ -6,14 +6,14 @@
     <el-table id="expendituredata" :data="tableData_s" border height='90%' style="width: 100%">
       <!-- <el-table-column prop="ReceivablesName" label="收款名称" sortable></el-table-column> -->
       <!-- <el-table-column type="index"></el-table-column> -->
-      <el-table-column prop="ReceivablesName" label="付款名称" ></el-table-column>
-      <el-table-column prop="number" label="应付金额" ></el-table-column>
-      <el-table-column prop="Receivables" label="付款金额" ></el-table-column>
-      <el-table-column prop="invoice" label="收到发票" ></el-table-column>
-      <el-table-column prop="invoicebo" label="发票" ></el-table-column>
-      <el-table-column prop="contractdate" label="时间" ></el-table-column>
-      <el-table-column prop="Receivableslist" label="合同" ></el-table-column>
-      <el-table-column prop="ReceivablesMode" label="" ></el-table-column>
+      <el-table-column prop="ReceivablesName" label="付款名称" sortable></el-table-column>
+      <el-table-column prop="number" label="应付金额" sortable></el-table-column>
+      <el-table-column prop="Receivables" label="付款金额" sortable></el-table-column>
+      <el-table-column prop="invoice" label="收到发票" sortable></el-table-column>
+      <el-table-column prop="invoicebo" label="发票" sortable></el-table-column>
+      <el-table-column prop="contractdate" label="时间" sortable></el-table-column>
+      <el-table-column prop="Receivableslist" label="合同" sortable></el-table-column>
+      <el-table-column prop="ReceivablesMode" label="" sortable></el-table-column>
       <el-table-column prop="Remarks" label="备注" sortable></el-table-column>
     </el-table>
     <p style="text-align:left; font-size:15px; color:#555;font-weight: bold;" type="error">
@@ -131,7 +131,10 @@ export default {
     play (input) {
       let _this = this
       _this.table = _this.tableData.filter(Val => {
-        if (Val.number.includes(input) || Val.invoice.includes(input) || Val.Receivables.includes(input) || Val.Remarks.includes(input) || Val.ReceivablesName.includes(input)) {
+        if (Val.Remarks == null) {
+          Val.Remarks = ''
+        }
+        if (Val.number.includes(input) || Val.invoice.includes(input) || Val.Receivables.includes(input) || Val.ReceivablesName.includes(input) || Val.Remarks.includes(input)) {
           _this.table.push(Val)
           return _this.table
         }
