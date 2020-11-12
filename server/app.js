@@ -143,7 +143,9 @@ app.use('/updatpost/:form/:token', (req, res) => {
       if (Object.keys(post).length == postint) {
         postfuhao = ""
       }
-      // console.log(post[index], index, postfuhao)
+      if (post[index] == null) {
+        post[index] = ''
+      }
       posttext += index + " = '"+post[index]+"'" + postfuhao
     }
     posttext += "WHERE id ='" + post.id + "'"
