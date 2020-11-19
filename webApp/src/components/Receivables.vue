@@ -308,7 +308,7 @@ export default {
         this.hetongjiner = response.data[0].number
         this.income = response.data
         this.form.projectlist = response.data[0].projectId
-        if(Number(this.hetongjiner) == Number(this.yingshou)){  //eslint-disable-line
+        if(Number(this.hetongjiner).toFixed(2) == Number(this.yingshou).toFixed(2)){  //eslint-disable-line
           document.querySelector('.colorRed').style.color = '#555'
         } else {
           document.querySelector('.colorRed').style.color = '#f00'
