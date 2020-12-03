@@ -153,7 +153,7 @@ export default {
                     this.fromexpenditure[i].kaifapiao = this.fromexpenditure[i].invoice
                   }
                   // this.weikaifapiao = Number(this.weikaifapiao) + Number(this.fromexpenditure[i].Receivables) - Number(this.fromexpenditure[i].kaifapiao)
-                  if(this.fromexpenditure[i].invoicebo == '不计发票'){ //eslint-disable-line
+                  if(this.fromexpenditure[i].invoicebo == '不计发票' && this.fromexpenditure[i].Receivableslist == '不分期'){ //eslint-disable-line
                     // this.fromexpenditure[i].kaifapiao = '不计发票'
                     this.fromexpenditure[i].biujifapiao += Number(this.fromexpenditure[i].Receivables)
                   } else {
@@ -175,13 +175,13 @@ export default {
                       this.fromsupplierlist[i].Receivables += Number(this.fromexpenditure[is].Receivables)
                       this.fromsupplierlist[i].kaifapiao += Number(this.fromexpenditure[is].kaifapiao)
                       this.fromsupplierlist[i].Receivablesend += Number(this.fromexpenditure[is].Receivablesend)
-                      // this.fromsupplierlist[i].biujifapiao += Number(this.fromexpenditure[i].biujifapiao)
+                      this.fromsupplierlist[i].biujifapiao += Number(this.fromexpenditure[is].biujifapiao)
                       // if (this.fromsupplierlist[i].SupplierName === '广州市科驰广告制作有限公司') {
                       //   console.log(this.fromexpenditure[is].Receivables, this.fromsupplierlist[i].Receivables)
                       // }
                     }
                   }
-                  this.fromsupplierlist[i].weishoufapiao = this.jsondata.currency(this.fromsupplierlist[i].Receivables - this.fromsupplierlist[i].kaifapiao, '￥', 2)
+                  this.fromsupplierlist[i].weishoufapiao = this.jsondata.currency(this.fromsupplierlist[i].Receivables - this.fromsupplierlist[i].kaifapiao - this.fromsupplierlist[i].biujifapiao, '￥', 2)
                   this.fromsupplierlist[i].number = this.jsondata.currency(this.fromsupplierlist[i].number, '￥', 2)
                   this.fromsupplierlist[i].Receivables = this.jsondata.currency(this.fromsupplierlist[i].Receivables, '￥', 2)
                   this.fromsupplierlist[i].Receivablesend = this.jsondata.currency(this.fromsupplierlist[i].Receivablesend, '￥', 2)

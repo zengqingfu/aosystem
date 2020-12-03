@@ -68,22 +68,22 @@
 
     <el-dialog :title="formModify.ReceivablesName" :visible.sync="dialogAddVisible" >
       <el-form ref="formModify" :model="formModify" :rules="rules"  label-width="80px" class="demo-ruleForm">
-        <el-form-item label="付款名称" prop="ReceivablesName" v-if="boxvalue2">
+        <el-form-item label="付款名称" prop="ReceivablesName" >
           <el-input v-model="formModify.ReceivablesName" ></el-input>
         </el-form-item>
-        <el-form-item label="付款时间" prop="ReceivablesData"  v-if="boxvalue2">
+        <el-form-item label="付款时间" prop="ReceivablesData" >
           <el-input v-model="formModify.ReceivablesData"></el-input>
         </el-form-item>
-        <el-form-item label="付款方式" prop="ReceivablesMode"  v-if="boxvalue2">
+        <el-form-item label="付款方式" prop="ReceivablesMode" >
             <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:46%" >
               <el-option label="现金" value="现金"></el-option>
               <el-option label="银行" value="银行"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="应付金额" prop="number" v-if="boxvalue2">
+        <el-form-item label="应付金额" prop="number">
           <el-input type="number" v-model="formModify.number" style="width:46%" ></el-input>
         </el-form-item>
-        <el-form-item label="有无合同" prop="contract"  v-if="boxvalue2">
+        <el-form-item label="有无合同" prop="contract">
             <el-select v-model="formModify.contract" placeholder="请选择" style="width:46%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="无" value="无"></el-option>
@@ -120,7 +120,7 @@
         <el-form-item>
           <el-button type="primary" @click="submitFormModify('formModify')">更新</el-button>
           <el-button @click="dialogAddVisible = false">取消</el-button>
-          <el-button style="float:right" @click="deletepost" v-if="!boxvalue2">删除收款</el-button>
+          <el-button style="float:right" @click="deletepost">删除收款</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
