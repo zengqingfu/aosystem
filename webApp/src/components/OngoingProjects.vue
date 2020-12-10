@@ -27,10 +27,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="项目金额" prop="ContractAmount">
-          <el-input type="number"  v-model.number="form.ContractAmount" style="width:46%" ></el-input>
+          <el-input type="number"  v-model="form.ContractAmount" style="width:46%" ></el-input>
         </el-form-item>
         <el-form-item label="预算支出" prop="ExpenditureBudget">
-          <el-input type="number" v-model.number="form.ExpenditureBudget" style="width:46%" ></el-input>
+          <el-input type="number" v-model="form.ExpenditureBudget" style="width:46%" ></el-input>
         </el-form-item>
         <el-form-item label="项目说明" prop="projectContent">
           <el-input type="textarea" v-model="form.projectContent" ></el-input>
@@ -90,10 +90,9 @@ export default {
         // CustomerName: [
         //   { required: true, message: '请选择客户名称', trigger: 'blur' }
         // ],
-        ContractAmount: [
-          { required: true, message: '请输入合同金额' },
-          { type: 'number', message: '金额必需为数额' }
-        ],
+        // ContractAmount: [
+        //   { required: true, message: '请输入合同金额' },
+        // ],
         ContractDate: [
           { required: true, message: '请选择签约日期', trigger: 'blur' }
         ]
