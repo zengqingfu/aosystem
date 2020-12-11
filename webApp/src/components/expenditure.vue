@@ -311,10 +311,10 @@ export default {
       return false
     },
     submitForm (formName) {
+      console.log(this.form)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.postData()
-          this.resetForm('form')
         } else {
           console.log('error submit!!')
           return false
@@ -329,9 +329,9 @@ export default {
     },
     postData () { // 添加数据
       this.jsondata.postData('expendituredata', this.form).then(response => {
-        console.log(response.data, this.form)
+        // console.log(response.data, this.form)
         if (response.data === 'OK') {
-          console.log(response.data, this.form)
+          // console.log(response.data, this.form)
           this.dialogFormVisible = false
           this.getdata()
           this.resetForm('form')
@@ -399,7 +399,7 @@ export default {
                 this.tableData[i].Receivablesend -= Number(this.tableData[is].Receivables)
                 if (this.tableData[is].invoicebo !== '不计发票') {
                   this.tableData[i].weikaifapiao += Number(this.tableData[is].Receivables) - Number(this.tableData[is].invoice)
-                  console.log(Number(this.tableData[is].Receivables), Number(this.tableData[is].invoice), this.tableData[i].weikaifapiao)
+                  // console.log(Number(this.tableData[is].Receivables), Number(this.tableData[is].invoice), this.tableData[i].weikaifapiao)
                 } else {
                   // this.tableData[i].weikaifapiao += Number(this.tableData[is].number)
                 }
@@ -437,7 +437,7 @@ export default {
     },
     deletepost () { // 删除收款
       this.jsondata.deletepost('expendituredata', this.formModify.id).then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         if (response.data === 'OK') {
           this.dialogAddVisible = false
           this.outerVisible = false
