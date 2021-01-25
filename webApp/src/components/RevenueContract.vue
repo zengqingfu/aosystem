@@ -88,9 +88,17 @@
         <el-form-item>
           <el-button type="primary" @click="submitFormModify('formModify')">更新</el-button>
           <el-button @click="dialogAddVisible = false">取消</el-button>
-          <el-button style="float:right" @click="deletepost">删除收款</el-button>
+          <el-button style="float:right" @click="outerVisible = true">删除收款</el-button>
         </el-form-item>
       </el-form>
+    </el-dialog>
+    <el-dialog
+        width="30%"
+        title="确认删除"
+        :visible.sync="outerVisible"
+        append-to-body>
+        <el-button @click="outerVisible = false">取消</el-button>
+        <el-button @click="deletepost">删除</el-button>
     </el-dialog>
     <el-table id="RevenueContract" :data="tableData" border :summary-method="jsondata.getSummaries" show-summary style="width: 100%">
       <el-table-column type="index"></el-table-column>
@@ -116,6 +124,7 @@
 export default {
   data () {
     return {
+      outerVisible: false,
       weikaifapiao: 0, // 未收金额
       projectName: '',
       public: [],
@@ -282,10 +291,11 @@ export default {
       return false
     },
     deletepost () { // 删除收款
-      this.jsondata.deletepost('RevenueContract', this.formModify.id).then(response => {
+      this.jsondata.deletepost('revenuecontract', this.formModify.id).then(response => {
         console.log(response.data)
         if (response.data === 'OK') {
           this.dialogAddVisible = false
+          this.outerVisible = false
           this.getdata()
         }
       })

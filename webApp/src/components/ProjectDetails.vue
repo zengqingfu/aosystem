@@ -406,9 +406,9 @@ export default {
           }
         }
         // this.tableData[3].contents = '合同金额:' + this.jsondata.currency(this.contentsinvoice, '￥', 2)
-        this.tableData[3].contents += ' 　　应收金额:' + this.jsondata.currency(this.contentsint, '￥', 2)
+        // this.tableData[3].contents += '应收金额:' + this.jsondata.currency(this.contentsint, '￥', 2)
         this.tableData[3].contents += ' 　　到账金额:' + this.jsondata.currency(this.Receivablesint, '￥', 2)
-        this.tableData[3].contents += ' 　　未收金额:' + this.jsondata.currency(this.contentsint - this.Receivablesint, '￥', 2)
+        this.tableData[3].contents += ' 　　未收金额:' + this.jsondata.currency(this.form.ContractAmount - this.Receivablesint, '￥', 2)
         this.tableData[5].contents = '开出发票:' + this.jsondata.currency(this.invoiceint, '￥', 2) + ' / (已开票未收款:' + this.jsondata.currency(this.invoiceint - this.Receivablesint, '', 2) + ')'
         this.shoukuan = response.data
         for (let i = 0; i < this.shoukuan.length; i++) {
