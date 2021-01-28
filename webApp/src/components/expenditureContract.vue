@@ -2,7 +2,7 @@
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3 style="color:#333">
       <span  @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}}</span> > 支出列表
-      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加支出</el-button>
+      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true;imageUrlbo = false;form.ReceivablesData = ''">添加支出</el-button>
       <el-button style="float: right;margin-right:20px" onclick="exportExcel('#expenditureContractlist')">点击导出</el-button>
       <el-input v-model="inputData" placeholder="请输入搜索内容" @input="play(inputData)" style="width:200px;float: right;;margin-right:0px"></el-input>
     </h3>
@@ -81,6 +81,18 @@
         <el-form-item label="备注" prop="Remarks">
           <el-input type="textarea" v-model="form.Remarks" ></el-input>
         </el-form-item>
+        <el-form-item label="原件" >
+          <el-upload
+            class="avatar-uploader"
+            :action="upimgaction"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+              <img v-if="false" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <el-button style="vertical-align: top; margin-left:20px" @click="getimgurl()" v-if="imageUrlbo">查看原件</el-button>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('form')">确定添加</el-button>
           <el-button @click="resetForm('form')">重置</el-button>
@@ -132,20 +144,22 @@
             </el-select>
         </el-form-item>
         <el-form-item label="付款金额" prop="Receivables" v-if="boxvalue1" >
-          <el-col :span="11" style="margin-right:10px">
+          <el-col :span="11" style="margin-right:10px;width:30%">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>
           <el-input type="number"  v-model="formModify.Receivables" style="width:46%" ></el-input>
+          <el-button type="primary" @click="formModify.Receivables = formModify.number" style="width:15%" >付款</el-button>
         </el-form-item>
         <el-form-item label="收到发票" prop="invoice" v-if="boxvalue1">
-          <el-col :span="11" style="margin-right:10px" v-if="boxvalue" >
+          <el-col :span="11" style="margin-right:10px;width:30%" v-if="boxvalue" >
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.kaifapiaodate" style="width: 100%;"></el-date-picker>
           </el-col>
-          <el-input type="number"  v-model="formModify.invoice" style="width:25%" v-if="boxvalue" ></el-input>
+          <el-input type="number"  v-model="formModify.invoice" style="width:25.5%" v-if="boxvalue" ></el-input>
           <el-select v-model="formModify.invoicebo" placeholder="请选择" style="width:20%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="不计发票" value="不计发票"></el-option>
           </el-select>
+          <el-button type="primary" @click="formModify.invoice = formModify.number" v-if="boxvalue" style="width:15%" >开发票</el-button>
         </el-form-item>
         <el-form-item label="收款方" prop="SupplierName">
             <el-select v-model="formModify.SupplierName" filterable placeholder="请选择" style="width:46%" >
@@ -175,6 +189,18 @@
         </el-form-item> -->
         <el-form-item label="备注" prop="Remarks">
           <el-input type="textarea" v-model="formModify.Remarks" ></el-input>
+        </el-form-item>
+        <el-form-item label="原件" >
+          <el-upload
+            class="avatar-uploader"
+            :action="upimgaction"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+              <img v-if="false" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <el-button style="vertical-align: top; margin-left:20px" @click="getimgurl()" v-if="imageUrlbo">查看原件</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitFormModify('formModify')">更新</el-button>
@@ -218,6 +244,9 @@
 export default {
   data () {
     return {
+      imageUrlbo: false,
+      imageUrl: '',
+      upimgaction: 'http://localhost:3000/uploads',
       outerVisible: false,
       tableData_s: [],
       table: [],
@@ -336,12 +365,44 @@ export default {
     }
   },
   mounted () {
+    // 开发环境~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    if (window.location.host.match('localhost')) {
+      this.upimgaction = 'http://localhost:3000/uploads'
+    } else {
+      this.upimgaction = '/uploads'
+    }
     this.getdata()
     this.getFormData('supplierlist')
     this.getFormDataClass('expenditureclass')
     this.getFormDataPojname()
   },
   methods: {
+    getimgurl () {
+      window.open('http://' + window.location.host + '/uploads/' + this.formModify.ReceivablesData, 'target', '')
+    },
+    handleAvatarSuccess (res, file) {
+      // this.imageUrl = URL.createObjectURL(file.raw)
+      this.form.ReceivablesData = res.filename
+      this.formModify.ReceivablesData = res.filename
+      this.imageUrlbo = true
+      this.$message.error('上传资料成功,请保存修改!')
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'application/pdf'
+      // const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传资料格式错误!')
+      }
+      // const isJPG = file.type === 'image/jpeg'
+      // const isLt2M = file.size / 1024 / 1024 < 2
+      // if (!isJPG) {
+      //   this.$message.error('上传头像图片只能是 JPG 格式!')
+      // }
+      // if (!isLt2M) {
+      //   this.$message.error('上传头像图片大小不能超过 2MB!')
+      // }
+      return isJPG
+    },
     submitFormModify (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -488,6 +549,11 @@ export default {
         this.formModify = response.data[0]
         this.formModify.SupplierName = row.SupplierName
         this.formModify.projectClass = row.projectClass
+        if (this.formModify.ReceivablesData === '') {
+          this.imageUrlbo = false
+        } else {
+          this.imageUrlbo = true
+        }
       })
         .catch(error => {
           console.log(error)

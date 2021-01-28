@@ -2,6 +2,10 @@
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
       进行中项目
+      <el-button type="primary" @click="getdata('2020')">2020</el-button>
+      <el-button type="primary" @click="getdata('2021')">2021</el-button>
+      <el-button type="primary" @click="getdata('2022')">2022</el-button>
+      <el-button type="primary" @click="getdata()">全部</el-button>
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加项目</el-button>
       <el-button style="float: right;margin-right:20px" onclick="exportExcel('#projectid')">点击导出</el-button>
       <el-input v-model="inputData" placeholder="请输入搜索内容" @input="play(inputData)" style="width:200px;float: right;;margin-right:0px"></el-input>
@@ -48,6 +52,7 @@
       <el-table-column prop="projectName" label="项目名称" sortable></el-table-column>
       <el-table-column prop="ContractAmount" label="项目金额" sortable></el-table-column>
       <el-table-column prop="Receivables" label="已收金额" sortable></el-table-column>
+      <el-table-column prop="Receivablesbfb" label="已收比例" sortable></el-table-column>
       <el-table-column prop="Receivablesend" label="未收金额" sortable></el-table-column>
       <el-table-column prop="ExpenditureBudget" label="应付金额" sortable></el-table-column>
       <el-table-column prop="expenditure" label="已付金额" sortable></el-table-column>
@@ -160,13 +165,22 @@ export default {
           console.log(error)
         })
     },
-    getdata () {
+    getdata (yueanint) {
+      this.tableData = []
       this.jsondata.getDataClass('projectlist', '0', 'complete').then(responseprojectlist => {
+        if (yueanint) {
+          responseprojectlist.data.filter(Val => {
+            if (Val.ContractDate.includes(yueanint)) {
+              this.tableData.push(Val)
+            }
+          })
+        } else {
+          this.tableData = responseprojectlist.data
+        }
         this.jsondata.getData('receivables').then(response => {
           this.jsondata.getData('revenuecontract').then(responseContract => {
             this.jsondata.getData('expenditure').then(responseexpenditure => { // 已付记录
               this.jsondata.getData('expendituredata').then(responsehetong => { // 已付合同
-                this.tableData = responseprojectlist.data
                 for (var i = 0; i < this.tableData.length; i++) {
                   this.tableData[i].Receivables = 0
                   this.tableData[i].expenditure = 0
@@ -201,10 +215,11 @@ export default {
                   this.tableData[i].projectprofit = this.jsondata.currency(Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].ExpenditureBudget), '￥', 2)
                   this.tableData[i].ContractDate = this.tableData[i].ContractDate.substr(0, 10)
                   this.tableData[i].Receivablesend = this.jsondata.currency(Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].Receivables), '￥', 2)
-                  this.tableData[i].ContractAmount = this.jsondata.currency(Number(this.tableData[i].ContractAmount), '￥', 2)
                   this.tableData[i].ExpenditureBudget = this.jsondata.currency(this.tableData[i].ExpenditureBudget, '￥', 2)
                   this.tableData[i].expenditure = this.jsondata.currency(this.tableData[i].expenditure, '￥', 2)
+                  this.tableData[i].Receivablesbfb = (Number(this.tableData[i].Receivables) / Number(this.tableData[i].ContractAmount) * 100).toFixed(2) + '%'
                   this.tableData[i].Receivables = this.jsondata.currency(this.tableData[i].Receivables, '￥', 2)
+                  this.tableData[i].ContractAmount = this.jsondata.currency(Number(this.tableData[i].ContractAmount), '￥', 2)
                 }
                 this.tableData_s = this.tableData
               })

@@ -171,6 +171,34 @@ export default {
 .el-table .cell{
   min-height: 24px;
 }
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    height: 40px;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 100px;
+    height: 40px;
+    line-height: 40px !important;
+    text-align: center;
+}
+.avatar {
+    width: 100px;
+    height: 40px;
+    display: block;
+}
+.avatar-uploader {
+    width: 100px;
+    display: inline-block;
+}
 
 @media screen and (max-width: 780px) {
   .el-menu--collapse {

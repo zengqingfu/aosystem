@@ -391,8 +391,6 @@ export default {
     getdataReceivables () {
       this.tableData[0].contents = this.form.projectName
       this.tableData[1].contents = this.form.ContractDate
-      this.tableData[3].contents = '合同金额:' + this.jsondata.currency(this.form.ContractAmount, '￥', 2)
-      this.tableData[4].contents = '预算支出:' + this.jsondata.currency(this.form.ExpenditureBudget, '￥', 2)
       this.tableData[7].contents = this.form.projectContent
       this.jsondata.getDataClass('receivables', this.$route.params.id, 'projectlist').then(response => {
         this.projectdata = response.data
@@ -405,6 +403,8 @@ export default {
             }
           }
         }
+        this.tableData[3].contents = '合同金额:' + this.jsondata.currency(this.form.ContractAmount, '￥', 2)
+        this.tableData[4].contents = '预算支出:' + this.jsondata.currency(this.form.ExpenditureBudget, '￥', 2)
         // this.tableData[3].contents = '合同金额:' + this.jsondata.currency(this.contentsinvoice, '￥', 2)
         // this.tableData[3].contents += '应收金额:' + this.jsondata.currency(this.contentsint, '￥', 2)
         this.tableData[3].contents += ' 　　到账金额:' + this.jsondata.currency(this.Receivablesint, '￥', 2)

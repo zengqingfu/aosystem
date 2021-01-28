@@ -24,29 +24,29 @@ db.connect(err => {
 app.use(express.static('dist'));
 
 // elem上传图片
-// app.use('/uploads', express.static('uploads'))
-// app.post('/uploads', multer({dest: 'uploads'}).single('file'), function (req, res, next) {
-// if (req.file.length === 0) {  //判断一下文件是否存在，也可以在前端代码中进行判断。
-//     res.render("error", {message: "上传文件不能为空！"});
-//     return
-// } else {
-//    let file = req.file;
-//    let fileInfo = {};
-//    console.log(file);
-//    fs.renameSync('./uploads/' + file.filename, './uploads/' + file.originalname);//这里修改文件名字，比较随意。
-//    // 获取文件信息
-//    fileInfo.mimetype = file.mimetype;
-//    fileInfo.originalname = file.originalname;
-//    fileInfo.size = file.size;
-//    fileInfo.path = file.path;
-
-//    // 设置响应类型及编码
-//    res.set({
-//      'content-type': 'application/json; charset=utf-8'
-//   });
-//    res.send(fileInfo);
-// }
-// });
+app.use('/uploads', express.static('uploads'))
+app.post('/uploads', multer({dest: 'uploads'}).single('file'), function (req, res, next) {
+if (req.file.length === 0) {  //判断一下文件是否存在，也可以在前端代码中进行判断。
+    res.render("error", {message: "上传文件不能为空！"});
+    return
+} else {
+   let file = req.file;
+   let fileInfo = {};
+   fs.renameSync('./uploads/' + file.filename, './uploads/' + file.filename + '.pdf');//这里修改文件名字，比较随意。
+   // 获取文件信息
+   fileInfo.mimetype = file.mimetype;
+   fileInfo.originalname = file.originalname;
+   fileInfo.size = file.size;
+   fileInfo.filename = file.filename + '.pdf';
+   fileInfo.path = file.path;
+   console.log(fileInfo);
+   // 设置响应类型及编码
+   res.set({
+     'content-type': 'application/json; charset=utf-8'
+  });
+   res.send(fileInfo);
+}
+});
 
 //登录数据
 app.use('/loigndata/',function(req, res, next){
