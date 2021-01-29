@@ -385,7 +385,7 @@ export default {
       this.form.ReceivablesData = res.filename
       this.formModify.ReceivablesData = res.filename
       this.imageUrlbo = true
-      this.$message.error('上传资料成功,请保存修改!')
+      this.$message.success('上传资料成功,请保存修改!')
     },
     beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'application/pdf'

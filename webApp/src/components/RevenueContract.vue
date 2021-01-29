@@ -2,7 +2,7 @@
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
       <span @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}}-项目 > </span>合同列表
-      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加合同</el-button>
+      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true;imageUrlbo = false;form.ReceivablesData = ''">添加合同</el-button>
       <el-button style="float: right;margin-right:20px" onclick="exportExcel('#RevenueContract')">点击导出</el-button>
     </h3>
     <el-dialog title="添加收款" :visible.sync="dialogFormVisible">
@@ -40,6 +40,18 @@
         </el-form-item>
         <el-form-item label="备注" prop="Remarks">
           <el-input type="textarea" v-model="form.Remarks" ></el-input>
+        </el-form-item>
+        <el-form-item label="原件" >
+          <el-upload
+            class="avatar-uploader"
+            :action="upimgaction"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+              <img v-if="false" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <el-button style="vertical-align: top; margin-left:20px" @click="getimgurl()" v-if="imageUrlbo">查看原件</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('form')">确定添加</el-button>
@@ -85,6 +97,18 @@
         <el-form-item label="备注" prop="Remarks">
           <el-input type="textarea" v-model="formModify.Remarks" ></el-input>
         </el-form-item>
+        <el-form-item label="原件" >
+          <el-upload
+            class="avatar-uploader"
+            :action="upimgaction"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+              <img v-if="false" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <el-button style="vertical-align: top; margin-left:20px" @click="getimgurl()" v-if="imageUrlbo">查看原件</el-button>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitFormModify('formModify')">更新</el-button>
           <el-button @click="dialogAddVisible = false">取消</el-button>
@@ -124,6 +148,9 @@
 export default {
   data () {
     return {
+      imageUrlbo: false,
+      imageUrl: '',
+      upimgaction: 'http://localhost:3000/uploads',
       outerVisible: false,
       weikaifapiao: 0, // 未收金额
       projectName: '',
@@ -194,11 +221,42 @@ export default {
   watch: {
   },
   mounted () {
+    // 开发环境~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    if (window.location.host.match('localhost')) {
+      this.upimgaction = 'http://localhost:3000/uploads'
+    } else {
+      this.upimgaction = '/uploads'
+    }
     this.getdata()
     this.getFormDataPojname()
   },
   methods: {
-
+    getimgurl () {
+      window.open('http://' + window.location.host + '/uploads/' + this.formModify.ReceivablesData, 'target', '')
+    },
+    handleAvatarSuccess (res, file) {
+      // this.imageUrl = URL.createObjectURL(file.raw)
+      this.form.ReceivedData = res.filename
+      this.formModify.ReceivedData = res.filename
+      this.imageUrlbo = true
+      this.$message.success('上传资料成功,请保存修改!')
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'application/pdf'
+      // const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传资料格式错误!')
+      }
+      // const isJPG = file.type === 'image/jpeg'
+      // const isLt2M = file.size / 1024 / 1024 < 2
+      // if (!isJPG) {
+      //   this.$message.error('上传头像图片只能是 JPG 格式!')
+      // }
+      // if (!isLt2M) {
+      //   this.$message.error('上传头像图片大小不能超过 2MB!')
+      // }
+      return isJPG
+    },
     submitFormModify (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -311,6 +369,11 @@ export default {
       this.dialogAddVisible = true
       this.jsondata.getDataId('revenuecontract', row.id).then(response => {
         this.formModify = response.data[0]
+        if (this.formModify.ReceivedData === '') {
+          this.imageUrlbo = false
+        } else {
+          this.imageUrlbo = true
+        }
       })
         .catch(error => {
           console.log(error)
