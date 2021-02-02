@@ -133,18 +133,17 @@ export default {
   },
   updatpostData (form, jsondata) {
     if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan') {
-      return
+      return axios({
+        url: geturl() + '/updatpost/' + form + '/' + sessionStorage.getItem('Token'),
+        method: 'POST',
+        data: jsondata,
+        dataType: 'JSON',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
     }
     // this.postDatabf(jsondata, 'updat')
-    return axios({
-      url: geturl() + '/updatpost/' + form + '/' + sessionStorage.getItem('Token'),
-      method: 'POST',
-      data: jsondata,
-      dataType: 'JSON',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
   },
   currency (value, currency, decimals) { // 生成货币格式
     const digitsRE = /(\d{3})(?=\d)/g
