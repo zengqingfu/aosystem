@@ -79,9 +79,10 @@ export default {
             sessionStorage.setItem('user', this.loginForm.username)
           } else {
             sessionStorage.setItem('Token', response.data)
+            sessionStorage.setItem('class', response.class)
             sessionStorage.setItem('user', this.loginForm.username)
           }
-          // console.log(response.data)
+          this.jsondata.postDatabf('login', 'login')
           this.$router.push('/index')
         }
       })

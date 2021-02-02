@@ -91,31 +91,29 @@ export default {
     })
   },
   postData (form, jsondata) {
-    if (sessionStorage.getItem('user') === 'bigmindjz') {
-      return
+    if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan') {
+      return axios({
+        url: geturl() + '/postdata/' + form + '/' + sessionStorage.getItem('Token'),
+        method: 'POST',
+        data: jsondata,
+        dataType: 'JSON',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
     }
-    return axios({
-      url: geturl() + '/postdata/' + form + '/' + sessionStorage.getItem('Token'),
-      method: 'POST',
-      data: jsondata,
-      dataType: 'JSON',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
   },
   deletepost (form, listid) { // 删除收款
-    if (sessionStorage.getItem('user') === 'bigmindjz') {
-      return
+    if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan') {
+      return axios({
+        url: geturl() + '/deletepost/' + form + '/' + listid + '/' + sessionStorage.getItem('user') + '/' + sessionStorage.getItem('Token'),
+        method: 'GET',
+        dataType: 'JSON',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
     }
-    return axios({
-      url: geturl() + '/deletepost/' + form + '/' + listid + '/' + sessionStorage.getItem('user') + '/' + sessionStorage.getItem('Token'),
-      method: 'GET',
-      dataType: 'JSON',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
   },
   postDatabf (jsondata, listdata) { // 添加缺失数据
     axios({
@@ -134,7 +132,7 @@ export default {
     })
   },
   updatpostData (form, jsondata) {
-    if (sessionStorage.getItem('user') === 'bigmindjz') {
+    if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan') {
       return
     }
     // this.postDatabf(jsondata, 'updat')

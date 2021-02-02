@@ -98,6 +98,7 @@ export default {
       this.biujifapiao = 0
       this.weikaifapiao = 0
       this.jsondata.getData('expendituredata').then(responseexpenditureData => { // 支出
+        responseexpenditureData.data = responseexpenditureData.data.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 排序.reverse()
         this.jsondata.getDataClass('projectlist', '0', 'complete').then(responseprojectList => { // 项目
           this.jsondata.getData('expenditure').then(responseexpenditure => { // 支出合同
             this.jsondata.getDataClass('supplierlist', this.$route.params.id, 'id').then(responsegys => { // 供应商例表
@@ -180,7 +181,6 @@ export default {
                   this.tableData[i].projectnumber = this.jsondata.currency(this.tableData[i].projectnumber, '￥', 2)
                   this.tableData[i].biujifapiao = this.jsondata.currency(this.tableData[i].biujifapiao, '￥', 2)
                 }
-                this.tableData = this.tableData.sort(function (a, b) { return (a.Receivableslist + '').localeCompare(b.Receivableslist + '') }) // 排序.reverse()
                 this.tableData = this.tableData.sort(function (a, b) { return (a.listid + '').localeCompare(b.listid + '') }) // 排序.reverse()
                 this.tableData = this.tableData.sort(function (a, b) { return (a.projectlist + '').localeCompare(b.projectlist + '') }) // 排序.reverse()
                 this.Suppliertitle = responsegys.data[0].SupplierName

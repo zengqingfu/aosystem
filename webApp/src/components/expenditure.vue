@@ -40,20 +40,22 @@
             </el-select>
         </el-form-item>
         <el-form-item label="付款金额" prop="Receivables">
-          <el-col :span="11" style="margin-right:10px">
+          <el-col :span="11" style="margin-right:10px;width:30%">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>
           <el-input type="number"  v-model="form.Receivables" style="width:46%" ></el-input>
+          <el-button type="primary" @click="form.Receivables = form.number" style="width:15%" >付款</el-button>
         </el-form-item>
         <el-form-item label="收到发票" prop="invoice">
-          <el-col :span="11" style="margin-right:10px" v-if="boxvalue" >
+          <el-col :span="11" style="margin-right:10px;width:30%" v-if="boxvalue" >
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.kaifapiaodate" style="width: 100%;"></el-date-picker>
           </el-col>
-          <el-input type="number"  v-model="form.invoice" style="width:25%" v-if="boxvalue"  ></el-input>
+          <el-input type="number"  v-model="form.invoice" style="width:25.5%" v-if="boxvalue"  ></el-input>
           <el-select v-model="form.invoicebo" placeholder="请选择" style="width:20%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="不计发票" value="不计发票"></el-option>
           </el-select>
+          <el-button type="primary" @click="form.invoice = form.number" v-if="boxvalue" style="width:15%" >开票</el-button>
         </el-form-item>
         <el-form-item label="备注" prop="Remarks">
           <el-input type="textarea" v-model="form.Remarks" ></el-input>

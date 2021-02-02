@@ -41,16 +41,18 @@
             </el-select>
         </el-form-item>
         <el-form-item label="开出发票" prop="invoice">
-          <el-col :span="11" style="margin-right:10px">
+          <el-col :span="11" style="margin-right:10px;width:30%">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.kaifapiaodate" style="width: 100%;"></el-date-picker>
           </el-col>
           <el-input type="number"  v-model="form.invoice" style="width:46%" ></el-input>
+          <el-button type="primary" @click="formModify.invoice = formModify.number" style="width:15%" >开票</el-button>
         </el-form-item>
         <el-form-item label="到账金额"  prop="Receivables" >
-          <el-col :span="11" style="margin-right:10px">
+          <el-col :span="11" style="margin-right:10px;width:30%">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>
           <el-input type="number" v-model="form.Receivables" style="width:46%" ></el-input>
+          <el-button type="primary" @click="formModify.Receivables = formModify.number" style="width:15%" >付款</el-button>
         </el-form-item>
         <el-form-item label="备注" prop="Remarks">
         <el-input type="textarea" v-model="form.Remarks" ></el-input>
