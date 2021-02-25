@@ -11,22 +11,28 @@
         <el-form-item label="付款名称" prop="ReceivablesName">
           <el-input v-model="form.ReceivablesName"></el-input>
         </el-form-item>
-        <el-form-item label="应付金额" prop="number">
-          <el-input type="number"  v-model="form.number" style="width:46%" ></el-input>
+        <el-form-item label="应付金额" prop="number" style="width:46%;display: inline-block;vertical-align: top;margin-right:7%">
+          <el-input type="number"  v-model="form.number" ></el-input>
         </el-form-item>
-        <el-form-item label="签约日期" prop="contractdate">
-          <el-col :span="11">
+        <el-form-item label="签约日期" prop="contractdate" style="width:46%;display: inline-block;vertical-align: top;">
+          <el-col>
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.contractdate" style="width: 100%;"></el-date-picker>
           </el-col>
         </el-form-item>
-        <el-form-item label="有无合同" prop="contract">
-            <el-select v-model="form.contract" placeholder="请选择" style="width:46%" >
+        <el-form-item label="付款方式" prop="ReceivablesMode" style="width:46%;display: inline-block;vertical-align: top;margin-right:7%">
+            <el-select v-model="form.ReceivablesMode" placeholder="请选择" style="width:100%">
+              <el-option label="现金" value="现金"></el-option>
+              <el-option label="银行" value="银行"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="有无合同" prop="contract" style="width:46%;display: inline-block;vertical-align: top;">
+            <el-select v-model="form.contract" placeholder="请选择" style="width:100%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="无" value="无"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="分期" prop="Receivableslist">
-            <el-select v-model="form.Receivableslist" placeholder="请选择" style="width:46%" >
+        <el-form-item label="分期" prop="Receivableslist" style="width:46%;display: inline-block;vertical-align: top;margin-right:7%">
+            <el-select v-model="form.Receivableslist" placeholder="请选择" style="width:100%" >
               <el-option label="1期" value="1期"></el-option>
               <el-option label="2期" value="2期"></el-option>
               <el-option label="3期" value="3期"></el-option>
@@ -36,27 +42,29 @@
               <el-option label="不分期" value="不分期"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="付款方式" prop="ReceivablesMode">
-            <el-select v-model="form.ReceivablesMode" placeholder="请选择" style="width:46%" >
+        <el-form-item label="付款方式" prop="ReceivablesMode" style="width:46%;display: inline-block;vertical-align: top;">
+            <el-select v-model="form.ReceivablesMode" placeholder="请选择" style="width:100%" >
               <el-option label="现金" value="现金"></el-option>
               <el-option label="银行" value="银行"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="付款金额" prop="Receivables" v-if="boxvalue1" >
-          <el-col :span="11" style="margin-right:10px">
-            <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.daozhangdate" style="width: 100%;"></el-date-picker>
+          <el-col :span="11" style="margin-right:10px;width:30%">
+            <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>
           <el-input type="number"  v-model="form.Receivables" style="width:46%" ></el-input>
+          <el-button type="primary" @click="form.Receivables = form.number" style="width:15%" >付款</el-button>
         </el-form-item>
         <el-form-item label="收到发票" prop="invoice" v-if="boxvalue1">
-          <el-col :span="11" style="margin-right:10px" v-if="boxvalue" >
+          <el-col :span="11" style="margin-right:10px;width:30%" v-if="boxvalue" >
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="form.kaifapiaodate" style="width: 100%;"></el-date-picker>
           </el-col>
-          <el-input type="number"  v-model="form.invoice" style="width:25%" v-if="boxvalue" ></el-input>
+          <el-input type="number"  v-model="form.invoice" style="width:25.5%" v-if="boxvalue" ></el-input>
           <el-select v-model="form.invoicebo" placeholder="请选择" style="width:20%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="不计发票" value="不计发票"></el-option>
           </el-select>
+          <el-button type="primary" @click="form.invoice = form.number" v-if="boxvalue" style="width:15%" >开发票</el-button>
         </el-form-item>
         <el-form-item label="收款方" filterable prop="SupplierName">
             <el-select v-model="form.SupplierName" filterable placeholder="请选择" style="width:46%" >
@@ -106,28 +114,28 @@
         <el-form-item label="付款名称" prop="ReceivablesName">
           <el-input v-model="formModify.ReceivablesName"></el-input>
         </el-form-item>
-        <el-form-item label="应付金额" prop="number">
-          <el-input type="number"  v-model="formModify.number" style="width:46%" ></el-input>
+        <el-form-item label="应付金额" prop="number" style="width:46%;display: inline-block;vertical-align: top;margin-right:7%">
+          <el-input type="number"  v-model="formModify.number" ></el-input>
         </el-form-item>
-        <el-form-item label="签约日期" prop="contractdate">
-          <el-col :span="11">
+        <el-form-item label="签约日期" prop="contractdate" style="width:46%;display: inline-block;vertical-align: top;">
+          <el-col>
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.contractdate" style="width: 100%;"></el-date-picker>
           </el-col>
         </el-form-item>
-        <el-form-item label="付款方式" prop="ReceivablesMode">
-            <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:46%" >
+        <el-form-item label="付款方式" prop="ReceivablesMode" style="width:46%;display: inline-block;vertical-align: top;margin-right:7%">
+            <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:100%">
               <el-option label="现金" value="现金"></el-option>
               <el-option label="银行" value="银行"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="有无合同" prop="contract">
-            <el-select v-model="formModify.contract" placeholder="请选择" style="width:46%" >
+        <el-form-item label="有无合同" prop="contract" style="width:46%;display: inline-block;vertical-align: top;">
+            <el-select v-model="formModify.contract" placeholder="请选择" style="width:100%" >
             <el-option label="有" value="有"></el-option>
             <el-option label="无" value="无"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="分期" prop="Receivableslist">
-            <el-select v-model="formModify.Receivableslist" placeholder="请选择" style="width:46%" >
+        <el-form-item label="分期" prop="Receivableslist" style="width:46%;display: inline-block;vertical-align: top;margin-right:7%">
+            <el-select v-model="formModify.Receivableslist" placeholder="请选择" style="width:100%" >
               <el-option label="1期" value="1期"></el-option>
               <el-option label="2期" value="2期"></el-option>
               <el-option label="3期" value="3期"></el-option>
@@ -137,21 +145,21 @@
               <el-option label="不分期" value="不分期"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="付款方式" prop="ReceivablesMode">
-            <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:46%" >
+        <el-form-item label="付款方式" prop="ReceivablesMode" style="width:46%;display: inline-block;vertical-align: top;">
+            <el-select v-model="formModify.ReceivablesMode" placeholder="请选择" style="width:100%" >
               <el-option label="现金" value="现金"></el-option>
               <el-option label="银行" value="银行"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="付款金额" prop="Receivables" v-if="boxvalue1" >
-          <el-col :span="11" style="margin-right:10px;width:30%">
+          <el-col style="margin-right:10px;width:37%">
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.daozhangdate" style="width: 100%;"></el-date-picker>
           </el-col>
           <el-input type="number"  v-model="formModify.Receivables" style="width:46%" ></el-input>
           <el-button type="primary" @click="formModify.Receivables = formModify.number" style="width:15%" >付款</el-button>
         </el-form-item>
         <el-form-item label="收到发票" prop="invoice" v-if="boxvalue1">
-          <el-col :span="11" style="margin-right:10px;width:30%" v-if="boxvalue" >
+          <el-col style="margin-right:10px;width:37%" v-if="boxvalue" >
             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formModify.kaifapiaodate" style="width: 100%;"></el-date-picker>
           </el-col>
           <el-input type="number"  v-model="formModify.invoice" style="width:25.5%" v-if="boxvalue" ></el-input>
