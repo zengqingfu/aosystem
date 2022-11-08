@@ -144,6 +144,14 @@ export default {
         this.jsondata.getData('revenuecontract').then(responseContract => {
           this.jsondata.getData('expenditure').then(responseexpenditure => { // 已付合同
             this.jsondata.getData('expendituredata').then(responsehetong => { // 已付合同
+              for (let item in responsehetong.data) {
+                for (let items in responseexpenditure.data) {
+                  if (responseexpenditure.data[items].id === responsehetong.data[item].projectId) {
+                    responsehetong.data[item].hetongid = responseexpenditure.data[items].projectId
+                  }
+                }
+              }
+
               for (var i = 0; i < this.tableData.length; i++) {
                 this.tableData[i].Receivables = 0
                 this.tableData[i].expenditure = 0
@@ -155,20 +163,25 @@ export default {
                     }
                   }
                 }
+                for (let item in responsehetong.data) {
+                  if (Number(responsehetong.data[item].hetongid) === Number(this.tableData[i].id)) {
+                    this.tableData[i].expenditure += Number(responsehetong.data[item].Receivables)
+                  }
+                }
                 for (var ie = 0; ie < responseexpenditure.data.length; ie++) {
                   responseexpenditure.data[ie].expenditure = 0
                   if (this.tableData[i].id === responseexpenditure.data[ie].projectId) {
                     this.tableData[i].ExpenditureBudget += Number(responseexpenditure.data[ie].number)
                   }
-                  for (var iee = 0; iee < responsehetong.data.length; iee++) {
-                    if (responseexpenditure.data[ie].id === responsehetong.data[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
-                      responseexpenditure.data[ie].expenditure += Number(responsehetong.data[iee].Receivables)
-                    }
-                  }
+                  // for (var iee = 0; iee < responsehetong.data.length; iee++) {
+                  //   if (responseexpenditure.data[ie].id === responsehetong.data[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
+                  //     responseexpenditure.data[ie].expenditure += Number(responsehetong.data[iee].Receivables)
+                  //   }
+                  // }
                   if (responseexpenditure.data[ie].Receivableslist === '不分期' && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
                     this.tableData[i].expenditure += Number(responseexpenditure.data[ie].Receivables)
                   } else {
-                    this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
+                    // this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
                   }
                 }
                 this.tableData[i].profit = this.jsondata.currency(Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].ExpenditureBudget), '￥', 2)

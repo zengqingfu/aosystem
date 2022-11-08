@@ -90,8 +90,8 @@ export default {
       }
     })
   },
-  postData (form, jsondata) {
-    if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan') {
+  postData (form, jsondata) { // 添加数据
+    if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan' || sessionStorage.getItem('user') === 'bigmindnew') {
       return axios({
         url: geturl() + '/postdata/' + form + '/' + sessionStorage.getItem('Token'),
         method: 'POST',
@@ -104,7 +104,7 @@ export default {
     }
   },
   deletepost (form, listid) { // 删除收款
-    if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan') {
+    if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan' || sessionStorage.getItem('user') === 'bigmindnew') {
       return axios({
         url: geturl() + '/deletepost/' + form + '/' + listid + '/' + sessionStorage.getItem('user') + '/' + sessionStorage.getItem('Token'),
         method: 'GET',
@@ -131,8 +131,8 @@ export default {
       }
     })
   },
-  updatpostData (form, jsondata) {
-    if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan') {
+  updatpostData (form, jsondata) { // 更新数据
+    if (sessionStorage.getItem('user') === 'zeng' || sessionStorage.getItem('user') === 'lengfan' || sessionStorage.getItem('user') === 'bigmindnew') {
       return axios({
         url: geturl() + '/updatpost/' + form + '/' + sessionStorage.getItem('Token'),
         method: 'POST',

@@ -5,6 +5,7 @@
       <el-button type="primary" @click="getdata('2020')">2020</el-button>
       <el-button type="primary" @click="getdata('2021')">2021</el-button>
       <el-button type="primary" @click="getdata('2022')">2022</el-button>
+      <el-button type="primary" @click="getdata('2023')">2023</el-button>
       <el-button type="primary" @click="getdata()">全部</el-button>
       <el-button type="primary" style="float: right;" @click="dialogFormVisible = true">添加项目</el-button>
       <el-button style="float: right;margin-right:20px" onclick="exportExcel('#projectid')">点击导出</el-button>
@@ -35,6 +36,9 @@
         </el-form-item>
         <el-form-item label="预算支出" prop="ExpenditureBudget">
           <el-input type="number" v-model="form.ExpenditureBudget" style="width:46%" ></el-input>
+        </el-form-item>
+        <el-form-item label="归属区域公司" prop="projectup">
+          <el-input v-model="form.Receivables" style="width:46%" ></el-input>
         </el-form-item>
         <el-form-item label="项目说明" prop="projectContent">
           <el-input type="textarea" v-model="form.projectContent" ></el-input>
@@ -84,6 +88,7 @@ export default {
         CustomerName: '',
         ContractAmount: '',
         ContractDate: '',
+        Receivables: '',
         ExpenditureBudget: ''
       },
       formexpenditureData: [],
@@ -180,8 +185,16 @@ export default {
         this.jsondata.getData('receivables').then(response => {
           this.jsondata.getData('revenuecontract').then(responseContract => {
             this.jsondata.getData('expenditure').then(responseexpenditure => { // 已付记录
-              this.jsondata.getData('expendituredata').then(responsehetong => { // 已付合同
+              this.jsondata.getData('expendituredata').then(responsehetong => { // 已付合同   76,450,549.58
+                for (let item in responsehetong.data) {
+                  for (let items in responseexpenditure.data) {
+                    if (responseexpenditure.data[items].id === responsehetong.data[item].projectId) {
+                      responsehetong.data[item].hetongid = responseexpenditure.data[items].projectId
+                    }
+                  }
+                }
                 for (var i = 0; i < this.tableData.length; i++) {
+                  this.tableData[i].Customerindex = this.tableData[i].Receivables // 乱七八糟的添加~~~~~~~~~~~唉~~~~~~~~~
                   this.tableData[i].Receivables = 0
                   this.tableData[i].expenditure = 0
                   this.tableData[i].Receivablesend = 0
@@ -193,20 +206,25 @@ export default {
                       }
                     }
                   }
+                  for (let item in responsehetong.data) {
+                    if (Number(responsehetong.data[item].hetongid) === Number(this.tableData[i].id)) {
+                      this.tableData[i].expenditure += Number(responsehetong.data[item].Receivables)
+                    }
+                  }
                   for (var ie = 0; ie < responseexpenditure.data.length; ie++) {
                     responseexpenditure.data[ie].expenditure = 0
                     if (this.tableData[i].id === responseexpenditure.data[ie].projectId) {
                       this.tableData[i].ExpenditureBudget += Number(responseexpenditure.data[ie].number)
                     }
-                    for (var iee = 0; iee < responsehetong.data.length; iee++) {
-                      if (responseexpenditure.data[ie].id === responsehetong.data[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
-                        responseexpenditure.data[ie].expenditure += Number(responsehetong.data[iee].Receivables)
-                      }
-                    }
+                    // for (var iee = 0; iee < responsehetong.data.length; iee++) {
+                    //   if (responseexpenditure.data[ie].id === responsehetong.data[iee].projectId && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
+                    //     responseexpenditure.data[ie].expenditure += Number(responsehetong.data[iee].Receivables)
+                    //   }
+                    // }
                     if (responseexpenditure.data[ie].Receivableslist === '不分期' && Number(responseexpenditure.data[ie].projectId) === Number(this.tableData[i].id)) {
                       this.tableData[i].expenditure += Number(responseexpenditure.data[ie].Receivables)
                     } else {
-                      this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
+                      // this.tableData[i].expenditure += responseexpenditure.data[ie].expenditure
                     }
                   }
                   this.tableData[i].profit = (Number(this.tableData[i].ContractAmount) - Number(this.tableData[i].ExpenditureBudget)) / Number(this.tableData[i].ContractAmount)
@@ -247,7 +265,11 @@ export default {
     play (input) {
       let _this = this
       _this.table = _this.tableData.filter(Val => {
-        if (Val.ContractDate.includes(input) || Val.projectName.includes(input) || Val.projectContent.includes(input)) {
+        if (Val.Customerindex === 'null' || Val.Customerindex === null) {
+          Val.Customerindex = '-'
+        }
+        // console.log(Val.Customerindex)
+        if (Val.ContractDate.includes(input) || Val.projectName.includes(input) || Val.projectContent.includes(input) || Val.Customerindex.includes(input)) {
           _this.table.push(Val)
           return _this.table
         }

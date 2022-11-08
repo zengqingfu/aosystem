@@ -105,48 +105,91 @@ export default {
               this.jsondata.getData('expenditureclass').then(responselist => { // 支出分类
                 for (let i = 0; i < responseprojectList.data.length; i++) {
                   for (let is = 0; is < responseexpenditure.data.length; is++) {
-                    for (let iss = 0; iss < responseexpenditureData.data.length; iss++) {
-                      if (responseprojectList.data[i].id === responseexpenditure.data[is].projectId && Number(responseexpenditureData.data[iss].projectId) === Number(responseexpenditure.data[is].id) && responseexpenditure.data[is].SupplierName === this.$route.params.id) {
-                        responseexpenditureData.data[iss].hetongid = responseexpenditure.data[is].id
-                        responseexpenditureData.data[iss].projectdata = responseexpenditure.data[is].contractdate
-                        responseexpenditureData.data[iss].projectlist = responseprojectList.data[i].projectName
-                        responseexpenditureData.data[iss].projectname = responseexpenditure.data[is].ReceivablesName
-                        responseexpenditureData.data[iss].listid = responseexpenditure.data[is].id
-                        responseexpenditureData.data[iss].weikaifapiao = Number(responseexpenditureData.data[iss].Receivables) - Number(responseexpenditureData.data[iss].invoice)
-                        responseexpenditureData.data[iss].porjectidset = responseprojectList.data[i].id
-                        if (responseexpenditure.data[is].number != '') { //eslint-disable-line
-                          responseexpenditureData.data[iss].projectnumber = Number(responseexpenditure.data[is].number)
-                          responseexpenditure.data[is].number = '' // 应付总额合并
-                        } else {
-                          responseexpenditureData.data[iss].projectnumber = 0
-                        }
-                        if (responseexpenditureData.data[iss].invoicebo === '不计发票') {
-                          responseexpenditureData.data[iss].biujifapiao = Number(responseexpenditureData.data[iss].Receivables)
-                        } else {
-                          responseexpenditureData.data[iss].biujifapiao = 0
-                        }
-                        if (responseexpenditure.data[is].Receivableslist === '不分期') {
-                        } else {
-                        }
-                        this.tableData.push(responseexpenditureData.data[iss])
-                        // console.log(responseexpenditureData.data[iss].invoicebo)
-                        // this.tableData[i].Receivables += Number(response.data[iss].Receivables)
-                      }
-                    }
-                    if (responseexpenditure.data[is].Receivableslist === '不分期' && responseexpenditure.data[is].SupplierName === this.$route.params.id && responseprojectList.data[i].id === responseexpenditure.data[is].projectId) {
-                      responseexpenditure.data[is].listid = responseexpenditure.data[is].id
-                      responseexpenditure.data[is].projectdata = responseexpenditure.data[is].contractdate
+                    if (responseprojectList.data[i].id === responseexpenditure.data[is].projectId) {
                       responseexpenditure.data[is].projectlist = responseprojectList.data[i].projectName
-                      responseexpenditure.data[is].projectname = responseexpenditure.data[is].ReceivablesName
-                      responseexpenditure.data[is].projectnumber = responseexpenditure.data[is].number
-                      responseexpenditure.data[is].weikaifapiao = Number(responseexpenditure.data[is].Receivables) - Number(responseexpenditure.data[is].invoice)
-                      responseexpenditure.data[is].porjectidset = responseprojectList.data[i].id
-                      responseexpenditure.data[is].hetongid = responseexpenditure.data[is].id
-                      this.tableData.push(responseexpenditure.data[is])
-                      // console.log(responseexpenditure.data[is].Receivables, responseexpenditure.data[is].projectnumber)
+                      responseexpenditure.data[is].listid = responseprojectList.data[i].id
+                      this.fromsupplierlist.push(responseexpenditure.data[is])
                     }
                   }
                 }
+                responseexpenditure.data = this.fromsupplierlist
+                for (let is = 0; is < responseexpenditure.data.length; is++) {
+                  for (let iss = 0; iss < responseexpenditureData.data.length; iss++) {
+                    if (Number(responseexpenditureData.data[iss].projectId) === Number(responseexpenditure.data[is].id) && responseexpenditure.data[is].SupplierName === this.$route.params.id) {
+                      responseexpenditureData.data[iss].hetongid = responseexpenditure.data[is].id
+                      responseexpenditureData.data[iss].projectdata = responseexpenditure.data[is].contractdate
+                      responseexpenditureData.data[iss].projectlist = responseexpenditure.data[is].projectlist
+                      responseexpenditureData.data[iss].projectname = responseexpenditure.data[is].ReceivablesName
+                      responseexpenditureData.data[iss].listid = responseexpenditure.data[is].id
+                      responseexpenditureData.data[iss].weikaifapiao = Number(responseexpenditureData.data[iss].Receivables) - Number(responseexpenditureData.data[iss].invoice)
+                      responseexpenditureData.data[iss].porjectidset = responseexpenditure.data[is].listid
+                      if (responseexpenditure.data[is].number != '') { //eslint-disable-line
+                        responseexpenditureData.data[iss].projectnumber = Number(responseexpenditure.data[is].number)
+                        responseexpenditure.data[is].number = '' // 应付总额合并
+                      } else {
+                        responseexpenditureData.data[iss].projectnumber = 0
+                      }
+                      if (responseexpenditureData.data[iss].invoicebo === '不计发票') {
+                        responseexpenditureData.data[iss].biujifapiao = Number(responseexpenditureData.data[iss].Receivables)
+                      } else {
+                        responseexpenditureData.data[iss].biujifapiao = 0
+                      }
+                      if (responseexpenditure.data[is].Receivableslist === '不分期') {
+                      } else {
+                      }
+                      this.tableData.push(responseexpenditureData.data[iss])
+                      // console.log(responseexpenditureData.data[iss].invoicebo)
+                      // this.tableData[i].Receivables += Number(response.data[iss].Receivables)
+                    }
+                  }
+                  if (responseexpenditure.data[is].Receivableslist === '不分期' && responseexpenditure.data[is].SupplierName === this.$route.params.id) {
+                    responseexpenditure.data[is].listid = responseexpenditure.data[is].id
+                    responseexpenditure.data[is].projectdata = responseexpenditure.data[is].contractdate
+                    responseexpenditure.data[is].projectlist = responseexpenditure.data[is].projectlist
+                    responseexpenditure.data[is].projectname = responseexpenditure.data[is].ReceivablesName
+                    responseexpenditure.data[is].projectnumber = responseexpenditure.data[is].number
+                    responseexpenditure.data[is].weikaifapiao = Number(responseexpenditure.data[is].Receivables) - Number(responseexpenditure.data[is].invoice)
+                    responseexpenditure.data[is].porjectidset = responseexpenditure.data[is].listid
+                    responseexpenditure.data[is].hetongid = responseexpenditure.data[is].id
+                    responseexpenditure.data[is].ReceivablesData = ''
+                    this.tableData.push(responseexpenditure.data[is])
+                    // console.log(responseexpenditure.data[is].Receivables, responseexpenditure.data[is].projectnumber)
+                  }
+                }
+                // for (let i = 0; i < responseprojectList.data.length; i++) {
+                //   for (let is = 0; is < responseexpenditure.data.length; is++) {
+                //     if (responseprojectList.data[i].id === responseexpenditure.data[is].projectId) {
+                //       responseexpenditure.data[is].projectlist = responseprojectList.data[i].projectName
+                //       responseexpenditure.data[is].listid = responseprojectList.data[i].id
+                //       this.fromsupplierlist.push(responseexpenditure.data[is])
+                //     }
+                //   }
+                // }
+                // for (let item in this.fromsupplierlist) {
+                //   for (let iss = 0; iss < responseexpenditureData.data.length; iss++) {
+                //     if (Number(responseexpenditureData.data[iss].projectId) === Number(this.fromsupplierlist[item].id) && this.fromsupplierlist[item].SupplierName === this.$route.params.id) {
+                //       responseexpenditureData.data[iss].hetongid = this.fromsupplierlist[item].id
+                //       responseexpenditureData.data[iss].projectdata = this.fromsupplierlist[item].contractdate
+                //       responseexpenditureData.data[iss].projectlist = this.fromsupplierlist[item].projectName
+                //       responseexpenditureData.data[iss].projectname = this.fromsupplierlist[item].ReceivablesName
+                //       responseexpenditureData.data[iss].listid = this.fromsupplierlist[item].id
+                //       responseexpenditureData.data[iss].weikaifapiao = Number(responseexpenditureData.data[iss].Receivables) - Number(responseexpenditureData.data[iss].invoice)
+                //       responseexpenditureData.data[iss].porjectidset = this.fromsupplierlist[item].id
+                //       if (this.fromsupplierlist[item].number != '') { //eslint-disable-line
+                //         responseexpenditureData.data[iss].projectnumber = Number(this.fromsupplierlist[item].number)
+                //         this.fromsupplierlist[item].number = '' // 应付总额合并
+                //       } else {
+                //         responseexpenditureData.data[iss].projectnumber = 0
+                //       }
+                //       if (responseexpenditureData.data[iss].invoicebo === '不计发票') {
+                //         responseexpenditureData.data[iss].biujifapiao = Number(responseexpenditureData.data[iss].Receivables)
+                //       } else {
+                //         responseexpenditureData.data[iss].biujifapiao = 0
+                //       }
+                //       this.tableData.push(responseexpenditureData.data[iss])
+                //     }
+                //   }
+                // }
                 // console.log(this.tableData)
                 for (let i = 0; i < this.tableData.length; i++) {
                   // console.log(this.tableData[i].Receivableslist, this.tableData[i].hetongid, this.tableData[i].projectClass, this.tableData[i].listid)

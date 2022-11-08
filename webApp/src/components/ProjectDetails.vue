@@ -26,6 +26,9 @@
         <el-form-item label="预算支出" prop="ExpenditureBudget">
           <el-input type="number" v-model="form.ExpenditureBudget" style="width:46%" ></el-input>
         </el-form-item>
+        <el-form-item label="归属区域" prop="projectup">
+          <el-input v-model="form.Receivables" style="width:46%" ></el-input>
+        </el-form-item>
         <el-form-item label="项目说明" prop="projectContent">
           <el-input type="textarea" v-model="form.projectContent" ></el-input>
         </el-form-item>
@@ -188,6 +191,7 @@ export default {
         CustomerName: '无',
         ContractAmount: '',
         ContractDate: '无',
+        Receivables: '无',
         ExpenditureBudget: '无'
       },
       contentsinvoice: '',

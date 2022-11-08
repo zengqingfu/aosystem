@@ -10,7 +10,7 @@ const path = require("path");
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '',
+  password: '785805',
   database: 'aosystem1'
 });
 

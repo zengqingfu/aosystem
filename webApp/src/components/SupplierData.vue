@@ -106,13 +106,7 @@ export default {
                 for (let i = 0; i < this.fromprojectList.length; i++) {
                   for (let is = 0; is < response.data.length; is++) {
                     if(this.fromprojectList[i].id == response.data[is].projectId){ //eslint-disable-line
-                      for (let iss = 0; iss < responsegys.data.length; iss++) {
-                        if(response.data[is].SupplierName == responsegys.data[iss].id){ //eslint-disable-line
-                          // this.thisdata = response.data[is]
-                          // this.thisdata.SupplierName = responsegys.data[iss].SupplierName
-                          this.fromexpenditure.push(response.data[is]) // 进行中项目的所有合同
-                        }
-                      }
+                      this.fromexpenditure.push(response.data[is]) // 进行中项目的所有合同
                     }
                   }
                 }
@@ -120,11 +114,18 @@ export default {
                   // if (this.fromexpenditure[i].SupplierName === '20' && this.fromexpenditure[i].Receivableslist != '不分期') {  //eslint-disable-line
                   //   console.log(this.fromexpenditure[i].Receivables, this.fromexpenditure[i].projectId)
                   // }
+                  // console.log(this.fromexpenditure[i].id)
                   this.fromexpenditure[i].kaifapiao = 0
                   this.fromexpenditure[i].biujifapiao = 0
                   if(this.fromexpenditure[i].Receivableslist != '不分期'){ //eslint-disable-line
                     this.fromexpenditure[i].number = 0 // 应收款~~~~~~~~~~~不确定,最后选择用收款列表计算,原本是用收款合同计算
                     this.fromexpenditure[i].Receivables = 0
+                    // for (let is = 0; is < this.fromexpenditureData.length; is++) {
+                    //   if(this.fromexpenditure[i].id == this.fromexpenditureData[is].projectId){ //eslint-disable-line
+                    //     this.fromexpenditure[i].number += Number(this.fromexpenditureData[is].number) // 应收款~~~~~~~~~~~不确定,最后选择用收款列表计算,原本是用收款合同计算
+                    //     this.fromexpenditure[i].Receivables += Number(this.fromexpenditureData[is].Receivables) // 已付金额
+                    //   }
+                    // }
                   }
                   for (let il = 0; il < responselist.data.length; il++) {
                     if(responselist.data[il].id == this.fromexpenditure[i].projectClass){ //eslint-disable-line

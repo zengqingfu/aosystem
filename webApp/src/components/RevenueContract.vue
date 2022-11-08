@@ -2,7 +2,7 @@
   <el-main style="text-align:left; line-height: 1.8em;">
     <h3>
       <span @click="goToHome" style="cursor: pointer;color:#409EFF">{{this.projectName}}-项目 > </span>合同列表
-      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true;imageUrlbo = false;form.ReceivablesData = ''">添加合同</el-button>
+      <el-button type="primary" style="float: right;" @click="dialogFormVisible = true;imageUrlbo = false;form.ReceivedData = ''">添加合同</el-button>
       <el-button style="float: right;margin-right:20px" onclick="exportExcel('#RevenueContract')">点击导出</el-button>
     </h3>
     <el-dialog title="添加收款" :visible.sync="dialogFormVisible">
@@ -232,7 +232,7 @@ export default {
   },
   methods: {
     getimgurl () {
-      window.open('http://' + window.location.host + '/uploads/' + this.formModify.ReceivablesData, 'target', '')
+      window.open('http://' + window.location.host + '/uploads/' + this.formModify.ReceivedData, 'target', '')
     },
     handleAvatarSuccess (res, file) {
       // this.imageUrl = URL.createObjectURL(file.raw)
@@ -369,7 +369,7 @@ export default {
       this.dialogAddVisible = true
       this.jsondata.getDataId('revenuecontract', row.id).then(response => {
         this.formModify = response.data[0]
-        if (this.formModify.ReceivedData === '') {
+        if (this.formModify.ReceivedData === '' || this.formModify.ReceivedData === 'null') {
           this.imageUrlbo = false
         } else {
           this.imageUrlbo = true

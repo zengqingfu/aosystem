@@ -69,6 +69,7 @@ export default {
       this.loginForm.password = CryptoJS.AES.encrypt(this.form.password, 'bigmind').toString() // 加密
       this.loginForm.username = this.form.username
       this.jsondata.postlogin(this.loginForm).then(response => {
+        console.log(response.data)
         if (response.data === '登陆失败') {
           this.infoLogin = true
           document.getElementById('infoLogin').innerHTML = '登陆失败'
